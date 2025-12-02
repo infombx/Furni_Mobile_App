@@ -11,7 +11,7 @@ class Header extends StatelessWidget {
         children: [
           // --- HEADER ----
           Container(
-            height: 80,
+            height: 85,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             width: double.infinity,
             color: Colors.white,

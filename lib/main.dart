@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:furni_project/screens/splash_screen.dart';
 import 'package:furni_project/widgets/footer/footer.dart';
-
-void main() {
-  runApp(MaterialApp(home: Scaffold(body: const SplashScreen())));
-=======
 import 'package:furni_project/Header/header.dart';
 
 void main() {
@@ -19,5 +14,4 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(debugShowCheckedModeBanner: false, home: const Header());
   }
->>>>>>> refs/remotes/origin/main
 }
