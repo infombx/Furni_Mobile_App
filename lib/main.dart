@@ -1,17 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:furni_project/screens/splash_screen.dart';
-import 'package:furni_project/widgets/footer/footer.dart';
-import 'package:furni_project/Header/header.dart';
+import 'package:furni_project/Items/counter.dart';
+import 'package:furni_project/Items/product.dart';
 
 void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: const Header());
-  }
+  runApp(MaterialApp(home: Scaffold(body: ProductWidget())));
 }
