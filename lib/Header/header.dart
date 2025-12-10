@@ -6,52 +6,31 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          // --- HEADER ----
-          Container(
-            height: 85,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            width: double.infinity,
-            color: Colors.white,
-            child: Row(
+    return 
+           Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                IconButton(icon: const Icon(Icons.menu), onPressed: () {}),
-
-                // Middle (logo)
                 SvgPicture.asset(
-                  'assets/images/furniLogo.svg', // (fix extension too, explained next)
+                  'assets/images/furniLogo.svg', 
                   alignment: Alignment.centerRight,
                   width: 70,
                 ),
                 const Spacer(),
-                // Right side
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(
-                        Icons.shopping_cart_checkout,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(width: 10),
-                    IconButton(
-                      icon: Icon(
-                        Icons.person_outline_outlined,
-                        color: Colors.black,
+                      icon: SvgPicture.asset(
+                        'assets/images/search.svg',
+                        width: 24,
+                        height: 24,
+                        alignment: Alignment.topLeft ,
                       ),
                       onPressed: () {},
                     ),
                   ],
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
+            );
+        
   }
 }
