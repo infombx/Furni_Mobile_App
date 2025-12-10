@@ -6,12 +6,12 @@ class FooterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 210,
+      height: 100,
       color: const Color.fromARGB(231, 20, 18, 18),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: 50),
+          SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.only(right: 30, left: 30),
             child: Divider(
@@ -19,7 +19,7 @@ class FooterWidget extends StatelessWidget {
               thickness: 1,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -40,7 +40,7 @@ class FooterWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 25),
+          const SizedBox(height: 10),
           const Text(
             'Copyright © 2025 Furni All rights reserved',
             style: TextStyle(color: Colors.white),

@@ -27,8 +27,8 @@ class _QuantityCounterState extends State<QuantityCounter> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
-      width: 120,
+      height: 41,
+      width: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
@@ -41,17 +41,10 @@ class _QuantityCounterState extends State<QuantityCounter> {
         children: [
           SizedBox(
             width: 40,
-            child: TextButton(
+            child: IconButton(
               onPressed: minCounter, 
-              child: Text(
-                "-",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  
-                ),
-              )
+              icon: Transform.translate(offset: Offset(0, -7),
+              child: Icon(Icons.minimize, size: 24,),)
             ),
           ),
           Text(

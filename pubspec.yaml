@@ -1,7 +1,6 @@
-name: furni_project
+name: furni_mobile_app
 description: "A new Flutter project."
 publish_to: 'none'
-
 version: 1.0.0+1
 
 environment:
@@ -10,14 +9,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  flutter_svg: ^1.1.6
   flutter_carousel_widget: ^2.2.0   # ← RECOMMENDED alternative, no conflicts
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.2.3
+  google_fonts: ^6.3.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^5.0.0
 
 flutter:
@@ -34,4 +33,30 @@ flutter:
     - assets/images/bedroom.png
     - assets/images/kitchen1.svg
     - assets/images/kitchen0.png
+
+    - assets/images/product_image_1.jpg
+    - assets/images/product_image_2.jpg
+    - assets/images/product_image_3.jpg
+    - assets/images/product_image_5.jpg
+    - assets/images/Left_arrow.png
+    - assets/images/Right_arrow.png
+    - assets/images/product_image_4.png
+    - assets/images/furniLogo.svg
+    - assets/images/logo_furni.svg
+    - assets/images/shopping-bag.png
+    - assets/images/shopping_bag.svg
+    - assets/images/user-circle.svg
+    - assets/images/person1.png
+    - assets/images/person2.png
+    - assets/images/person3.png
+    - assets/images/store.svg
+    - assets/images/mail.svg
+    - assets/images/Map.png
+    - assets/images/phone.svg
+    - assets/images/Subtract.svg
+    - assets/images/img1.png
+    - assets/images/search.svg
+
+
+
 

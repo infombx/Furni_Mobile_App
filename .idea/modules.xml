@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/furni_project.iml" filepath="$PROJECT_DIR$/furni_project.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/furni_project_android.iml" filepath="$PROJECT_DIR$/android/furni_project_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/furni_mobile_app.iml" filepath="$PROJECT_DIR$/furni_mobile_app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/furni_mobile_app_android.iml" filepath="$PROJECT_DIR$/android/furni_mobile_app_android.iml" />
     </modules>
   </component>
 </project>
