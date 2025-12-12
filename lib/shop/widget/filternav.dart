@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Filternav extends StatelessWidget{
+  const Filternav({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

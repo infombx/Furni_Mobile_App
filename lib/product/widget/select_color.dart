@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SelectColor extends StatefulWidget {
+  const SelectColor({super.key});
+
   @override
   State<SelectColor> createState() => _SelectColorState();
 }

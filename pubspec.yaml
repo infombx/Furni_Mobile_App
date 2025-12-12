@@ -9,10 +9,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_carousel_widget: ^2.2.0   
+
+  flutter_carousel_widget: ^2.2.0
   cupertino_icons: ^1.0.8
   flutter_svg: ^2.2.3
   google_fonts: ^6.3.3
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -45,11 +47,7 @@ flutter:
     - assets/images/Left_arrow.png
     - assets/images/Right_arrow.png
     - assets/images/product_image_4.png
-    - assets/images/furniLogo.svg
-    - assets/images/logo_furni.svg
-    - assets/images/shopping-bag.png
     - assets/images/shopping_bag.svg
-    - assets/images/user-circle.svg
     - assets/images/person1.png
     - assets/images/person2.png
     - assets/images/person3.png
@@ -60,10 +58,12 @@ flutter:
     - assets/images/Subtract.svg
     - assets/images/img1.png
     - assets/images/search.svg
+    - assets/images/a40cc85f069a0857fe7da4976ba73bf5db64a055.jpg
+    - assets/images/sofa.png
+    - assets/images/Dining table.png
+    - assets/images/Celebration.png
     - assets/images/delivery.svg
     - assets/images/money.svg
     - assets/images/lock.svg
     - assets/images/call.svg
     - assets/images/filter.svg
-
-

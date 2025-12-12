@@ -8,6 +8,8 @@ import 'package:furni_mobile_app/contactUs/widget/shopnow.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Contactus extends StatelessWidget{
+  const Contactus({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

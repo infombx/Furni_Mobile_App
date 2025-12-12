@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DisplayImages extends StatefulWidget {
+  const DisplayImages({super.key});
+
   @override
   State <DisplayImages> createState()=> _DisplayImagesState();
 }

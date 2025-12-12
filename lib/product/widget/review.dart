@@ -4,6 +4,8 @@ import 'package:furni_mobile_app/product/widget/rating_star.dart';
 import 'package:furni_mobile_app/product/data/review.dart';
 
 class Review  extends StatefulWidget {
+  const Review({super.key});
+
    @override
  State <Review> createState()=> _ReviewState();
 }

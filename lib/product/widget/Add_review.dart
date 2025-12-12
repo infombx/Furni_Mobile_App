@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:furni_mobile_app/product/widget/rating_star.dart';
 
 class AddReview extends StatelessWidget{
+  const AddReview({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

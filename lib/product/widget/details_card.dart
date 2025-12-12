@@ -3,8 +3,14 @@ import 'package:furni_mobile_app/Items/counter.dart';
 import 'package:furni_mobile_app/product/widget/rating_star.dart';
 import 'package:furni_mobile_app/product/widget/select_color.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:furni_mobile_app/dummy items/data_required.dart';
+import 'package:furni_mobile_app/Items/counter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DetailsCard extends StatelessWidget{
+  const DetailsCard({super.key, required this.onQuantityChanged});
+  final void Function (int) onQuantityChanged;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -95,19 +101,19 @@ class DetailsCard extends StatelessWidget{
           SizedBox(height: 20,),
           Row(
             children: [ 
-              QuantityCounter(),
+              QuantityCounter(onQuantityChanged:onQuantityChanged),
               SizedBox(width: 8,),
-              ElevatedButton(onPressed: (){}, child: Text('Add to cart'),
+              ElevatedButton(onPressed: (){},
               style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all(Size(210, 40)),
-                backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 0, 0, 0)), 
-                foregroundColor: MaterialStateProperty.all(Colors.white),
-                shape: MaterialStateProperty.all(
+                fixedSize: WidgetStateProperty.all(Size(210, 40)),
+                backgroundColor: WidgetStateProperty.all(Color.fromARGB(255, 0, 0, 0)), 
+                foregroundColor: WidgetStateProperty.all(Colors.white),
+                shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
-              ),
+              ), child: Text('Add to cart'),
           )
 
           
