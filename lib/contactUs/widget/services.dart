@@ -7,10 +7,9 @@ class Services extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
     return Container(
-      // width: 400,
-      // height: 488,
-      // padding: EdgeInsets.all(32),
       child: Column(
         children: [
           Row(
@@ -20,9 +19,9 @@ class Services extends StatelessWidget{
                   color: const Color.fromRGBO(243, 245, 247, 1),
                   borderRadius: BorderRadius.circular(20)
                 ),
-                width: 170,
-                height: 170,
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.only(top:20, left:5, right:5, bottom:20),
+                width: w * 0.38,  
+                height: h * 0.35,
                 
                 child: Center(
                   child: Column(
@@ -30,6 +29,7 @@ class Services extends StatelessWidget{
                       SvgPicture.asset('assets/images/delivery.svg', width: 48,),
                       SizedBox(height: 16,),
                       Text('Free Shipping',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
@@ -53,9 +53,9 @@ class Services extends StatelessWidget{
                   color: const Color.fromRGBO(243, 245, 247, 1),
                   borderRadius: BorderRadius.circular(20)
                 ),
-                   width: 170,
-                height: 170,
-                padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.only(top:20, left:5, right:5, bottom:20),
+                   width: w * 0.38,  
+                  height: h * 0.35,
                 child: Center(
                   child: Column(
                     children: [
@@ -89,31 +89,34 @@ class Services extends StatelessWidget{
                   color: const Color.fromRGBO(243, 245, 247, 1),
                   borderRadius: BorderRadius.circular(20)
                 ),
-                 width: 170,
-                height: 170,
-                padding: EdgeInsets.all(10),
-                child: Center(
-                  child: Column(
-                    children: [
-                      SvgPicture.asset('assets/images/lock.svg', width: 48,),
-                      SizedBox(height: 16,),
-                      Text('Secure Payments',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        fontFamily: GoogleFonts.inter().fontFamily
-                      ),),
-                      Text('Secured by stripe',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        fontFamily: GoogleFonts.inter().fontFamily,
-                        color: Color.fromRGBO(108, 114, 117, 1),
-                      ),
-                      textAlign: TextAlign.center,)
-                    ],
+              padding: EdgeInsets.only(top:20, left:5, right:5, bottom:20),
+                width: w * 0.38,  
+                height: h * 0.35,
+               
+                  child: Center(
+                    child: Column(
+                      children: [
+                        SvgPicture.asset('assets/images/lock.svg', width: 48,),
+                        SizedBox(height: 16,),
+                        Text('Secure Payments',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          fontFamily: GoogleFonts.inter().fontFamily
+                        ),),
+                        Text('Secured by stripe',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          fontFamily: GoogleFonts.inter().fontFamily,
+                          color: Color.fromRGBO(108, 114, 117, 1),
+                        ),
+                        textAlign: TextAlign.center,)
+                      ],
+                    ),
                   ),
-                ),
+                
               ),
               SizedBox(width: 10,),
 
@@ -122,9 +125,9 @@ class Services extends StatelessWidget{
                   color: const Color.fromRGBO(243, 245, 247, 1),
                   borderRadius: BorderRadius.circular(20)
                 ),
-                width: 170,
-                height: 170,
-                padding: EdgeInsets.all(10),
+               padding: EdgeInsets.only(top:20, left:5, right:5, bottom:20),
+                width: w * 0.38,  
+                height: h * 0.35,
                 child: Center(
                   child: Column(
                     children: [

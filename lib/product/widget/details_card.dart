@@ -3,16 +3,15 @@ import 'package:furni_mobile_app/Items/counter.dart';
 import 'package:furni_mobile_app/product/widget/rating_star.dart';
 import 'package:furni_mobile_app/product/widget/select_color.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/dummy items/data_required.dart';
-import 'package:furni_mobile_app/Items/counter.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 
 class DetailsCard extends StatelessWidget{
   const DetailsCard({super.key, required this.onQuantityChanged});
   final void Function (int) onQuantityChanged;
+
   @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,7 +104,7 @@ class DetailsCard extends StatelessWidget{
               SizedBox(width: 8,),
               ElevatedButton(onPressed: (){},
               style: ButtonStyle(
-                fixedSize: WidgetStateProperty.all(Size(210, 40)),
+                fixedSize: WidgetStateProperty.all(Size(w* 0.55, 45)),
                 backgroundColor: WidgetStateProperty.all(Color.fromARGB(255, 0, 0, 0)), 
                 foregroundColor: WidgetStateProperty.all(Colors.white),
                 shape: WidgetStateProperty.all(

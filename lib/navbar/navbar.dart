@@ -5,6 +5,7 @@ import 'package:furni_mobile_app/screens/cart_screen.dart';
 // import 'package:furni_mobile_app/screens/profile_screen.dart';
 // import 'package:furni_mobile_app/screens/shop_screen.dart';
 import 'package:furni_mobile_app/screens/home_screen.dart';
+import 'package:furni_mobile_app/shop/shopPage.dart';
 
 class GlassFloatingNavBar extends StatefulWidget {
   const GlassFloatingNavBar({super.key});
@@ -65,8 +66,7 @@ class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
                           );
                         },
                         child: SvgPicture.asset(
-                          'assets/images/home2.svg',
-                          width: 26,
+                          'assets/images/home2.svg', height:24,
                         ),
                       ),
                       label: "Home",
@@ -77,7 +77,7 @@ class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => HomeScreen()),
+                            MaterialPageRoute(builder: (_) => Shoppage()),
                           );
                         },
                         child: SvgPicture.asset(

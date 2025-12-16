@@ -31,7 +31,6 @@ class _ProductWidgetState extends State<ProductWidget> {
       widget.onPriceChanged(initialPrice);
     });
   }
-
   void _onQuantityChanged(int value) {
     setState(() {
       selectedQty = value;
@@ -45,6 +44,8 @@ class _ProductWidgetState extends State<ProductWidget> {
     double itemPrice = (widget.item.price * selectedQty);
     ImageProvider imageProvider;
     final url = widget.item.imageUrl;
+   
+
     if (url.startsWith('http')) {
       imageProvider = NetworkImage(url);
     } else {

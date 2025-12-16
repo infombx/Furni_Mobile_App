@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:furni_mobile_app/data/data_cons.dart';
-import 'package:furni_mobile_app/product/widget/rating_star.dart';
+import 'package:furni_mobile_app/product/Product_page.dart';
+import 'package:furni_mobile_app/product/widget/rating_star.dart'; // ensure correct import
 import 'package:furni_mobile_app/home_page/toggle_favorite.dart';
-
+import 'package:furni_mobile_app/screens/home_screen.dart';
 class NewProductCard extends StatelessWidget {
   const NewProductCard({super.key, required this.item});
   final CartItem item;
@@ -22,107 +23,112 @@ class NewProductCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          width: 260,
-          height: 290,
-          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 236, 239, 239),
-            borderRadius: BorderRadius.circular(16),
-            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-          ),
-          child: Stack(
-            children: [
-              // Example: favorite button on top-right
-              Positioned(
-                top: 13,
-                right: 10,
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.white,
-                  child: FavoriteToggleButton(),
+        GestureDetector(
+          onTap: (){
+           MaterialPageRoute(builder: (_) => HomeScreen());
+          },
+          child: Container(
+            width: 260,
+            height: 290,
+            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 236, 239, 239),
+              borderRadius: BorderRadius.circular(16),
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover, ),
+            ),
+            child: Stack(
+              children: [
+                // Example: favorite button on top-right
+                Positioned(
+                  top: 13,
+                  right: 10,
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.white,
+                    child: FavoriteToggleButton(),
+                  ),
                 ),
-              ),
-
-              // Example: New and -50% labels at top-left
-              Positioned(
-                top: 16,
-                left: 16,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 30,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 248, 246, 246),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'New',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 6.5),
-                    Container(
-                      height: 30,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 4, 206, 31),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          '-50%',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 244, 243, 243),
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Example: Add to Cart button at bottom
-              Positioned(
-                bottom: 13,
-                left: 10,
-                right: 10,
-                child: Center(
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      fixedSize: WidgetStatePropertyAll(const Size(200, 40)),
-                      backgroundColor: WidgetStatePropertyAll(
-                        const Color.fromARGB(255, 6, 53, 107),
-                      ),
-                      shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
+          
+                // Example: New and -50% labels at top-left
+                Positioned(
+                  top: 16,
+                  left: 16,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 30,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 248, 246, 246),
                           borderRadius: BorderRadius.circular(8),
                         ),
+                        child: const Center(
+                          child: Text(
+                            'New',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    onPressed: () {},
-                    child: const Text(
-                      'Add to Cart',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 246, 245, 245),
+                      const SizedBox(height: 6.5),
+                      Container(
+                        height: 30,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 4, 206, 31),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            '-50%',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 244, 243, 243),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+          
+                // Example: Add to Cart button at bottom
+                Positioned(
+                  bottom: 13,
+                  left: 10,
+                  right: 10,
+                  child: Center(
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        fixedSize: WidgetStatePropertyAll(const Size(200, 40)),
+                        backgroundColor: WidgetStatePropertyAll(
+                          const Color.fromARGB(255, 6, 53, 107),
+                        ),
+                        shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: const Text(
+                        'Add to Cart',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 246, 245, 245),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
 
