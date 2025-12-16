@@ -3,7 +3,6 @@ import 'package:furni_mobile_app/Header/header.dart';
 import 'package:furni_mobile_app/Items/Shipping_address.dart';
 import 'package:furni_mobile_app/Items/cart_listview.dart';
 import 'package:furni_mobile_app/Items/contact_details.dart';
-import 'package:furni_mobile_app/dummy%20items/data_required.dart';
 import 'package:furni_mobile_app/dummy%20items/myItems.dart';
 import 'package:furni_mobile_app/screens/order_complete_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -513,9 +512,34 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                 ],
               ),
             ),
-          ],
+            const SizedBox(height: 20,),
+        Container(
+          width: 450,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: TextButton(
+            onPressed:(){Navigator.of(context).push(MaterialPageRoute(
+              builder: (ctx)=> OrderCompleteScreen(
+                item:dummycart,
+                Total: total,
+                paymode: modePay,
+                quantity: itemQuantities,
+                  )));},
+               child: Text('Place Order',
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w600, 
+                  fontSize: 16, color: Colors.white
+          ),
+          ),
+          ),
+        )
+          ]
+          ),
         ),
-      ),
+        
     );
   }
 }

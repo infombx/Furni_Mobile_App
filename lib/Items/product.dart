@@ -21,7 +21,7 @@ class ProductWidget extends StatefulWidget {
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
-  int selectedQty = 1;
+  late int selectedQty;
 
   @override
   void initState() {
@@ -33,7 +33,6 @@ class _ProductWidgetState extends State<ProductWidget> {
       widget.onPriceChanged(initialPrice);
     });
   }
-
   void _onQuantityChanged(int value) {
     setState(() {
       selectedQty = value;
@@ -47,6 +46,8 @@ class _ProductWidgetState extends State<ProductWidget> {
     double itemPrice = (widget.item.price * selectedQty);
     ImageProvider imageProvider;
     final url = widget.item.imageUrl;
+   
+
     if (url.startsWith('http')) {
       imageProvider = NetworkImage(url);
     } else {
@@ -108,7 +109,41 @@ class _ProductWidgetState extends State<ProductWidget> {
                 ],
               ),
             ),
-
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const SizedBox(height: 30),
+                  Text(
+                    widget.item.productName,
+                    style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    widget.item.property,
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12,
+                      color: const Color.fromARGB(255, 102, 110, 114),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  QuantityCounter(
+                    initialQuantity: widget.item.quantity,
+                    onQuantityChanged: (value) {
+                      setState(() {
+                        selectedQty = value;
+                        widget.item.quantity = value;
+                      });
+                      widget.onQuantityChanged(value);
+                      widget.onPriceChanged(widget.item.price * value);
+                    },
+                    max: 9,
+                  ),
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 30),
               child: Column(
@@ -119,22 +154,16 @@ class _ProductWidgetState extends State<ProductWidget> {
                       children: [
                         TextSpan(
                           text: '\$',
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
+                          style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14),
                         ),
                         TextSpan(
                           text: '$itemPrice',
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
+                          style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14),
                         ),
                       ],
                     ),
-                  ), //
-                  IconButton(onPressed: () {}, icon: Icon(Icons.close)),
+                  ),
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.close)),
                 ],
               ),
             ),

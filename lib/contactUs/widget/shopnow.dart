@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furni_mobile_app/home_page/shopNow_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Shopnow extends StatelessWidget{
@@ -36,14 +37,7 @@ class Shopnow extends StatelessWidget{
             ) ),
             SizedBox(height: 30),
        
-            TextButton(onPressed: (){}, child: Text('Shop Now',
-            style:TextStyle(
-              fontWeight: FontWeight.w500,
-              fontFamily: GoogleFonts.inter().fontFamily,
-              fontSize: 16,
-              letterSpacing: -0.4,
-              color: Colors.black,
-            ) ))
+            ShopNowLink()
           ],
         ),
    );

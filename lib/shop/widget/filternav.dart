@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:furni_mobile_app/shop/widget/filter.dart';
+import 'package:furni_mobile_app/shop/widget/sortby.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Filternav extends StatelessWidget{
@@ -10,15 +12,15 @@ class Filternav extends StatelessWidget{
     return Container(
       padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
       width: double.infinity,
-      height: 56,
+      height: 60,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 1,
-            blurRadius: 3,
-            offset: Offset(0, 2), 
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3), 
           ),
         ],
       ),
@@ -36,10 +38,24 @@ class Filternav extends StatelessWidget{
                 color: Colors.black
               ),)
             ],), 
-            onPressed: (){},
+            onPressed: (){showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            builder: (context) => const FilterBottomSheet(),
+            );},
           ),
           Spacer(),
-          TextButton(onPressed: (){}, child: Row(
+          TextButton(onPressed: (){showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            builder: (context) => const Sortby(),
+            );}, child: Row(
             children: [
               Text('Sort by',  style: TextStyle(
                     fontSize: 16,
