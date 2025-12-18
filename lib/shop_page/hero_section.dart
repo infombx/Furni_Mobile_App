@@ -11,7 +11,7 @@ class HeroSection extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            height: 400,
+            height: 300,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               image: const DecorationImage(

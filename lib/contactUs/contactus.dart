@@ -14,29 +14,112 @@ class Contactus extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return  
-      Scaffold(
-        body: SingleChildScrollView(
-              padding: EdgeInsets.all(32),
-              child: Column(
-                children: [
-                  About(),
-                  SizedBox(height: 20),
-                  Shopnow(),
-                   SizedBox(height: 20),
-                  Text('Contact Us',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
-                    fontFamily: GoogleFonts.poppins().fontFamily  
+      SingleChildScrollView(
+            padding: EdgeInsets.all(32),
+            child: Column(
+              children: [
+                About(),
+                SizedBox(height: 20),
+                Shopnow(),
+                 SizedBox(height: 20),
+                Text('Contact Us',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                  fontFamily: GoogleFonts.poppins().fontFamily  
+                ),
+                ),
+               
+               SizedBox(height: 40),
+               Container(
+                padding: EdgeInsets.only(top: 16, left:40, right: 40, bottom: 20),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                
+                child: Center(
+                  child: Column(
+                    children: [
+                      SvgPicture.asset('assets/images/store.svg'),
+                      SizedBox(height: 16),
+                      Text('ADDRESS',
+                      style: TextStyle(
+                        fontFamily: GoogleFonts.inter().fontFamily,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 108, 114, 117)
+                      ),),
+                      SizedBox(height: 8),
+                      Text(textAlign: TextAlign.center,'234 Hai Trieu, Ho Chi Minh City, Viet Nam', 
+                      style: TextStyle(
+                        fontFamily: GoogleFonts.inter().fontFamily,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),)
+      
+                    ],
                   ),
+                ),
+               ),
+               SizedBox(height: 16),
+                Container(
+                padding: EdgeInsets.only(top: 16, left:40, right: 40, bottom: 20),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      SvgPicture.asset('assets/images/phone.svg'),
+                      SizedBox(height: 16),
+                      Text('CONTACT US',
+                      style: TextStyle(
+                        fontFamily: GoogleFonts.inter().fontFamily,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 108, 114, 117)
+                      ),),
+                      SizedBox(height: 8),
+                      Text(textAlign: TextAlign.center,'+84 234 567 890', 
+                      style: TextStyle(
+                        fontFamily: GoogleFonts.inter().fontFamily,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),)
+      
+                    ],
                   ),
-                 
-                 SizedBox(height: 40),
-                 Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(20)
+                ),
+               ),
+               SizedBox(height: 16),
+                Container(
+                padding: EdgeInsets.only(top: 16, left:40, right: 40, bottom: 20),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      SvgPicture.asset('assets/images/mail.svg'),
+                      SizedBox(height: 16),
+                      Text('EMAIL',
+                      style: TextStyle(
+                        fontFamily: GoogleFonts.inter().fontFamily,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 108, 114, 117)
+                      ),),
+                      SizedBox(height: 8),
+                      Text(textAlign: TextAlign.center,'hello@furni.com', 
+                      style: TextStyle(
+                        fontFamily: GoogleFonts.inter().fontFamily,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),),
+                    ],
                   ),
                   height: 160,
                   child: Center(

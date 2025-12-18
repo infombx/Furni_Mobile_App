@@ -35,31 +35,34 @@ class _LocationState extends State<Location> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 300,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-        )
-            ,
-        child: FlutterMap(
-          mapController: _mapController,
-          options: MapOptions(
-            initialCenter: _initialCenter,
-            initialZoom: 14,
-           
-          ),
-          children: [
-            TileLayer(
-              urlTemplate:
-                  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-              subdomains: const ['a', 'b', 'c'],
-              userAgentPackageName: 'com.example.yourapp',
-            ),
-            MarkerLayer(markers: _markers),
-          ],
+Widget build(BuildContext context) {
+  double w = MediaQuery.of(context).size.width;
+
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(20), // ✅ clips map
+    child: Container(
+      height: 300,
+      width: w * 0.9,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: FlutterMap(
+        mapController: _mapController,
+        options: MapOptions(
+          initialCenter: _initialCenter,
+          initialZoom: 14,
         ),
-    );
+        children: [
+          TileLayer(
+            urlTemplate:
+                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            subdomains: const ['a', 'b', 'c'],
+          ),
+          MarkerLayer(markers: _markers),
+        ],
+      ),
+    ),
+  );
+
   }
 }

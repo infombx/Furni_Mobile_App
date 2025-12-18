@@ -25,7 +25,7 @@ class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
         Positioned(
           left: 16,
           right: 16,
-          bottom: 20,
+          bottom: 10,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(24),
             child: BackdropFilter(
@@ -49,6 +49,8 @@ class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
                 ),
 
                 child: BottomNavigationBar(
+                  showSelectedLabels: false,     
+                  showUnselectedLabels: false,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   type: BottomNavigationBarType.fixed,
