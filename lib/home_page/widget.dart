@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:furni_mobile_app/data/data_cons.dart';
-import 'package:furni_mobile_app/product/Product_page.dart';
 import 'package:furni_mobile_app/product/widget/rating_star.dart'; // ensure correct import
 import 'package:furni_mobile_app/home_page/toggle_favorite.dart';
 import 'package:furni_mobile_app/screens/home_screen.dart';
+
 class NewProductCard extends StatelessWidget {
   const NewProductCard({super.key, required this.item});
   final CartItem item;
@@ -24,8 +24,8 @@ class NewProductCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
-          onTap: (){
-           MaterialPageRoute(builder: (_) => HomeScreen());
+          onTap: () {
+            MaterialPageRoute(builder: (_) => HomeScreen());
           },
           child: Container(
             width: 260,
@@ -34,7 +34,7 @@ class NewProductCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 236, 239, 239),
               borderRadius: BorderRadius.circular(16),
-              image: DecorationImage(image: imageProvider, fit: BoxFit.cover, ),
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
             ),
             child: Stack(
               children: [
@@ -48,7 +48,7 @@ class NewProductCard extends StatelessWidget {
                     child: FavoriteToggleButton(),
                   ),
                 ),
-          
+
                 // Example: New and -50% labels at top-left
                 Positioned(
                   top: 16,
@@ -98,7 +98,7 @@ class NewProductCard extends StatelessWidget {
                     ],
                   ),
                 ),
-          
+
                 // Example: Add to Cart button at bottom
                 Positioned(
                   bottom: 13,

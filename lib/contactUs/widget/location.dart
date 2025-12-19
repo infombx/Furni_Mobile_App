@@ -3,7 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 class Location extends StatefulWidget {
-  const Location({Key? key}) : super(key: key);
+  const Location({super.key});
 
   @override
   State<Location> createState() => _LocationState();
@@ -14,7 +14,6 @@ class _LocationState extends State<Location> {
 
   // marker storage
   final List<Marker> _markers = [];
-
 
   // Initial center → Mauritius (Port Louis)
   final LatLng _initialCenter = LatLng(-20.1619, 57.5013);
@@ -35,34 +34,27 @@ class _LocationState extends State<Location> {
   }
 
   @override
-Widget build(BuildContext context) {
-  double w = MediaQuery.of(context).size.width;
+  Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
 
-  return ClipRRect(
-    borderRadius: BorderRadius.circular(20), // ✅ clips map
-    child: Container(
-      height: 300,
-      width: w * 0.9,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: FlutterMap(
-        mapController: _mapController,
-        options: MapOptions(
-          initialCenter: _initialCenter,
-          initialZoom: 14,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20), // ✅ clips map
+      child: Container(
+        height: 300,
+        width: w * 0.9,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+        child: FlutterMap(
+          mapController: _mapController,
+          options: MapOptions(initialCenter: _initialCenter, initialZoom: 14),
+          children: [
+            TileLayer(
+              urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              subdomains: const ['a', 'b', 'c'],
+            ),
+            MarkerLayer(markers: _markers),
+          ],
         ),
-        children: [
-          TileLayer(
-            urlTemplate:
-                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            subdomains: const ['a', 'b', 'c'],
-          ),
-          MarkerLayer(markers: _markers),
-        ],
       ),
-    ),
-  );
-
+    );
   }
 }

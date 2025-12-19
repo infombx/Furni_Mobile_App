@@ -2,10 +2,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:furni_mobile_app/Items/bottomsheet.dart';
-import 'package:furni_mobile_app/screens/cart_screen.dart';
 // import 'package:furni_mobile_app/screens/profile_screen.dart';
 // import 'package:furni_mobile_app/screens/shop_screen.dart';
 import 'package:furni_mobile_app/screens/home_screen.dart';
+
 import 'package:furni_mobile_app/shop/shopPage.dart';
 
 class GlassFloatingNavBar extends StatefulWidget {
@@ -16,7 +16,7 @@ class GlassFloatingNavBar extends StatefulWidget {
 }
 
 class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
                 ),
 
                 child: BottomNavigationBar(
-                  showSelectedLabels: false,     
+                  showSelectedLabels: false,
                   showUnselectedLabels: false,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
@@ -69,7 +69,8 @@ class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
                           );
                         },
                         child: SvgPicture.asset(
-                          'assets/images/home2.svg', height:24,
+                          'assets/images/home2.svg',
+                          height: 24,
                         ),
                       ),
                       label: "Home",
@@ -93,20 +94,15 @@ class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
                     BottomNavigationBarItem(
                       icon: GestureDetector(
                         onTap: () {
-                          
                           showModalBottomSheet(
-  context: context,
-  isScrollControlled: true,
-  shape: const RoundedRectangleBorder(
-    borderRadius: BorderRadius.zero,
-  ),
-  clipBehavior: Clip.antiAlias,
-  builder: (ctx) => const BottomCartSheet(),
-);
-
-                          
-                          
-                          
+                            context: context,
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            builder: (ctx) => const BottomCartSheet(),
+                          );
                         },
                         child: SvgPicture.asset(
                           'assets/images/cart_logo.svg',

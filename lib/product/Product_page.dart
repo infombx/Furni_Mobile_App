@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/Header/header.dart';
 import 'package:furni_mobile_app/product/widget/Add_review.dart';
 import 'package:furni_mobile_app/product/widget/details_card.dart';
 import 'package:furni_mobile_app/product/widget/display_images.dart';
 import 'package:furni_mobile_app/product/widget/navigation.dart';
 import 'package:furni_mobile_app/product/widget/review.dart';
-import 'package:furni_mobile_app/product/widget/details_card.dart';
-
-
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key, required this.onQuantityChanged});
@@ -15,7 +11,6 @@ class ProductPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -39,7 +34,6 @@ class ProductPage extends StatelessWidget {
                 ),
               ),
             ),
-            
           ],
         ),
       ),
