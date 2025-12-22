@@ -56,8 +56,9 @@ class _ProductWidgetState extends State<ProductWidget> {
         height: 190,
         width: double.infinity,
         child: Card(
+          color: Colors.white,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                         
                        children: [
@@ -68,7 +69,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                            decoration: BoxDecoration(
                             image: DecorationImage(
                               image: imageProvider,// to be added
-                            fit: BoxFit.cover),
+                            fit: BoxFit.fitWidth),
                            ),
                         
                           ),
@@ -109,7 +110,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                     
-                      RichText(text:TextSpan(children:[TextSpan(text:'\$',style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14)), TextSpan(text:'$itemPrice', style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14, ))] )),//
+                      RichText(text:TextSpan(children:[TextSpan(text:'\$',style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black)), TextSpan(text:'$itemPrice', style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14,  color: Colors.black ))] )),//
                       IconButton(onPressed:(){}, icon: Icon(Icons.close))
                   
                     ],

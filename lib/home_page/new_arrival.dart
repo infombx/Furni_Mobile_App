@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furni_mobile_app/shop/shopPage.dart';
 
+
 class NewArrival extends StatefulWidget {
   const NewArrival({super.key});
 
@@ -168,7 +169,7 @@ class _NewArrivalState extends State<NewArrival> {
         ),
         Column(
           children: [
-            SizedBox(height: 16),
+            SizedBox(height: 10),
             Padding(
               padding: EdgeInsets.only(left: 10.0),
               child: Row(
@@ -183,11 +184,8 @@ class _NewArrivalState extends State<NewArrival> {
                                          ), Icon(Icons.arrow_forward, size: 16),
                      ],
                    ),
-              
-                  
                 ),
-               
-                 
+                  SizedBox(height: 25,)
                 ],
               ),
             ),

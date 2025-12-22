@@ -16,7 +16,7 @@ class Bundle extends StatelessWidget {
           children: [
             // --- Container 1 ---
             Container(
-              height: 450,
+              // height: 300,
               margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 255, 255, 255),
@@ -27,14 +27,14 @@ class Bundle extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: Image.asset(
-                      'assets/images/living_room.png',
+                      'assets/images/LivingRoom.jpg',
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
                   ),
                   Positioned(
-                    top: 25,
-                    left: 10,
+                    top: 10,
+                    right: 10,
                     child: Text(
                       'Living Room',
                       style: TextStyle(
@@ -43,8 +43,7 @@ class Bundle extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  Positioned(top: 60, left: 15, child: ShopNowLink()),
+                  Positioned(top: 30, right: 0, child: ShopNowLink()),
                 ],
               ),
             ),
@@ -68,7 +67,7 @@ class Bundle extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: 100,
+                    bottom: 55,
                     left: 10,
                     child: Text(
                       'Bedroom',
@@ -79,15 +78,14 @@ class Bundle extends StatelessWidget {
                     ),
                   ),
 
-                  Positioned(top: 135, left: 10, child: ShopNowLink()),
+                  Positioned(bottom: 20, left: 0, child: ShopNowLink()),
                 ],
               ),
             ),
             //------------------------------container 3------------------------
             Container(
-              height: 300,
+              height: 230,
               margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: const Color.fromARGB(100, 243, 245, 247),
                 borderRadius: BorderRadius.circular(16),
@@ -104,8 +102,8 @@ class Bundle extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: 100,
-                    left: 15,
+                    bottom: 55,
+                    left: 10,
                     child: Text(
                       'Kitchen',
                       style: TextStyle(
@@ -115,7 +113,7 @@ class Bundle extends StatelessWidget {
                     ),
                   ),
 
-                  Positioned(top: 135, left: 11, child: ShopNowLink()),
+                  Positioned(bottom: 20, left: 0, child: ShopNowLink()),
                 ],
               ),
             ), //3

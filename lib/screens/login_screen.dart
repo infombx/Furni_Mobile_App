@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:furni_mobile_app/screens/home_screen.dart';
 import 'package:furni_mobile_app/screens/signup_screen.dart';
-import 'package:furni_mobile_app/screens/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:furni_mobile_app/services/auth_login_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,9 +15,44 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool rememberMe = false;
   bool passwordVisible = false;
+  bool isLoading = false;
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  final AuthService authService = AuthService();
+
+  /// =======================
+  /// LOGIN FUNCTION
+  /// =======================
+  Future<void> loginUser() async {
+    final identifier = usernameController.text.trim();
+    final password = passwordController.text.trim();
+
+    if (identifier.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please fill all fields')));
+      return;
+    }
+
+    setState(() => isLoading = true);
+
+    final success = await authService.signIn(identifier, password);
+
+    setState(() => isLoading = false);
+
+    if (success) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Invalid credentials')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +68,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 Stack(
                   children: [
                     Center(
-                      child: SizedBox(
-                        child: Image.asset(
-                          'assets/images/login.png',
-                          fit: BoxFit.cover,
-                        ),
+                      child: Image.asset(
+                        'assets/images/login.png',
+                        fit: BoxFit.cover,
                       ),
                     ),
                     Padding(
@@ -57,11 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Sign In',
                   style: GoogleFonts.poppins(
                     fontSize: 40,
-
                     fontWeight: FontWeight.w500,
-                    fontStyle: FontStyle.normal,
-                    height: 44 / 40,
-                    letterSpacing: -0.4,
                   ),
                 ),
 
@@ -71,29 +101,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Text(
                       "Don't have an account yet?",
-                      style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 16,
-                        height: 26 / 16,
-                      ),
+                      style: GoogleFonts.inter(fontSize: 16),
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(
+                        Navigator.push(
+                          context,
                           MaterialPageRoute(
-                            builder: (ctx) => const SignUpScreen(),
+                            builder: (_) => const SignUpScreen(),
                           ),
                         );
                       },
                       child: Text(
                         'Sign up',
                         style: GoogleFonts.inter(
-                          color: Color(0xFF1E485B),
+                          color: const Color(0xFF1E485B),
                           fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 16,
-                          height: 26 / 16,
                         ),
                       ),
                     ),
@@ -105,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(
                   controller: usernameController,
                   decoration: const InputDecoration(
-                    labelText: 'Your username or email address',
+                    labelText: 'Email or Username',
                     border: UnderlineInputBorder(),
                   ),
                 ),
@@ -136,7 +159,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 15),
 
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Checkbox(
                       value: rememberMe,
@@ -146,16 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       },
                     ),
-
-                    Text(
-                      'Remember me',
-                      style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 16,
-                        height: 26 / 16,
-                      ),
-                    ),
+                    Text('Remember me', style: GoogleFonts.inter(fontSize: 16)),
                   ],
                 ),
 
@@ -166,26 +179,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 311,
                     height: 44,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) => const SplashScreen(),
-                          ),
-                        );
-                      },
+                      onPressed: isLoading ? null : loginUser,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF184E60),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color.fromARGB(255, 253, 252, 252),
-                        ),
-                      ),
+                      child: isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                              'Sign In',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
                     ),
                   ),
                 ),

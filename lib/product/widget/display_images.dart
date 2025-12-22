@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DisplayImages extends StatefulWidget {
-  const DisplayImages({super.key});
+  const DisplayImages({super.key, required this.images});
+  final List<String> images;
 
   @override
   State <DisplayImages> createState()=> _DisplayImagesState();
@@ -9,22 +10,14 @@ class DisplayImages extends StatefulWidget {
 
 class _DisplayImagesState extends State<DisplayImages>{
   int current = 0;
-  List<String> images = [
-    'assets/images/product_image_4.png',
-    'assets/images/product_image_1.jpg',
-    'assets/images/product_image_2.jpg',
-    'assets/images/product_image_3.jpg',
-    'assets/images/product_image_5.jpg'
-
-  ];
    void swipeLeft (){
     setState(() {
-      current = ((current -1)+ images.length)% images.length;
+      current = (((current - 1) + widget.images.length) % widget.images.length).toInt();
     });
    }
     void swipeRight (){
     setState(() {
-      current = (current +1)% images.length;
+      current = ((current + 1) % widget.images.length).toInt();
     });
    }
   @override
@@ -39,7 +32,7 @@ class _DisplayImagesState extends State<DisplayImages>{
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.asset(images[current], width: 311,height: 414,
+                child: Image.asset(widget.images[current], width: 311,height: 414,
                 fit: BoxFit.cover,
                 ),
               ),

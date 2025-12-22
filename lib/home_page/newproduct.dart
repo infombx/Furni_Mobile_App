@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furni_mobile_app/data/dummy_data.dart';
 import 'package:furni_mobile_app/home_page/widget.dart';
 import 'package:furni_mobile_app/shop/shopPage.dart';
+import 'package:furni_mobile_app/product/data/dummyData.dart';
 
 class NewArrival extends StatefulWidget {
   const NewArrival({super.key});
@@ -62,7 +63,7 @@ class _NewArrivalState extends State<NewArrival> {
 
                   return Transform.scale(
                     scale: scale,
-                    child: NewProductCard(item: dummyData[index]),
+                    child: NewProductCard(item: dummyProducts[index]),
                   );
                 },
               );
@@ -83,7 +84,7 @@ class _NewArrivalState extends State<NewArrival> {
             ),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
-              widthFactor: (_currentPage + 1) / dummyData.length,
+              widthFactor: (_currentPage + 1) / dummyProducts.length,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.black,

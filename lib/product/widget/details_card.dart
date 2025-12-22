@@ -5,20 +5,47 @@ import 'package:furni_mobile_app/product/widget/select_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-class DetailsCard extends StatelessWidget{
-  const DetailsCard({super.key, required this.onQuantityChanged});
-  final void Function (int) onQuantityChanged;
+class DetailsCard extends StatefulWidget{
+  const DetailsCard({
+    super.key, 
+ 
+    required this.name, 
+    required this.category, 
+    required this.colours, 
+    required this.description,
+    required this.measurements,
+    required this.price,
+    required this.rating,
+    required this.quantity
 
+
+    });
+
+  final String name;
+  final String category;
+  final String description;
+  final double price;
+  final String measurements;
+  final List<String> colours;
+  final int quantity;
+  final int rating;
+
+  @override
+  State<DetailsCard> createState() => _DetailsCardState();
+}
+
+class _DetailsCardState extends State<DetailsCard> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
+    int selectedqty =1;
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              RatingStar(),
+              RatingStar(initialRating: widget.rating,),
               SizedBox(width: 12,),
               Text('11 Reviews', style: TextStyle(fontSize: 12,
                fontFamily: GoogleFonts.inter().fontFamily
@@ -27,7 +54,7 @@ class DetailsCard extends StatelessWidget{
           ),
           SizedBox(height: 5,),
           Text(
-            'Tray Table',
+            widget.name,
             style: TextStyle(
               fontSize: 40,
               fontWeight: FontWeight.w500,
@@ -38,7 +65,7 @@ class DetailsCard extends StatelessWidget{
           ),
           SizedBox(height: 5,),
           Text(
-            'Buy one or buy a few and make every space where you sit more convenient. Light and easy to move around with removable tray top, handy for serving snacks.',
+            widget.description,
             style: TextStyle(
               fontSize: 16,
               color: const Color.fromARGB(255, 108, 109, 117),
@@ -49,7 +76,7 @@ class DetailsCard extends StatelessWidget{
           ),
           SizedBox(height: 16,),
           Text(
-            '\$199.00',
+            'Rs ${widget.price}',
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w500,
@@ -73,7 +100,7 @@ class DetailsCard extends StatelessWidget{
           ),
           SizedBox(height: 5,),
           Text(
-            '17 1/2x20 5/8 "',
+            widget.measurements,
             style: TextStyle(
               fontSize: 20,
               fontFamily: GoogleFonts.inter().fontFamily,
@@ -96,11 +123,15 @@ class DetailsCard extends StatelessWidget{
                                 ]
                     ),
           SizedBox(height: 5,),
-          SelectColor(),
+          SelectColor(colorsNames: widget.colours,),
           SizedBox(height: 20,),
           Row(
             children: [ 
-              QuantityCounter(onQuantityChanged:onQuantityChanged),
+              QuantityCounter(onQuantityChanged:(value){
+                setState(() {
+                  selectedqty= value;
+                });
+              }),
               SizedBox(width: 8,),
               ElevatedButton(onPressed: (){},
               style: ButtonStyle(
@@ -114,11 +145,7 @@ class DetailsCard extends StatelessWidget{
                 ),
               ), child: Text('Add to cart'),
           )
-
-          
-
-        ],
-        
+        ],       
       ) ,
         ]
       )

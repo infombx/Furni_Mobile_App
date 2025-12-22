@@ -11,7 +11,7 @@ class HeroSection extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            height: 300,
+            height: 250,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               image: const DecorationImage(
@@ -21,10 +21,11 @@ class HeroSection extends StatelessWidget {
             ),
           ),
 
-          Align(
-            alignment: const Alignment(0, -0.35), // move text UP
+          Positioned(
+            top: 90,
+            left: 15,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: const [
                 Text(
@@ -34,13 +35,6 @@ class HeroSection extends StatelessWidget {
                     color: Colors.black,
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0, 2),
-                        blurRadius: 6,
-                        color: Colors.black45,
-                      ),
-                    ],
                   ),
                 ),
                 SizedBox(height: 12),
@@ -50,13 +44,6 @@ class HeroSection extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: 16,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0, 1),
-                        blurRadius: 4,
-                        color: Colors.black38,
-                      ),
-                    ],
                   ),
                 ),
               ],

@@ -61,7 +61,7 @@ class AboutUsSection extends StatelessWidget {
                     ],
                   ),
                 ),),
-                const SizedBox(height: 80),
+                const SizedBox(height: 25),
               ],
             ),
           ),

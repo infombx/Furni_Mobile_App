@@ -4,15 +4,21 @@ import 'package:furni_mobile_app/navbar/navbar.dart';
 import 'package:furni_mobile_app/screens/cart_screen.dart';
 import 'package:furni_mobile_app/screens/home_screen.dart';
 import 'package:furni_mobile_app/screens/homme.dart';
+import 'package:furni_mobile_app/screens/splash_screen.dart';
 import 'package:furni_mobile_app/shop/shopPage.dart';
+import 'package:furni_mobile_app/Header/header.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home:  HomeScreen(),
-      
-    
-    
-  ));
+    theme:ThemeData(scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.white,
+    )
+  ),
+     home:
+     Scaffold(
+        body: SafeArea(child: SplashScreen()),
+      ),
+  ),
+);
 }
-
-

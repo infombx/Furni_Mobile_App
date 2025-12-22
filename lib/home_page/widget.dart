@@ -1,44 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/data/data_cons.dart';
 import 'package:furni_mobile_app/product/Product_page.dart';
-import 'package:furni_mobile_app/product/widget/rating_star.dart'; // ensure correct import
+import 'package:furni_mobile_app/product/data/dummyData.dart';
+import 'package:furni_mobile_app/product/widget/rating_star.dart';
 import 'package:furni_mobile_app/home_page/toggle_favorite.dart';
 import 'package:furni_mobile_app/screens/home_screen.dart';
+
 class NewProductCard extends StatelessWidget {
-  const NewProductCard({super.key, required this.item});
-  final CartItem item;
+  const NewProductCard({
+    super.key,
+    required this.item,
+  });
+
+  /// ✅ SINGLE product, not a list
+  final Product item;
 
   @override
   Widget build(BuildContext context) {
-    // Determine image — asset or network
-    ImageProvider imageProvider;
-    final url = item.image;
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      imageProvider = NetworkImage(url);
-    } else {
-      final assetpath = url.startsWith('assets/') ? url : 'assets/images/$url';
-      imageProvider = AssetImage(assetpath);
-    }
-
+    int qty = 1;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
-          onTap: (){
-           MaterialPageRoute(builder: (_) => HomeScreen());
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => ProductPage(
+                onQuantityChanged:(value) => qty = value,
+                product_id: item.id)),
+            );
           },
           child: Container(
-            width: 260,
+            width: 260, // OK if NOT inside GridView
             height: 290,
             margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 236, 239, 239),
+              color: const Color.fromARGB(0, 236, 239, 239),
               borderRadius: BorderRadius.circular(16),
-              image: DecorationImage(image: imageProvider, fit: BoxFit.cover, ),
+              image: DecorationImage(
+                image: AssetImage(item.display_image),
+                fit: BoxFit.fitWidth,
+              ),
             ),
             child: Stack(
               children: [
-                // Example: favorite button on top-right
+                /// FAVORITE BUTTON
                 Positioned(
                   top: 13,
                   right: 10,
@@ -48,82 +53,45 @@ class NewProductCard extends StatelessWidget {
                     child: FavoriteToggleButton(),
                   ),
                 ),
-          
-                // Example: New and -50% labels at top-left
+
+                /// BADGES
                 Positioned(
                   top: 16,
                   left: 16,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 30,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 248, 246, 246),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'New',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
+                      _badge(
+                        text: 'New',
+                        bg: Colors.white,
+                        color: Colors.black,
                       ),
-                      const SizedBox(height: 6.5),
-                      Container(
-                        height: 30,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 4, 206, 31),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            '-50%',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 244, 243, 243),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
+                      const SizedBox(height: 6),
+                      _badge(
+                        text: '-50%',
+                        bg: Colors.green,
+                        color: Colors.white,
                       ),
                     ],
                   ),
                 ),
-          
-                // Example: Add to Cart button at bottom
+
+                /// ADD TO CART
                 Positioned(
                   bottom: 13,
                   left: 10,
                   right: 10,
-                  child: Center(
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        fixedSize: WidgetStatePropertyAll(const Size(200, 40)),
-                        backgroundColor: WidgetStatePropertyAll(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
                           const Color.fromARGB(255, 6, 53, 107),
-                        ),
-                        shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      onPressed: () {},
-                      child: const Text(
-                        'Add to Cart',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 246, 245, 245),
-                        ),
-                      ),
+                    ),
+                    onPressed: () {},
+                    child: const Text(
+                      'Add to Cart',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -132,16 +100,18 @@ class NewProductCard extends StatelessWidget {
           ),
         ),
 
+        /// PRODUCT DETAILS
         Padding(
-          padding: const EdgeInsets.only(left: 15.0, top: 8.0),
+          padding: const EdgeInsets.only(left: 15, top: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const RatingStar(),
+              RatingStar(initialRating: item.rating),
               const SizedBox(height: 4),
               Text(
                 item.name,
-                textAlign: TextAlign.left,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -149,8 +119,7 @@ class NewProductCard extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                '\$${item.price.toStringAsFixed(2)}',
-                textAlign: TextAlign.left,
+                'Rs ${item.price.toStringAsFixed(2)}',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -160,6 +129,31 @@ class NewProductCard extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _badge({
+    required String text,
+    required Color bg,
+    required Color color,
+  }) {
+    return Container(
+      height: 30,
+      width: 80,
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: color,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
     );
   }
 }

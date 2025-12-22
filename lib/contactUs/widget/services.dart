@@ -20,9 +20,9 @@ class Services extends StatelessWidget{
                   color: const Color.fromRGBO(243, 245, 247, 1),
                   borderRadius: BorderRadius.circular(20)
                 ),
-                padding: EdgeInsets.only(top:10, left:25, right:10, bottom:10),
+                padding: EdgeInsets.only(top:30, left:25, right:25, bottom:10),
                 width: w * 0.39,  
-                height: h * 0.30,
+                height: h * 0.25,
                 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +43,7 @@ class Services extends StatelessWidget{
                       fontFamily: GoogleFonts.inter().fontFamily,
                       color: Color.fromRGBO(108, 114, 117, 1),
                     ),
-                    textAlign: TextAlign.center,)
+                    textAlign: TextAlign.start,)
                   ],
                 ),
               ),
@@ -53,9 +53,9 @@ class Services extends StatelessWidget{
                   color: const Color.fromRGBO(243, 245, 247, 1),
                   borderRadius: BorderRadius.circular(20)
                 ),
-                  padding: EdgeInsets.only(top:10, left:25, right:10, bottom:10),
+                  padding: EdgeInsets.only(top:30, left:25, right:25, bottom:10),
                 width: w * 0.39,  
-                height: h * 0.30,
+                 height: h * 0.25,
                 child: Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,9 +90,9 @@ class Services extends StatelessWidget{
                   color: const Color.fromRGBO(243, 245, 247, 1),
                   borderRadius: BorderRadius.circular(20)
                 ),
-              padding: EdgeInsets.only(top:10, left:25, right:5, bottom:10),
+              padding: EdgeInsets.only(top:30, left:25, right:25, bottom:10),
                 width: w * 0.39,  
-                height: h * 0.30,
+                 height: h * 0.25,
                
                   child: Center(
                     
@@ -128,9 +128,9 @@ class Services extends StatelessWidget{
                   color: const Color.fromRGBO(243, 245, 247, 1),
                   borderRadius: BorderRadius.circular(20)
                 ),
-               padding: EdgeInsets.only(top:10, left:25, right:10, bottom:10),
+               padding: EdgeInsets.only(top:30, left:25, right:25, bottom:10),
                 width: w * 0.39,  
-                height: h * 0.30,
+                height: h * 0.25,
                 child: Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
