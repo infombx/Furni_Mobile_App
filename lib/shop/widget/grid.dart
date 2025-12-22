@@ -19,6 +19,7 @@ class _ProductGridState extends State<ProductGrid> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      
       padding: const EdgeInsets.all(16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -28,6 +29,7 @@ class _ProductGridState extends State<ProductGrid> {
       ),
       itemCount: widget.items.length,
       itemBuilder: (context, index) {
+        
         final item = widget.items[index];
 
         return Column(
@@ -47,17 +49,20 @@ class _ProductGridState extends State<ProductGrid> {
                   ),
                 );
               },
-              child: Container(
-                height: 200,
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: BorderRadius.circular(16),
-                  image: DecorationImage(
-                    image: AssetImage(item.display_image),
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
+             child: Container(
+  height: 200,
+  margin: const EdgeInsets.symmetric(horizontal: 8),
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(16),
+    image: DecorationImage(
+      // CRITICAL: Use NetworkImage for API URLs
+      image: NetworkImage(item.display_image), 
+      fit: BoxFit.cover,
+      // Error handling for broken links
+      onError: (exception, stackTrace) => const Icon(Icons.broken_image),
+    ),
+  ),
                 child: Stack(
                   children: [
                     Positioned(

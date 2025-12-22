@@ -25,41 +25,44 @@ class Product {
     required this.rating,
     required this.display_image
   });
-  factory Product.fromJson(Map<String, dynamic> json) {
-  String _parseImage(dynamic link) {
-  if (link == null) return '';
-
-  if (link.startsWith('http')) {
-    return link;
+factory Product.fromJson(Map<String, dynamic> json) {
+  // Helper to extract nested text from the complex description list
+  String parseDescription(dynamic descData) {
+    if (descData is List) {
+      return descData.map((paragraph) {
+        if (paragraph['children'] is List) {
+          return (paragraph['children'] as List)
+              .map((child) => child['text'] ?? '')
+              .join('');
+        }
+        return '';
+      }).join('\n');
+    }
+    return descData?.toString() ?? '';
   }
 
-  // If later you convert it to Strapi uploads
-  return 'http://159.65.15.249:1337/uploads/$link';
-}
+  // Helper to construct image URLs safely
+  String parseImage(dynamic link) {
+    if (link == null || link.toString().trim().isEmpty) {
+      return 'https://via.placeholder.com/150'; // Fallback
+    }
+    String cleanLink = link.toString().trim();
+    if (cleanLink.startsWith('http')) return cleanLink;
+    return 'http://159.65.15.249:1337/uploads/$cleanLink';
+  }
 
   return Product(
     id: json['id'] ?? 0,
-
-    name: json['title'] ?? 'Unnamed product',
-
+    name: json['title'] ?? 'Unnamed',
+    category: json['category'] ?? '', // Match your JSON key
+    description: parseDescription(json['description']), // Prevents "JsonMap is not a subtype of String"
     measurements: json['measurement'] ?? '',
-
     price: (json['price'] ?? 0).toDouble(),
-
-    quantity: 1,
-
-    rating: json['stock'] ?? 0,
-
-    display_image: _parseImage(json['featuredImageLink']),
-
-    category:  json['product_category'], 
-
-    images: json ['images'],
-
-    description: json['description'],
-
-    colours: json['colour'] ?? 0,
-
+    quantity: json['stock'] ?? 0,
+    rating: json['rating'] ?? 0,
+    display_image: parseImage(json['featuredImageLink']), // Prevents "Null is not a subtype of Map"
+    images: [parseImage(json['featuredImageLink'])],
+    colours: [], 
   );
 }
 }
@@ -73,10 +76,3 @@ final List<String> category = [
   "Dining Room",
   "Office"
 ];
-
-
-class ProductBucket {
-  ProductBucket({required this.items});
-  ProductBucket.forItems(List<Product> itemList) : items = List.from(itemList);
-  final List<Product> items;
-}

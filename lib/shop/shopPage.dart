@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furni_mobile_app/Header/header.dart';
 import 'package:furni_mobile_app/navbar/navbar.dart';
 import 'package:furni_mobile_app/product/data/dummyData.dart';
+import 'package:furni_mobile_app/services/api_dummydata.dart';
 import 'package:furni_mobile_app/shop/widget/filternav.dart';
 import 'package:furni_mobile_app/shop/widget/grid.dart';
 import 'package:furni_mobile_app/shop/widget/productFilter.dart';
@@ -15,14 +16,14 @@ class Shoppage extends StatefulWidget {
 }
 
 class _ShoppageState extends State<Shoppage> {
-  late final List<Product> _allProducts;
-  late List<Product> _filteredProducts;
+  late Future<List<Product>> _productsFuture;
+  List<Product> _allProducts = [];
+  List<Product> _filteredProducts = [];
 
   @override
   void initState() {
     super.initState();
-    _allProducts = dummyProducts;
-    _filteredProducts = dummyProducts;
+    _productsFuture = ApiService.fetchProducts();
   }
 
   /// APPLY FILTER FROM BOTTOM SHEET
@@ -30,8 +31,7 @@ class _ShoppageState extends State<Shoppage> {
     setState(() {
       _filteredProducts = _allProducts.where((product) {
         final categoryMatch =
-            filter.category == null ||
-            product.category == filter.category;
+            filter.category == null || product.category == filter.category;
 
         final priceMatch =
             product.price >= filter.minPrice &&
@@ -49,7 +49,6 @@ class _ShoppageState extends State<Shoppage> {
         title: const Header(),
         automaticallyImplyLeading: false,
       ),
-
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -58,13 +57,45 @@ class _ShoppageState extends State<Shoppage> {
             Filternav(
               onFilterApplied: _applyFilter,
             ),
-
             const SizedBox(height: 6),
-            SizedBox(
-              height:500,
-              child: ProductGrid(
-                items: _filteredProducts,
-              ),
+
+            // ---------------- Product Grid with API ----------------
+            FutureBuilder<List<Product>>(
+              future: _productsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox(
+                    height: 500,
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+
+                if (snapshot.hasError) {
+                  return SizedBox(
+                    height: 500,
+                    child: Center(child: Text('Error: ${snapshot.error}')),
+                  );
+                }
+
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const SizedBox(
+                    height: 500,
+                    child: Center(child: Text('No products found')),
+                  );
+                }
+
+                // ✅ API data loaded
+                final products = snapshot.data!;
+
+                // Initialize lists if empty
+                if (_allProducts.isEmpty) _allProducts = products;
+                if (_filteredProducts.isEmpty) _filteredProducts = products;
+
+                return SizedBox(
+                  height: 500,
+                  child: ProductGrid(items: _filteredProducts),
+                );
+              },
             ),
           ],
         ),
