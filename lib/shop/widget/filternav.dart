@@ -29,7 +29,6 @@ class Filternav extends StatelessWidget {
       ),
       child: Row(
         children: [
-          /// FILTER BUTTON
           TextButton(
             onPressed: () async {
               final result = await showModalBottomSheet<ProductFilter>(
@@ -64,7 +63,6 @@ class Filternav extends StatelessWidget {
 
           const Spacer(),
 
-          /// SORT BUTTON (Optional)
           TextButton(
             onPressed: () {
               showBottomSheet(context: context, 
