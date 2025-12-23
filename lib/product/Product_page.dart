@@ -32,10 +32,8 @@ class ProductPage extends StatelessWidget {
 
         // 3. Find the specific product safely
         final productList = snapshot.data!;
-        final product = productList.firstWhere(
-          (p) => p.id == product_id,
-          orElse: () => productList.first, // Fallback to first if ID missing
-        );
+        final product = productList.firstWhere((p) => p.id == product_id);
+        print("DEBUG: Image URL is: ${product.images}");
 
         return Scaffold(
           appBar: AppBar(title: const Header()),

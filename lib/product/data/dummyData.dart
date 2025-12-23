@@ -1,4 +1,3 @@
-import 'package:furni_mobile_app/services/api_dummydata.dart';
 class Product {
   final int id;
   final String name;
@@ -23,56 +22,103 @@ class Product {
     required this.images,
     required this.quantity,
     required this.rating,
-    required this.display_image
+    required this.display_image,
   });
-factory Product.fromJson(Map<String, dynamic> json) {
-  // Helper to extract nested text from the complex description list
-  String parseDescription(dynamic descData) {
-    if (descData is List) {
-      return descData.map((paragraph) {
-        if (paragraph['children'] is List) {
-          return (paragraph['children'] as List)
-              .map((child) => child['text'] ?? '')
-              .join('');
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    const String baseUrl = "http://159.65.15.249:1337";
+
+    // 1. EXTRACT CATEGORY NAME
+    String categoryName = "General";
+    if (json['product_category'] is Map) {
+      categoryName = json['product_category']['name']?.toString() ?? "General";
+    }
+
+    // 2. PARSE RICH TEXT DESCRIPTION BLOCKS
+    String parseDescription(dynamic descData) {
+      if (descData is String) return descData;
+      if (descData is List) {
+        return descData.map((paragraph) {
+          if (paragraph is Map && paragraph['children'] is List) {
+            return (paragraph['children'] as List)
+                .map((child) => (child is Map) ? (child['text']?.toString() ?? '') : '')
+                .join('');
+          }
+          return '';
+        }).join('\n');
+      }
+      return "";
+    }
+
+    // 3. IMAGE URL HELPER
+    // Handles both full URLs, relative paths, and nesting within objects
+    String parseImageUrl(dynamic imageData) {
+      if (imageData == null) return 'https://via.placeholder.com/300';
+      
+      String path = "";
+      
+      // If it's the Strapi Image Object: { "url": "/uploads/..." }
+      if (imageData is Map && imageData.containsKey('url')) {
+        path = imageData['url'].toString();
+      } else {
+        // If it's a direct string link
+        path = imageData.toString().trim().replaceAll('\n', '').replaceAll('\r', '');
+      }
+
+      if (path.isEmpty) return 'https://via.placeholder.com/300';
+      if (path.startsWith('http')) return path;
+      
+      // Ensure we don't double up on /uploads if it's already in the path
+      return path.startsWith('/') ? '$baseUrl$path' : '$baseUrl/$path';
+    }
+
+    // 4. FIX FOR COLOUR TEXT
+    List<String> extractColours(dynamic data) {
+      if (data == null || data is! List) return [];
+      return data.map((item) {
+        if (item is Map) {
+          return item['name']?.toString() ?? "";
         }
-        return '';
-      }).join('\n');
+        return item.toString();
+      }).where((name) => name.isNotEmpty).toList();
     }
-    return descData?.toString() ?? '';
-  }
 
-  // Helper to construct image URLs safely
-  String parseImage(dynamic link) {
-    if (link == null || link.toString().trim().isEmpty) {
-      return 'https://via.placeholder.com/150'; // Fallback
+    // 5. PREPARE IMAGE LISTS
+    List<String> imagesList = [];
+    if (json['images'] != null && json['images'] is List && (json['images'] as List).isNotEmpty) {
+      imagesList = (json['images'] as List).map((i) => parseImageUrl(i)).toList();
     }
-    String cleanLink = link.toString().trim();
-    if (cleanLink.startsWith('http')) return cleanLink;
-    return 'http://159.65.15.249:1337/uploads/$cleanLink';
+
+    // 6. SET DISPLAY IMAGE (Featured)
+    // Fallback: Use the first image from imagesList if display_image is empty
+    String displayImg = '';
+    if (json['featuredImageLink'] != null) {
+      displayImg = parseImageUrl(json['featuredImageLink']);
+    } else if (imagesList.isNotEmpty) {
+      displayImg = imagesList.first;
+    } else {
+      displayImg = 'https://via.placeholder.com/300';
+    }
+
+    return Product(
+      id: json['id'] ?? 0,
+      name: (json['title'] ?? 'Unnamed').toString(),
+      category: categoryName,
+      description: parseDescription(json['description']),
+      measurements: (json['measurement'] ?? '').toString(),
+      price: (json['price'] ?? 0).toDouble(),
+      quantity: json['stock'] ?? 0,
+      rating: json['rating'] ?? 0,
+      display_image: displayImg,
+      images: imagesList.isEmpty ? [displayImg] : imagesList,
+      colours: extractColours(json['colour']),
+    );
   }
-
-  return Product(
-    id: json['id'] ?? 0,
-    name: json['title'] ?? 'Unnamed',
-    category: json['category'] ?? '', // Match your JSON key
-    description: parseDescription(json['description']), // Prevents "JsonMap is not a subtype of String"
-    measurements: json['measurement'] ?? '',
-    price: (json['price'] ?? 0).toDouble(),
-    quantity: json['stock'] ?? 0,
-    rating: json['rating'] ?? 0,
-    display_image: parseImage(json['featuredImageLink']), // Prevents "Null is not a subtype of Map"
-    images: [parseImage(json['featuredImageLink'])],
-    colours: [], 
-  );
 }
-}
-
 final List<String> category = [
-  "All",
   "Kitchen",
   "Living Room",
   "Bedroom",
   "Bathroom",
-  "Dining Room",
-  "Office"
+  "Outdoor"
 ];

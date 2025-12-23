@@ -16,6 +16,7 @@ class ProductGrid extends StatefulWidget {
 class _ProductGridState extends State<ProductGrid> {
   int qty = 1;
 
+  
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -36,7 +37,6 @@ class _ProductGridState extends State<ProductGrid> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// IMAGE CARD (CLICKABLE)
             InkWell(
               borderRadius: BorderRadius.circular(16),
               onTap: () {
@@ -57,17 +57,14 @@ class _ProductGridState extends State<ProductGrid> {
     color: Colors.white,
     borderRadius: BorderRadius.circular(16),
     image: DecorationImage(
-      // CRITICAL: Use NetworkImage for API URLs
       image: NetworkImage(item.display_image), 
       fit: BoxFit.cover,
-      // Error handling for broken links
       onError: (exception, stackTrace) => const Icon(Icons.broken_image),
     ),
   ),
                 child: Stack(
                   children: [
 
-                    /// BUTTON (EXCLUDED FROM TAP)
                     Positioned(
                       bottom: 10,
                       left: 10,
@@ -92,7 +89,6 @@ class _ProductGridState extends State<ProductGrid> {
               ),
             ),
 
-            /// PRODUCT DETAILS
             Padding(
               padding: const EdgeInsets.only(left: 16, top: 6),
               child: Column(
