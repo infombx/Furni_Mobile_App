@@ -9,7 +9,6 @@ import 'package:furni_mobile_app/navbar/navbar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
