@@ -25,8 +25,6 @@ class _ShoppageState extends State<Shoppage> {
     super.initState();
     _productsFuture = ApiService.fetchProducts();
   }
-
-  /// APPLY FILTER FROM BOTTOM SHEET
   void _applyFilter(ProductFilter filter) {
     setState(() {
       _filteredProducts = _allProducts.where((product) {
@@ -59,7 +57,6 @@ class _ShoppageState extends State<Shoppage> {
             ),
             const SizedBox(height: 6),
 
-            // ---------------- Product Grid with API ----------------
             FutureBuilder<List<Product>>(
               future: _productsFuture,
               builder: (context, snapshot) {
@@ -84,10 +81,8 @@ class _ShoppageState extends State<Shoppage> {
                   );
                 }
 
-                // ✅ API data loaded
                 final products = snapshot.data!;
 
-                // Initialize lists if empty
                 if (_allProducts.isEmpty) _allProducts = products;
                 if (_filteredProducts.isEmpty) _filteredProducts = products;
 

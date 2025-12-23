@@ -127,23 +127,23 @@ class _DetailsCardState extends State<DetailsCard> {
           SizedBox(height: 20,),
           Row(
             children: [ 
-              QuantityCounter(onQuantityChanged:(value){
-                setState(() {
-                  selectedqty= value;
-                });
-              }),
-              SizedBox(width: 8,),
-              ElevatedButton(onPressed: (){},
-              style: ButtonStyle(
-                fixedSize: WidgetStateProperty.all(Size(w* 0.55, 45)),
-                backgroundColor: WidgetStateProperty.all(Color.fromARGB(255, 0, 0, 0)), 
-                foregroundColor: WidgetStateProperty.all(Colors.white),
-                shape: WidgetStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-              ), child: Text('Add to cart'),
+             QuantityCounter(onQuantityChanged: (value) {
+            setState(() {
+              selectedqty = value;
+            });
+          }),
+          const SizedBox(width: 8),
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(w * 0.55, 45),
+              backgroundColor: Colors.black,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            child: const Text('Add to cart'),
           )
         ],       
       ) ,
