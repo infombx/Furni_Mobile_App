@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/Header/header.dart';
 import 'package:furni_mobile_app/models/user_model.dart';
 import 'package:furni_mobile_app/services/update_profilepicture.dart';
 import 'package:furni_mobile_app/widgets/account%20details.dart';

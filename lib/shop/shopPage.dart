@@ -25,6 +25,7 @@ class _ShoppageState extends State<Shoppage> {
     super.initState();
     _productsFuture = ApiService.fetchProducts();
   }
+
   void _applyFilter(ProductFilter filter) {
     setState(() {
       _filteredProducts = _allProducts.where((product) {
@@ -43,18 +44,14 @@ class _ShoppageState extends State<Shoppage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Header(),
-        automaticallyImplyLeading: false,
-      ),
+      appBar: AppBar(automaticallyImplyLeading: false, title: Header()),
+
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 4),
             const HeroSection(),
-            Filternav(
-              onFilterApplied: _applyFilter,
-            ),
+            Filternav(onFilterApplied: _applyFilter),
             const SizedBox(height: 6),
 
             FutureBuilder<List<Product>>(

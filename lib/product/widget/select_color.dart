@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// google_fonts not required here
 
 class SelectColor extends StatefulWidget {
   const SelectColor({super.key, required this.colorsNames});
@@ -10,32 +10,34 @@ class SelectColor extends StatefulWidget {
 }
 
 class _SelectColorState extends State<SelectColor> {
-final Map<String, Color> colorMap = {
-  // Original Colors
-  'black': Colors.black,
-  'grey': Colors.grey,
-  'red': Colors.red,
-  'white': Colors.white,
-  'orange': Colors.orange, 
-  'brown': Colors.brown,
+  final Map<String, Color> colorMap = {
+    // Original Colors
+    'black': Colors.black,
+    'grey': Colors.grey,
+    'red': Colors.red,
+    'white': Colors.white,
+    'orange': Colors.orange,
+    'brown': Colors.brown,
 
-  // Additional common furniture colors
-  'blue': Colors.blue,
-  'green': Colors.green,
-  'pink': Colors.pink,
-  'yellow': Colors.yellow,
-  'amber': Colors.amber,
-  'beige': const Color(0xFFF5F5DC), // Custom hex for Beige
-  'off-white': const Color(0xFFFAF9F6), // Matches your "Off-white Pillow"
-  'dark grey': const Color(0xFF333333),
-  'light blue': Colors.lightBlue,
-};
+    // Additional common furniture colors
+    'blue': Colors.blue,
+    'green': Colors.green,
+    'pink': Colors.pink,
+    'yellow': Colors.yellow,
+    'amber': Colors.amber,
+    'beige': const Color(0xFFF5F5DC), // Custom hex for Beige
+    'off-white': const Color(0xFFFAF9F6), // Matches your "Off-white Pillow"
+    'dark grey': const Color(0xFF333333),
+    'light blue': Colors.lightBlue,
+  };
   late String selectedColorName;
 
   @override
   void initState() {
     super.initState();
-    selectedColorName = widget.colorsNames.isNotEmpty ? widget.colorsNames.first : "";
+    selectedColorName = widget.colorsNames.isNotEmpty
+        ? widget.colorsNames.first
+        : "";
   }
 
   @override
@@ -45,10 +47,10 @@ final Map<String, Color> colorMap = {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Text(
-              selectedColorName,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
+        Text(
+          selectedColorName,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
         const SizedBox(height: 12),
         Wrap(
           spacing: 12,
@@ -65,11 +67,19 @@ final Map<String, Color> colorMap = {
                   shape: BoxShape.circle,
                   color: colorValue,
                   border: Border.all(
-                    color: isSelected ? Colors.blue : Colors.grey.withOpacity(0.3),
+                    color: isSelected
+                        ? Colors.blue
+                        : Colors.grey.withOpacity(0.3),
                     width: isSelected ? 3 : 1,
                   ),
-                  boxShadow: isSelected 
-                      ? [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))] 
+                  boxShadow: isSelected
+                      ? [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ]
                       : [],
                 ),
               ),

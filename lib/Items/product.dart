@@ -11,16 +11,19 @@ class ProductWidget extends StatefulWidget {
     required this.onQuantityChanged,
     required this.initialQuantity,
   });
+
   final CartItem item;
   final void Function(double itemprice) onPriceChanged;
   final void Function(int quantity) onQuantityChanged;
-    final int initialQuantity;
+  final int initialQuantity;
+
   @override
   State<ProductWidget> createState() => _ProductWidgetState();
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
-   int selectedQty = 1;
+  late int selectedQty;
+
   @override
   void initState() {
     super.initState();
@@ -31,9 +34,11 @@ class _ProductWidgetState extends State<ProductWidget> {
       widget.onPriceChanged(initialPrice);
     });
   }
+
   void _onQuantityChanged(int value) {
     setState(() {
       selectedQty = value;
+      widget.item.quantity = value;
     });
     widget.onQuantityChanged(selectedQty);
     widget.onPriceChanged(widget.item.price * selectedQty);
@@ -41,83 +46,90 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double itemPrice = (widget.item.price * selectedQty);
+    final double itemPrice = (widget.item.price * selectedQty);
     ImageProvider imageProvider;
     final url = widget.item.imageUrl;
-   
 
-    if (url.startsWith('http')) {
+    if (url.isNotEmpty && url.startsWith('http')) {
       imageProvider = NetworkImage(url);
     } else {
       final assetPath = url.startsWith('assets/') ? url : 'assets/images/$url';
-      imageProvider = AssetImage(assetPath);}
-    return
-    SizedBox(
-        height: 190,
-        width: double.infinity,
-        child: Card(
-          color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Row(
-                        
-                       children: [
-                        
-                         Container(
-                          height: 150,
-                           width: 100,
-                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: imageProvider,// to be added
-                            fit: BoxFit.fitWidth),
-                           ),
-                        
-                          ),
-                          Spacer(),
-                       
-                          
-                           Column(
-                            children: [
-                    
-                              SizedBox(height: 30,),
-                              Text(widget.item.productName, style: GoogleFonts.inter(fontWeight:FontWeight.w600,fontSize: 14),),
-                              SizedBox(height: 20,) ,
-                              // to be added
-                          Text(widget.item.property
-                           ,style: GoogleFonts.inter(fontWeight: FontWeight.w400,fontSize: 12, color:Color.fromARGB(255, 102, 110, 114),),),// to be added
-                          SizedBox(height: 12,),
-                         QuantityCounter(
-                    initialQuantity: widget.item.quantity,  // <-- Now it works
-                    onQuantityChanged: (value) {
-                      setState(() {
-                        selectedQty = value;
-                        widget.item.quantity = value;    // <-- Update the model
-                      });
-                  
-                      widget.onQuantityChanged(value);
-                      widget.onPriceChanged(widget.item.price * value);
-                      
-                    },
+      imageProvider = AssetImage(assetPath);
+    }
+
+    return SizedBox(
+      height: 190,
+      width: double.infinity,
+      child: Card(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 150,
+                width: 100,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
                   ),
-                  
-                    ],
-                          ),
-                        
-                   Spacer() ,
-                                Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                    
-                      RichText(text:TextSpan(children:[TextSpan(text:'\$',style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black)), TextSpan(text:'$itemPrice', style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14,  color: Colors.black ))] )),//
-                      IconButton(onPressed:(){}, icon: Icon(Icons.close))
-                  
-                    ],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 6),
+                    Text(
+                      widget.item.productName,
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      widget.item.property,
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        color: const Color.fromARGB(255, 102, 110, 114),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    QuantityCounter(
+                      initialQuantity: widget.item.quantity,
+                      onQuantityChanged: (value) {
+                        _onQuantityChanged(value);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '\$${itemPrice.toStringAsFixed(2)}',
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
                   ),
-                    
-                        ),
-                      ]),
-                )));
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.close)),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -3,12 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ContactDetailsForm extends StatefulWidget {
   const ContactDetailsForm({super.key, this.onSaved});
-  final void Function (Map<String, String>values)? onSaved;
+  final void Function(Map<String, String> values)? onSaved;
   @override
-  State<ContactDetailsForm> createState(){
-    return  _ContactDetatilsFormState();
+  State<ContactDetailsForm> createState() {
+    return _ContactDetatilsFormState();
   }
 }
+
 class _ContactDetatilsFormState extends State<ContactDetailsForm> {
   final _formKey = GlobalKey<FormState>();
 
@@ -22,11 +23,9 @@ class _ContactDetatilsFormState extends State<ContactDetailsForm> {
   String phone = '';
   String email = '';
 
-  final RegExp emailRegExp = RegExp(
-  r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$",
-  );
+  final RegExp emailRegExp = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$");
 
-   String? _nonEmptyValidator(String? v, String fieldName) {
+  String? _nonEmptyValidator(String? v, String fieldName) {
     if (v == null || v.trim().isEmpty) {
       return '$fieldName is required';
     }
@@ -82,138 +81,202 @@ class _ContactDetatilsFormState extends State<ContactDetailsForm> {
         title: const Text('Saved'),
         content: const Text('Contact details saved successfully.'),
         actions: [
-          TextButton(onPressed: () => Navigator.of(ctx).pop(), child: const Text('OK')),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('OK'),
+          ),
         ],
       ),
     );
   }
 
   @override
-  Widget build (context){
+  Widget build(context) {
     return Container(
       height: 400,
 
       width: 450,
       decoration: BoxDecoration(
         border: Border.all(width: 1, color: Colors.black),
-        borderRadius: BorderRadius.circular(10)
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Form(
+        key: _formKey,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 30,),
-              Text('Contact Information', style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 20),),
-              const SizedBox(height: 30,),
+              const SizedBox(height: 30),
+              Text(
+                'Contact Information',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                ),
+              ),
+              const SizedBox(height: 30),
               Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('FIRST NAME', style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 12),),
-                      const SizedBox(height: 10,),
+                      Text(
+                        'FIRST NAME',
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
                       Container(
-                                height: 50,
-                                width: 160,
-                                padding: EdgeInsets.symmetric(horizontal: 12),
-                                decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.grey),
-                      color: Colors.white,
-                                ),
-                                child: TextFormField(
-                              
-                      decoration: InputDecoration(
-                              hintText: 'First name',hintStyle: GoogleFonts.inter(fontWeight: FontWeight.w400, fontSize: 16),
-                              border: InputBorder.none, 
-                              
-                      ), 
-                                ),
-                              ),
+                        height: 50,
+                        width: 160,
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey),
+                          color: Colors.white,
+                        ),
+                        child: TextFormField(
+                          controller: firstNameCtrl,
+                          validator: (v) => _nonEmptyValidator(v, 'First name'),
+                          decoration: InputDecoration(
+                            hintText: 'First name',
+                            hintStyle: GoogleFonts.inter(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                            ),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(width: 16,),
+                  const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('LAST NAME',style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 12)),
-                      const SizedBox(height: 10,),
-                      Container(
-                                height: 50,
-                                width: 160,
-                                padding: EdgeInsets.symmetric(horizontal: 12),
-                                decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.grey),
-                      color: Colors.white,
-                                ),
-                                child: TextFormField(
-                      decoration: InputDecoration(
-                              hintText: 'Last name',hintStyle: GoogleFonts.inter(fontWeight: FontWeight.w400, fontSize: 16),
-                              border: InputBorder.none, 
+                      Text(
+                        'LAST NAME',
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                        ),
                       ),
-                                ),
-                              ),
+                      const SizedBox(height: 10),
+                      Container(
+                        height: 50,
+                        width: 160,
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey),
+                          color: Colors.white,
+                        ),
+                        child: TextFormField(
+                          controller: lastNameCtrl,
+                          validator: (v) => _nonEmptyValidator(v, 'Last name'),
+                          decoration: InputDecoration(
+                            hintText: 'Last name',
+                            hintStyle: GoogleFonts.inter(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                            ),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],
               ),
-               Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 20,),
-                      Text('PHONE NUMBER',style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 12)),
-                      const SizedBox(height: 10,),
-                      Container(
-                                height: 50,
-                                width: 416,
-                                padding: EdgeInsets.symmetric(horizontal: 12),
-                                decoration: BoxDecoration(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  Text(
+                    'PHONE NUMBER',
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    height: 50,
+                    width: 416,
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: Colors.grey),
                       color: Colors.white,
-                                ),
-                                child: TextFormField(
+                    ),
+                    child: TextFormField(
+                      controller: phoneCtrl,
+                      validator: _phoneValidator,
                       decoration: InputDecoration(
-                              hintText: 'Phone number',hintStyle: GoogleFonts.inter(fontWeight: FontWeight.w400, fontSize: 16),
-                              border: InputBorder.none, 
+                        hintText: 'Phone number',
+                        hintStyle: GoogleFonts.inter(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                        ),
+                        border: InputBorder.none,
                       ),
-                                ),
-                              ),
-                    ],
+                    ),
                   ),
-                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 20,),
-                      Text('EMAIL ADDRESS',style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 12)),
-                      const SizedBox(height: 10,),
-                      Container(
-                                height: 50,
-                                width: 416,
-                                padding: EdgeInsets.symmetric(horizontal: 12),
-                                decoration: BoxDecoration(
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  Text(
+                    'EMAIL ADDRESS',
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    height: 50,
+                    width: 416,
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: Colors.grey),
                       color: Colors.white,
-                                ),
-                                child: TextFormField(
+                    ),
+                    child: TextFormField(
+                      controller: emailCtrl,
+                      validator: _emailValidator,
                       decoration: InputDecoration(
-                              hintText: 'Your Email',hintStyle: GoogleFonts.inter(fontWeight: FontWeight.w400, fontSize: 16),
-                              border: InputBorder.none, 
+                        hintText: 'Your Email',
+                        hintStyle: GoogleFonts.inter(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                        ),
+                        border: InputBorder.none,
                       ),
-                                ),
-                              ),
-                    ],
+                    ),
                   ),
-          
+                ],
+              ),
+
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: _handleSubmit,
+                    child: const Text('Save'),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
       ),
     );
   }
-
 }

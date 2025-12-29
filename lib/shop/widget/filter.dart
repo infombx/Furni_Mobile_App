@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:furni_mobile_app/shop/widget/productFilter.dart';
-import 'package:furni_mobile_app/product/data/dummyData.dart';
+import 'package:furni_mobile_app/shop/model/category_model.dart';
+import 'package:furni_mobile_app/services/category_service.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   const FilterBottomSheet({super.key});
@@ -11,8 +12,37 @@ class FilterBottomSheet extends StatefulWidget {
 }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
-  String? selectedCategory;
+  CategoryModel? selectedCategory;
+  List<CategoryModel> categories = [];
+  bool isLoading = true;
+
   RangeValues _currentRange = const RangeValues(0, 234);
+
+  @override
+  void initState() {
+    super.initState();
+    loadCategories();
+  }
+
+  Future<void> loadCategories() async {
+    try {
+      final result = await CategoryService.fetchCategories();
+
+      // DEBUG: print fetched category names
+      print('Categories fetched: ${result.map((e) => e.name).toList()}');
+
+      setState(() {
+        categories = result;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching categories: $e');
+      setState(() {
+        categories = [];
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +54,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Header
             Row(
               children: [
                 IconButton(
@@ -40,7 +71,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 ),
               ],
             ),
+
             const SizedBox(height: 24),
+
+            // Category Label
             Text(
               'Category',
               style: TextStyle(
@@ -49,39 +83,55 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 fontFamily: GoogleFonts.inter().fontFamily,
               ),
             ),
+
             const SizedBox(height: 20),
+
+            // Category List
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
-                children: category.map((item) {
-                  final isSelected = selectedCategory == item;
-                  return Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            isSelected ? const Color.fromARGB(255, 92, 92, 92) : const Color.fromARGB(255, 0, 0, 0),
-                        foregroundColor: isSelected ? const Color.fromARGB(255, 0, 0, 0) : const Color.fromARGB(255, 255, 255, 255),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                children: isLoading
+                    ? [const CircularProgressIndicator()]
+                    : categories.isEmpty
+                    ? [
+                        const Text(
+                          'No categories found',
+                          style: TextStyle(fontSize: 16),
                         ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          selectedCategory =
-                              selectedCategory == item ? null : item;
-                        });
-                      },
-                      child: Text(item),
-                    ),
-                  );
-                }).toList(),
+                      ]
+                    : categories.map((item) {
+                        final isSelected = selectedCategory?.id == item.id;
+
+                        return Container(
+                          margin: const EdgeInsets.only(right: 10),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: isSelected
+                                  ? Colors.yellow
+                                  : Colors.black,
+                              foregroundColor: isSelected
+                                  ? Colors.black
+                                  : Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                selectedCategory = isSelected ? null : item;
+                              });
+                            },
+                            child: Text(item.name),
+                          ),
+                        );
+                      }).toList(),
               ),
             ),
 
             const SizedBox(height: 24),
 
+            // Price Range
             Text(
               'Price Range',
               style: TextStyle(
@@ -90,7 +140,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 fontFamily: GoogleFonts.inter().fontFamily,
               ),
             ),
+
             const SizedBox(height: 20),
+
             Row(
               children: [
                 Text(
@@ -104,6 +156,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 ),
               ],
             ),
+
             RangeSlider(
               values: _currentRange,
               min: 0,
@@ -114,6 +167,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             ),
 
             const SizedBox(height: 32),
+
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
@@ -127,7 +181,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 Navigator.pop(
                   context,
                   ProductFilter(
-                    category: selectedCategory,
+                    category: selectedCategory?.name,
                     minPrice: _currentRange.start,
                     maxPrice: _currentRange.end,
                   ),

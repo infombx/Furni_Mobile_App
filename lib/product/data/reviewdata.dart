@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class ReviewWeb {
   final int id;
   final String name;
@@ -19,18 +17,23 @@ class ReviewWeb {
     required this.productId,
   });
 
- factory ReviewWeb.fromJson(Map<String, dynamic> json) {
-  // Access the nested ProductId inside the productId object
-  final productData = json['productId'];
-  final String actualId = productData != null ? productData['ProductId'] ?? '' : '';
+  factory ReviewWeb.fromJson(Map<String, dynamic> json) {
+    // Access the nested ProductId inside the productId object
+    final productData = json['productId'];
+    final String actualId = productData != null
+        ? productData['ProductId'] ?? ''
+        : '';
 
-  return ReviewWeb(
-    id: json['id'],
-    name: json['name'] ?? 'Anonymous',
-    comment: json['Comment'] ?? '',
-    rating: (json['rating'] ?? 0) as int,
-    date: DateTime.parse(json['Date'] ?? DateTime.now().toIso8601String()),
-    pictureUrl: json['pfp'] ?? 'https://via.placeholder.com/150',
-    productId: [actualId], // Store it as a list if you prefer your current structure
-  );
-}}
+    return ReviewWeb(
+      id: json['id'],
+      name: json['name'] ?? 'Anonymous',
+      comment: json['Comment'] ?? '',
+      rating: (json['rating'] ?? 0) as int,
+      date: DateTime.parse(json['Date'] ?? DateTime.now().toIso8601String()),
+      pictureUrl: json['pfp'] ?? 'https://via.placeholder.com/150',
+      productId: [
+        actualId,
+      ], // Store it as a list if you prefer your current structure
+    );
+  }
+}

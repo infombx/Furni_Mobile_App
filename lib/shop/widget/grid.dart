@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:furni_mobile_app/home_page/toggle_favorite.dart';
+// import 'package:furni_mobile_app/home_page/toggle_favorite.dart';
 import 'package:furni_mobile_app/product/Product_page.dart';
 import 'package:furni_mobile_app/product/data/dummyData.dart';
 import 'package:furni_mobile_app/product/widget/rating_star.dart';
@@ -16,13 +15,11 @@ class ProductGrid extends StatefulWidget {
 class _ProductGridState extends State<ProductGrid> {
   int qty = 1;
 
-  
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      
       padding: const EdgeInsets.all(16),
-    
+
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 6,
@@ -31,7 +28,6 @@ class _ProductGridState extends State<ProductGrid> {
       ),
       itemCount: widget.items.length,
       itemBuilder: (context, index) {
-        
         final item = widget.items[index];
 
         return Column(
@@ -45,34 +41,42 @@ class _ProductGridState extends State<ProductGrid> {
                   MaterialPageRoute(
                     builder: (_) => ProductPage(
                       product_id: item.id,
-                      onQuantityChanged: (value) => qty = value,
+                      onQuantityChanged: (int value) {
+                        setState(() {
+                          qty = value;
+                        });
+                      },
                     ),
                   ),
                 );
               },
-             child: Container(
-  height: 200,
-  margin: const EdgeInsets.symmetric(horizontal: 8),
-  decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(16),
-    image: DecorationImage(
-      image: NetworkImage(item.display_image), 
-      fit: BoxFit.cover,
-      onError: (exception, stackTrace) => const Icon(Icons.broken_image),
-    ),
-  ),
+              child: Container(
+                height: 200,
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  image: DecorationImage(
+                    image: NetworkImage(item.display_image),
+                    fit: BoxFit.cover,
+                    onError: (exception, stackTrace) =>
+                        const Icon(Icons.broken_image),
+                  ),
+                ),
                 child: Stack(
                   children: [
-
                     Positioned(
                       bottom: 10,
                       left: 10,
                       right: 10,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 6, 53, 107),
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            6,
+                            53,
+                            107,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -99,7 +103,10 @@ class _ProductGridState extends State<ProductGrid> {
                   Text(
                     item.name,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
                   ),
                   const SizedBox(height: 2),
                   Text(
@@ -118,15 +125,5 @@ class _ProductGridState extends State<ProductGrid> {
     );
   }
 
-  Widget _badge(String text, Color bg, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      decoration:
-          BoxDecoration(color: bg, borderRadius: BorderRadius.circular(8)),
-      child: Text(
-        text,
-        style: TextStyle(color: color, fontWeight: FontWeight.w600),
-      ),
-    );
-  }
+  // badge helper removed (unused)
 }

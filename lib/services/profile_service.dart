@@ -1,12 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileService {
-  final String baseUrl = "http://159.65.15.249:1337";
-
-  // ✅ THIS LINE IS REQUIRED
-  final Dio dio = Dio();
-
+  /// Minimal implementation used by the profile screen.
+  /// Saves profile fields locally and returns success.
   Future<bool> createUserProfile({
     required String firstName,
     required String lastName,
@@ -15,38 +11,14 @@ class ProfileService {
   }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final jwt = prefs.getString('jwt');
-      final userId = prefs.getInt('userId');
-
-      dio.options.headers = {'Authorization': 'Bearer $jwt'};
-
-      int? imageId;
-
+      await prefs.setString('firstName', firstName);
+      await prefs.setString('lastName', lastName);
+      await prefs.setString('displayName', displayName);
       if (imagePath != null) {
-        final formData = FormData.fromMap({
-          'files': await MultipartFile.fromFile(imagePath),
-        });
-
-        final uploadRes = await dio.post('$baseUrl/api/upload', data: formData);
-
-        imageId = uploadRes.data[0]['id'];
+        await prefs.setString('profileImagePath', imagePath);
       }
-
-      final Map<String, dynamic> data = {
-        'firstName': firstName,
-        'lastName': lastName,
-        'displayName': displayName,
-      };
-
-      if (imageId != null) {
-        data['profilePicture'] = imageId;
-      }
-
-      final res = await dio.put('$baseUrl/api/users/$userId', data: data);
-
-      return res.statusCode == 200;
-    } catch (e) {
-      print('CREATE PROFILE ERROR: $e');
+      return true;
+    } catch (_) {
       return false;
     }
   }

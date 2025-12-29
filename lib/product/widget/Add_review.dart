@@ -13,8 +13,8 @@ import 'package:furni_mobile_app/services/auth_service.dart';
 import 'package:furni_mobile_app/services/api_review.dart';
 
 class AddReview extends StatefulWidget {
- AddReview({super.key, required this.productId});
- final String productId;
+  const AddReview({super.key, required this.productId});
+  final String productId;
 
   @override
   State<AddReview> createState() => _AddReviewState();
@@ -23,59 +23,59 @@ class AddReview extends StatefulWidget {
 class _AddReviewState extends State<AddReview> {
   @override
   Widget build(BuildContext context) {
-    String _selectedValue = 'Account';
-  AppUser? currentUser;
-  bool isLoading = true;
+    String selectedValue = 'Account';
+    AppUser? currentUser;
+    bool isLoading = true;
 
-  final AuthService authService = AuthService();
-  Future<void> _loadUser() async {
-    final user = await authService.fetchMe();
-    setState(() {
-      currentUser = user;
-      isLoading = false;
-    });
-  }
+    final AuthService authService = AuthService();
+    Future<void> loadUser() async {
+      final user = await authService.fetchMe();
+      setState(() {
+        currentUser = user;
+        isLoading = false;
+      });
+    }
+
     @override
-  void initState() {
-    super.initState();
-    _loadUser();
-  }
+    void initState() {
+      super.initState();
+      loadUser();
+    }
 
-     final TextEditingController comment = TextEditingController();
-int selectedRating = 0; 
-void _handlePost() async {
-  if (comment.text.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Please enter a comment")),
-    );
-    return;
-  }
+    final TextEditingController comment = TextEditingController();
+    int selectedRating = 0;
+    void handlePost() async {
+      if (comment.text.isEmpty) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Please enter a comment")));
+        return;
+      }
 
-  // Assuming currentUser is loaded from your _loadUser()
-  if (currentUser == null) return;
+      // Assuming currentUser is loaded from your _loadUser()
+      if (currentUser == null) return;
 
-  try {
-    await ReviewService().postReview(
-      name: currentUser!.displayName, 
-      comment: comment.text,
-      rating: selectedRating,
-      productIds: [widget.productId],
-    );
+      try {
+        await ReviewService().postReview(
+          name: currentUser!.displayName,
+          comment: comment.text,
+          rating: selectedRating,
+          productIds: [widget.productId],
+        );
 
-    comment.clear();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Review submitted!")),
-    );
-    
-    // Optional: Refresh the list or go back
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Error submitting review: $e")),
-    );
-  }
-}
-     
-  
+        comment.clear();
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Review submitted!")));
+
+        // Optional: Refresh the list or go back
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Error submitting review: $e")));
+      }
+    }
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,11 +87,17 @@ void _handlePost() async {
           SizedBox(height: 10),
           Container(
             child: Row(
-              children: [RatingStar(onRatingSelected: (value){
-                setState(() {
-                  value = selectedRating;
-                });
-              },), SizedBox(width: 10), Text('11 reviews')],
+              children: [
+                RatingStar(
+                  onRatingSelected: (value) {
+                    setState(() {
+                      value = selectedRating;
+                    });
+                  },
+                ),
+                SizedBox(width: 10),
+                Text('11 reviews'),
+              ],
             ),
           ),
           SizedBox(height: 10),
@@ -136,7 +142,9 @@ void _handlePost() async {
                     right: 0,
                     top: -5,
                     child: IconButton(
-                      onPressed: () {_handlePost();},
+                      onPressed: () {
+                        handlePost();
+                      },
                       icon: Icon(
                         Icons.arrow_circle_right,
                         color: const Color.fromARGB(255, 37, 37, 37),

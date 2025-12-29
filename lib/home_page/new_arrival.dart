@@ -1,26 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/shop/shopPage.dart';
+import 'package:furni_mobile_app/data/data_cons.dart';
+import 'package:furni_mobile_app/product/widget/rating_star.dart';
+import 'package:furni_mobile_app/data/dummy_data.dart';
 
-
-class NewArrival extends StatefulWidget {
-  const NewArrival({super.key});
+// Rename this to a proper name instead of `Widget`
+class DummyNewProductCard extends StatelessWidget {
+  const DummyNewProductCard({super.key, required this.item});
+  final CartItem item;
 
   @override
-  State<NewArrival> createState() => _NewArrivalState();
+  Widget build(BuildContext context) {
+    // your card build logic here...
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 260,
+          height: 300,
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 236, 239, 239),
+            borderRadius: BorderRadius.circular(16),
+            image: DecorationImage(
+              image: AssetImage(item.image),
+              fit: BoxFit.cover,
+            ),
+          ),
+          // ... overlay, buttons, etc ...
+        ),
+        const SizedBox(height: 8),
+        const RatingStar(),
+        const SizedBox(height: 4),
+        Text(
+          item.name,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          '\$${item.price.toStringAsFixed(2)}',
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
 }
 
-class _NewArrivalState extends State<NewArrival> {
+class NewArrival extends StatelessWidget {
+  const NewArrival({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // --- TITLE ---
         const Padding(
           padding: EdgeInsets.only(left: 18),
           child: Text(
             'New',
-            textAlign: TextAlign.left,
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
         ),
@@ -28,168 +64,34 @@ class _NewArrivalState extends State<NewArrival> {
           padding: EdgeInsets.only(left: 18),
           child: Text(
             'Arrivals',
-            textAlign: TextAlign.left,
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
         ),
-
         const SizedBox(height: 16),
-
-        // Horizontal scroll list
         SizedBox(
-          height: 350,
+          height: 380,
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
-              children: [
-                // ---------------- CARD 1 ----------------
-                Container(
-                  width: 260,
-                  //height: 300,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/images/living_room.png',
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const Positioned(
-                        top: 16,
-                        left: 12,
-                        child: Text(
-                          'Living Room',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 8,
-                        left: 8,
-                        child: Row(
-                          children: [
-                            TextButton(
-                              onPressed:(){Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=> Shoppage()));},
-                              child: const Text(
-                                'Shop now',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                            IconButton(
-                              onPressed:(){Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=> Shoppage()));},
-                              icon: const Icon(
-                                Icons.arrow_forward,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // ---------------- CARD 2 ----------------
-                Container(
-                  width: 260,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/images/bedroom.png',
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const Positioned(
-                        top: 16,
-                        left: 12,
-                        child: Text(
-                          'Bedroom',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 8,
-                        left: 8,
-                        child: Row(
-                          children: [
-                            TextButton(
-                              onPressed:(){Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=> Shoppage()));},
-                              child: const Text(
-                                'Shop now',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                            IconButton(
-                             onPressed:(){Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=> Shoppage()));},
-                              icon: const Icon(
-                                Icons.arrow_forward,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              children: dummyData.map((item) {
+                return DummyNewProductCard(item: item);
+              }).toList(),
             ),
           ),
         ),
-        Column(
-          children: [
-            SizedBox(height: 10),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Row(
-                children: [
-                  TextButton(onPressed:(){Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=> Shoppage()));}, child: 
-                   Row(
-                     children: [
-                       Text(
-                        'More Products',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                                         ), Icon(Icons.arrow_forward, size: 16),
-                     ],
-                   ),
-                ),
-                  SizedBox(height: 25,)
-                ],
+        const SizedBox(height: 13),
+        const Padding(
+          padding: EdgeInsets.only(left: 10.0),
+          child: Row(
+            children: [
+              Text(
+                'More Products',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
-            ),
-          ],
+              Icon(Icons.arrow_forward, size: 16),
+            ],
+          ),
         ),
       ],
     );

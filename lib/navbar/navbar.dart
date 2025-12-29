@@ -17,7 +17,7 @@ class GlassFloatingNavBar extends StatefulWidget {
 }
 
 class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,8 @@ class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => const HomeScreen()),
+                                builder: (_) => const HomeScreen(),
+                              ),
                             );
                           },
                           child: SvgPicture.asset(
@@ -82,7 +83,8 @@ class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => const Shoppage()),
+                                builder: (_) => const Shoppage(),
+                              ),
                             );
                           },
                           child: SvgPicture.asset(
@@ -100,7 +102,8 @@ class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
                               isScrollControlled: true,
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(24)),
+                                  top: Radius.circular(24),
+                                ),
                               ),
                               clipBehavior: Clip.antiAlias,
                               builder: (ctx) => const BottomCartSheet(),
@@ -119,7 +122,8 @@ class _GlassFloatingNavBarState extends State<GlassFloatingNavBar> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => const MyAccount()),
+                                builder: (_) => const MyAccount(),
+                              ),
                             );
                           },
                           child: SvgPicture.asset(

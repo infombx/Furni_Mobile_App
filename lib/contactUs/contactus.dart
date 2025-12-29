@@ -49,39 +49,37 @@ class Contactus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title:Header(),
-        automaticallyImplyLeading: false,
-      ),
+      appBar: AppBar(automaticallyImplyLeading: false, title: Header()),
+
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(32,0,32,0),
+        padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
         child: Column(
           children: [
-             Row(
-                    children: [
-                      TextButton.icon(
-                        onPressed: () {
-                Navigator.pop(context, {
-                });
-              },
-              
-                        icon: const Icon(
-                          Icons.arrow_back_ios,
-                          size: 11,
-                          color: Colors.black54,
-                        ),
-                        label: const Text('back', style: TextStyle(color: Colors.black)),
-                      ),
-              
-                    ],
+            Row(
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context, {});
+                  },
+
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 11,
+                    color: Colors.black54,
                   ),
+                  label: const Text(
+                    'back',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
             About(),
             const SizedBox(height: 20),
             Shopnow(),
             const SizedBox(height: 20),
-      
+
             Text(
               'Contact Us',
               style: TextStyle(
@@ -90,135 +88,43 @@ class Contactus extends StatelessWidget {
                 fontFamily: GoogleFonts.poppins().fontFamily,
               ),
             ),
-      
-            const SizedBox(height: 40),
-      
-            Container(
-                height: 160,
-                width: w*0.9,
-              padding:
-                  const EdgeInsets.only(top: 20, left: 40, right: 40, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                children: [
-                  SvgPicture.asset('assets/images/store.svg'),
-                  const SizedBox(height: 16),
-                  Text(
-                    'ADDRESS',
-                    style: TextStyle(
-                      fontFamily: GoogleFonts.inter().fontFamily,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: const Color.fromARGB(255, 108, 114, 117),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '234 Hai Trieu, Ho Chi Minh City, Viet Nam',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: GoogleFonts.inter().fontFamily,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-      
-            const SizedBox(height: 16),
-      
-            Container(
-              height: 160,
-              width: w* 0.9,
 
-              padding:
-                  const EdgeInsets.only(top: 20, left: 40, right: 40, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                children: [
-                  SvgPicture.asset('assets/images/phone.svg'),
-                  const SizedBox(height: 16),
-                  Text(
-                    'CONTACT US',
-                    style: TextStyle(
-                      fontFamily: GoogleFonts.inter().fontFamily,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: const Color.fromARGB(255, 108, 114, 117),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '+84 234 567 890',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: GoogleFonts.inter().fontFamily,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
+            const SizedBox(height: 40),
+
+            _infoCard(
+              'assets/images/store.svg',
+              'ADDRESS',
+              '234 Hai Trieu, Ho Chi Minh City, Viet Nam',
             ),
-      
+
             const SizedBox(height: 16),
-      
-            Container(
-              height: 160,
-              width: w* 0.9,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                children: [
-                  SvgPicture.asset('assets/images/mail.svg'),
-                  const SizedBox(height: 10),
-                  Text(
-                    'EMAIL',
-                    style: TextStyle(
-                      fontFamily: GoogleFonts.inter().fontFamily,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: const Color.fromARGB(255, 108, 114, 117),
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    'hello@furni.com',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: GoogleFonts.inter().fontFamily,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
+
+            _infoCard(
+              'assets/images/phone.svg',
+              'CONTACT US',
+              '+84 234 567 890',
             ),
-      
+
+            const SizedBox(height: 16),
+
+            _infoCard('assets/images/mail.svg', 'EMAIL', 'hello@furni.com'),
+
             const SizedBox(height: 32),
             Location(),
             const SizedBox(height: 32),
-      
+
             Contactform(),
             const SizedBox(height: 10),
-      
+
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
                 foregroundColor: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 6,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -232,13 +138,13 @@ class Contactus extends StatelessWidget {
                 ),
               ),
             ),
-      
+
             const SizedBox(height: 50),
             Services(),
           ],
         ),
       ),
-      bottomNavigationBar: SizedBox(height: 90, child: GlassFloatingNavBar(),),
+      bottomNavigationBar: SizedBox(height: 90, child: GlassFloatingNavBar()),
     );
   }
 }
