@@ -4,19 +4,59 @@ import 'package:furni_mobile_app/product/data/dummyData.dart';
 import 'package:furni_mobile_app/product/widget/rating_star.dart';
 import 'package:furni_mobile_app/home_page/toggle_favorite.dart';
 import 'package:furni_mobile_app/screens/home_screen.dart';
+import 'package:furni_mobile_app/product/data/orders.dart';
+import 'package:furni_mobile_app/models/user_model.dart';
+import 'package:furni_mobile_app/services/OrdersService.dart';
+import 'package:furni_mobile_app/services/update_profilepicture.dart';
+import 'package:furni_mobile_app/widgets/account%20details.dart';
+import 'package:furni_mobile_app/widgets/address_details.dart';
+import 'package:furni_mobile_app/widgets/footer/profile_picture.dart';
+import 'package:furni_mobile_app/widgets/user_profile.dart';
+import 'package:furni_mobile_app/services/auth_service.dart';
+import 'package:furni_mobile_app/services/api_review.dart';
 
 class NewProductCard extends StatelessWidget {
   const NewProductCard({
     super.key,
     required this.item,
   });
-
-  /// ✅ SINGLE product, not a list
   final Product item;
-
   @override
   Widget build(BuildContext context) {
     int qty = 1;
+       AppUser? _currentUser; 
+  
+
+void handleAddToCart(BuildContext context) async {
+
+  final authService = AuthService();
+  final user = await authService.fetchMe();
+
+  if (user == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please log in to add items to cart')),
+    );
+    return;
+  }
+
+
+  ordersList.add(MyOrders(
+    product_id: item.id,
+    image: item.display_image,
+    quantity: 1,
+    description: item.description,
+    price: item.price,
+    colorr: item.colours,
+    name: item.name,
+    userId: user.id,
+    measurement: item.measurements
+  ));
+  await CartPersistence.saveCart();
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('${item.name} added to cart!')),
+  );
+}
+ 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -88,7 +128,7 @@ class NewProductCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {handleAddToCart(context);},
                     child: const Text(
                       'Add to Cart',
                       style: TextStyle(color: Colors.white),
