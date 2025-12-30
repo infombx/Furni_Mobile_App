@@ -1,125 +1,91 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:furni_mobile_app/home_page/shopNow_widget.dart';
+import 'package:furni_mobile_app/home_page/data/bundle.dart';
+import 'package:furni_mobile_app/services/api_bundle.dart';
+import 'package:furni_mobile_app/shop/shoppage.dart'; 
 
-class Bundle extends StatelessWidget {
+class Bundle extends StatefulWidget {
   const Bundle({super.key});
 
   @override
+  State<Bundle> createState() => _BundleState();
+}
+
+class _BundleState extends State<Bundle> {
+  static const String baseUrl = "http://159.65.15.249:1337";
+  Future<List<BundleModel>>? _bundleFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _bundleFuture = ApiService.fetchBundles();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            // --- Container 1 ---
-            Container(
-              // height: 300,
-              margin: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      'assets/images/LivingRoom.jpg',
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    right: 10,
-                    child: Text(
-                      'Living Room',
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 0, 0, 0),
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                  Positioned(top: 30, right: 0, child: ShopNowLink()),
-                ],
-              ),
-            ),
-            //--------------------------------container 2------------------------
-            Container(
-              height: 230,
-              margin: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(100, 243, 245, 247),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      'assets/images/bedroom.png',
-                      width: double.infinity,
-                      height: 300,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 55,
-                    left: 10,
-                    child: Text(
-                      'Bedroom',
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 24, 24, 24),
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
+    return FutureBuilder<List<BundleModel>>(
+      future: _bundleFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        }
 
-                  Positioned(bottom: 20, left: 0, child: ShopNowLink()),
-                ],
-              ),
-            ),
-            //------------------------------container 3------------------------
-            Container(
-              height: 230,
-              margin: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(100, 243, 245, 247),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      'assets/images/kitchen0.png',
-                      width: double.infinity,
-                      height: 300,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 55,
-                    left: 10,
-                    child: Text(
-                      'Kitchen',
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 25, 24, 24),
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
+        final bundles = snapshot.data ?? [];
 
-                  Positioned(bottom: 20, left: 0, child: ShopNowLink()),
-                ],
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: bundles.length,
+          itemBuilder: (context, index) {
+            final bundle = bundles[index];
+            final fullImageUrl = '$baseUrl${bundle.imageUrl}';
+
+            return GestureDetector(
+              onTap: () {
+                // Navigate to ShopPage with the category filter
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Shoppage(selectedCategory: bundle.title),
+                  ),
+                );
+              },
+              child: Container(
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Stack(
+                    children: [
+                      Image.network(
+                        fullImageUrl,
+                        width: double.infinity,
+                        fit: BoxFit.fitWidth,
+                      ),
+                      Positioned(
+                          top: 20,
+                          left: 10,
+                          child: Text(bundle.title,
+                              style: GoogleFonts.poppins(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ))),
+                      const Positioned(
+                          top: 50, left: 10, child: ShopNowLink()),
+                    ],
+                  ),
+                ),
               ),
-            ), //3
-          ],
-        ),
-      ),
+            );
+          },
+        );
+      },
     );
   }
 }

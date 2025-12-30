@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:furni_mobile_app/product/Product_page.dart';
-import 'package:furni_mobile_app/models/product_model.dart';
+import 'package:furni_mobile_app/product/data/dummyData.dart';
 import 'package:furni_mobile_app/product/widget/rating_star.dart';
 import 'package:furni_mobile_app/home_page/toggle_favorite.dart';
+import 'package:furni_mobile_app/screens/home_screen.dart';
 
 class NewProductCard extends StatelessWidget {
-  const NewProductCard({super.key, required this.item});
+  const NewProductCard({
+    super.key,
+    required this.item,
+  });
 
   final Product item;
 
   @override
   Widget build(BuildContext context) {
-    final ImageProvider img = item.imageUrl.startsWith('http')
-        ? NetworkImage(item.imageUrl)
-        : AssetImage(item.imageUrl) as ImageProvider;
+    int qty = 1;
+    // Check if there is actually a discount to display the badge
+    
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,9 +28,8 @@ class NewProductCard extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (_) => ProductPage(
-                  onQuantityChanged: (int _) {},
-                  product_id: item.id,
-                ),
+                    onQuantityChanged: (value) => qty = value,
+                    product_id: item.id),
               ),
             );
           },
@@ -35,21 +38,17 @@ class NewProductCard extends StatelessWidget {
             height: 290,
             margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: const Color.fromARGB(0, 236, 239, 239),
+              color: Colors.white,
               borderRadius: BorderRadius.circular(16),
-              image: DecorationImage(image: img, fit: BoxFit.cover),
+              image: DecorationImage(
+                // Use NetworkImage for the URL from your API
+                image: NetworkImage(item.display_image),
+                fit: BoxFit.cover,
+                onError: (exception, stackTrace) => const Icon(Icons.broken_image),
+              ),
             ),
             child: Stack(
               children: [
-                Positioned(
-                  top: 13,
-                  right: 10,
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.white,
-                    child: FavoriteToggleButton(),
-                  ),
-                ),
                 Positioned(
                   top: 16,
                   left: 16,
@@ -60,15 +59,19 @@ class NewProductCard extends StatelessWidget {
                         bg: Colors.white,
                         color: Colors.black,
                       ),
-                      const SizedBox(height: 6),
-                      _badge(
-                        text: '-50%',
-                        bg: Colors.green,
-                        color: Colors.white,
-                      ),
+                      // if (hasDiscount) ...[
+                      //   const SizedBox(height: 6),
+                      //   _badge(
+                      //     text: '-${item.percentageDiscount}%',
+                      //     bg: Colors.green,
+                      //     color: Colors.white,
+                      //   ),
+                      // ],
                     ],
                   ),
                 ),
+
+                /// ADD TO CART
                 Positioned(
                   bottom: 13,
                   left: 10,
@@ -80,7 +83,9 @@ class NewProductCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      // Add logic to add item to cart
+                    },
                     child: const Text(
                       'Add to Cart',
                       style: TextStyle(color: Colors.white),
@@ -91,12 +96,14 @@ class NewProductCard extends StatelessWidget {
             ),
           ),
         ),
+
+        /// PRODUCT DETAILS
         Padding(
           padding: const EdgeInsets.only(left: 15, top: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RatingStar(initialRating: 0),
+              RatingStar(initialRating: item.rating),
               const SizedBox(height: 4),
               Text(
                 item.name,
@@ -122,14 +129,9 @@ class NewProductCard extends StatelessWidget {
     );
   }
 
-  Widget _badge({
-    required String text,
-    required Color bg,
-    required Color color,
-  }) {
+  Widget _badge({required String text, required Color bg, required Color color}) {
     return Container(
-      height: 30,
-      width: 80,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(8),
@@ -139,7 +141,7 @@ class NewProductCard extends StatelessWidget {
           text,
           style: TextStyle(
             color: color,
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
         ),

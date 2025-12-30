@@ -29,10 +29,18 @@ class Product {
     const String baseUrl = "http://159.65.15.249:1337";
 
     // 1. EXTRACT CATEGORY NAME
-    String categoryName = "General";
-    if (json['product_category'] is Map) {
-      categoryName = json['product_category']['name']?.toString() ?? "General";
-    }
+ String categoryName = "General";
+if (json['product_category'] != null) {
+  // Check for Strapi's nested structure
+  var catData = json['product_category'];
+  if (catData is Map) {
+    // If your API is already flattened
+    categoryName = catData['name']?.toString() ?? "General";
+  } else if (catData is List && catData.isNotEmpty) {
+    // If it's a list of categories
+    categoryName = catData[0]['name']?.toString() ?? "General";
+  }
+}
 
     // 2. PARSE RICH TEXT DESCRIPTION BLOCKS
     String parseDescription(dynamic descData) {

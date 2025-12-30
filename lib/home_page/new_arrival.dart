@@ -69,7 +69,7 @@ class NewArrival extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         SizedBox(
-          height: 380,
+          height: 390,
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12),

@@ -10,33 +10,40 @@ class ShopNowLink extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextButton(
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero, // Removes default button padding
+            minimumSize: const Size(0, 0),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
           onPressed: () {
-            Navigator.of(
+            Navigator.push(
               context,
-            ).push(MaterialPageRoute(builder: (ctx) => Shoppage()));
+              MaterialPageRoute(builder: (context) => const Shoppage()),
+            );
           },
-          child: Column(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.black, width: 1.2),
-                      ),
-                    ),
-                    child: Text(
-                      'Shop now',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                    ),
+              Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.black, width: 1.2),
                   ),
-                  Icon(Icons.arrow_forward, size: 18, color: Colors.black),
-                ],
+                ),
+                child: const Text(
+                  "Shop Now",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
+              const Icon(
+                Icons.arrow_forward,
+                color: Colors.black,
+                size: 18,
               ),
             ],
           ),

@@ -1,164 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:furni_mobile_app/services/api_serviceCard.dart';
+import 'package:furni_mobile_app/contactUs/data/servicesData.dart';
 
-class Services extends StatelessWidget{
+class Services extends StatelessWidget {
   const Services({super.key});
+
+  static const String baseUrl = "http://159.65.15.249:1337";
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              Container(
-                 decoration: BoxDecoration(
+    return FutureBuilder<List<ServiceCard>>(
+      future: ApiService.fetchServices(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        final services = snapshot.data!;
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          child: GridView.builder(
+            shrinkWrap: true, // Crucial for use inside a SingleChildScrollView
+            physics: const NeverScrollableScrollPhysics(), 
+            itemCount: services.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,          // 2 columns
+              crossAxisSpacing: 10,       // Horizontal space
+              mainAxisSpacing: 10,        // Vertical space
+              childAspectRatio: 0.85,     // Adjust height/width ratio
+            ),
+            itemBuilder: (context, index) {
+              final card = services[index];
+              
+              return Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
                   color: const Color.fromRGBO(243, 245, 247, 1),
-                  borderRadius: BorderRadius.circular(20)
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                padding: EdgeInsets.only(top:30, left:25, right:25, bottom:10),
-                width: w * 0.39,  
-                height: h * 0.25,
-                
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset('assets/images/delivery.svg', width: 48,),
-                    SizedBox(height: 16,),
-                    Text('Free Shipping',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      fontFamily: GoogleFonts.inter().fontFamily
-                    ),),
-                    Text('Order above \$200',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      fontFamily: GoogleFonts.inter().fontFamily,
-                      color: Color.fromRGBO(108, 114, 117, 1),
+                    // Load SVG from Strapi URL
+                    SvgPicture.network(
+                      '$baseUrl${card.iconUrl}',
+                      width: 48,
+                      placeholderBuilder: (context) => const SizedBox(
+                        width: 48, 
+                        height: 48, 
+                        child: CircularProgressIndicator(strokeWidth: 2)
+                      ),
                     ),
-                    textAlign: TextAlign.start,)
+                    const SizedBox(height: 16),
+                    Text(
+                      card.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        fontFamily: GoogleFonts.inter().fontFamily,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      card.subTitle,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        fontFamily: GoogleFonts.inter().fontFamily,
+                        color: const Color.fromRGBO(108, 114, 117, 1),
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              SizedBox(width: 10,),
-              Container(
-                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(243, 245, 247, 1),
-                  borderRadius: BorderRadius.circular(20)
-                ),
-                  padding: EdgeInsets.only(top:30, left:25, right:25, bottom:10),
-                width: w * 0.39,  
-                 height: h * 0.25,
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset('assets/images/money.svg', width: 48,),
-                      SizedBox(height: 16,),
-                      Text('Money-back',
-                       style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        fontFamily: GoogleFonts.inter().fontFamily
-                      ),),
-                      Text('30 days guarantee',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        fontFamily: GoogleFonts.inter().fontFamily,
-                        color: Color.fromRGBO(108, 114, 117, 1),
-                      ),
-                      textAlign: TextAlign.start,)
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              );
+            },
           ),
-          SizedBox(height: 10,),
-          Row(
-            children: [
-              Container(
-                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(243, 245, 247, 1),
-                  borderRadius: BorderRadius.circular(20)
-                ),
-              padding: EdgeInsets.only(top:30, left:25, right:25, bottom:10),
-                width: w * 0.39,  
-                 height: h * 0.25,
-               
-                  child: Center(
-                    
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset('assets/images/lock.svg', width: 48,),
-                        SizedBox(height: 16,),
-                        Text('Secure Payments',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          fontFamily: GoogleFonts.inter().fontFamily
-                        ),),
-                        Text('Secured by stripe',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                          fontFamily: GoogleFonts.inter().fontFamily,
-                          color: Color.fromRGBO(108, 114, 117, 1),
-                        ),
-                        textAlign: TextAlign.start,)
-                      ],
-                    ),
-                  ),
-                
-              ),
-              SizedBox(width: 10,),
-      
-              Container(
-                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(243, 245, 247, 1),
-                  borderRadius: BorderRadius.circular(20)
-                ),
-               padding: EdgeInsets.only(top:30, left:25, right:25, bottom:10),
-                width: w * 0.39,  
-                height: h * 0.25,
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset('assets/images/call.svg', width: 48,),
-                      SizedBox(height: 16,),
-                      Text('24/7 Support',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        fontFamily: GoogleFonts.inter().fontFamily
-                      ),),
-                      Text('Phone and Email support',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        fontFamily: GoogleFonts.inter().fontFamily,
-                        color: Color.fromRGBO(108, 114, 117, 1),
-                      ),
-                      textAlign: TextAlign.start,)
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 }

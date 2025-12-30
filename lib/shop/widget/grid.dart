@@ -14,17 +14,17 @@ class ProductGrid extends StatefulWidget {
 
 class _ProductGridState extends State<ProductGrid> {
   int qty = 1;
-
-  @override
+@override
   Widget build(BuildContext context) {
     return GridView.builder(
       padding: const EdgeInsets.all(16),
-
+      shrinkWrap: true, // Crucial for SingleChildScrollView
+      physics: const NeverScrollableScrollPhysics(), // Crucial for SingleChildScrollView
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 6,
-        mainAxisSpacing: 10,
-        childAspectRatio: 0.58,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 15,
+        childAspectRatio: 0.55, // Adjusted to give slightly more vertical room
       ),
       itemCount: widget.items.length,
       itemBuilder: (context, index) {
@@ -33,68 +33,58 @@ class _ProductGridState extends State<ProductGrid> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InkWell(
-              borderRadius: BorderRadius.circular(16),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ProductPage(
-                      product_id: item.id,
-                      onQuantityChanged: (int value) {
-                        setState(() {
-                          qty = value;
-                        });
-                      },
+            // 1. WRAP THE IMAGE IN EXPANDED
+            // This forces the image to take only the remaining space, 
+            // preventing it from pushing the text out of the box.
+            Expanded(
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () {
+                  // Your Navigation Logic
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    image: DecorationImage(
+                      image: NetworkImage(item.display_image),
+                      fit: BoxFit.cover,
+                      onError: (e, s) => const Icon(Icons.broken_image),
                     ),
                   ),
-                );
-              },
-              child: Container(
-                height: 200,
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  image: DecorationImage(
-                    image: NetworkImage(item.display_image),
-                    fit: BoxFit.cover,
-                    onError: (exception, stackTrace) =>
-                        const Icon(Icons.broken_image),
-                  ),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      bottom: 10,
-                      left: 10,
-                      right: 10,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            6,
-                            53,
-                            107,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        bottom: 8,
+                        left: 8,
+                        right: 8,
+                        child: SizedBox(
+                          height: 35, // Fixed height for button
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(255, 6, 53, 107),
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {},
+                            child: const Text(
+                              'Add to Cart',
+                              style: TextStyle(color: Colors.white, fontSize: 11),
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: const Text(
-                          'Add to Cart',
-                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
 
+            // 2. TEXT CONTENT (FIXED HEIGHT SECTION)
             Padding(
-              padding: const EdgeInsets.only(left: 16, top: 6),
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -102,10 +92,11 @@ class _ProductGridState extends State<ProductGrid> {
                   const SizedBox(height: 4),
                   Text(
                     item.name,
+                    maxLines: 1, // Prevents overflow if name is long
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -113,7 +104,7 @@ class _ProductGridState extends State<ProductGrid> {
                     'Rs ${item.price.toStringAsFixed(2)}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
                 ],
@@ -123,6 +114,7 @@ class _ProductGridState extends State<ProductGrid> {
         );
       },
     );
+  
   }
 
   // badge helper removed (unused)
