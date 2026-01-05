@@ -17,7 +17,6 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   bool isLoading = true;
 
   RangeValues _currentRange = const RangeValues(0, 234);
-
   @override
   void initState() {
     super.initState();

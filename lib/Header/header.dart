@@ -14,6 +14,7 @@ class Header extends StatefulWidget {
   State<Header> createState() => _HeaderState();
 }
 
+//header
 class _HeaderState extends State<Header> {
   bool _showSearch = false;
   bool _isLoading = false;
@@ -105,7 +106,7 @@ class _HeaderState extends State<Header> {
   void _showOverlay() {
     _removeOverlay();
     _overlayEntry = OverlayEntry(builder: (_) => _buildOverlay());
-    Overlay.of(context, rootOverlay: true)!.insert(_overlayEntry!);
+    Overlay.of(context).insert(_overlayEntry!);
   }
 
   void _updateOverlay() {
@@ -118,84 +119,51 @@ class _HeaderState extends State<Header> {
   }
 
   Widget _buildOverlay() {
-    final double appBarHeight =
-        kToolbarHeight + MediaQuery.of(context).padding.top;
-
     return Positioned.fill(
-      child: Stack(
-        children: [
-          // 🔹 Soft dark background
-          GestureDetector(
-            onTap: () => _toggle(false),
-            child: Container(color: Colors.black.withOpacity(0.35)),
-          ),
+      top: MediaQuery.of(context).padding.top + 80,
+      child: GestureDetector(
+        onTap: () => _toggle(false),
+        child: Material(
+          color: Colors.black54,
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    !_hasSearched
+                        ? 'Type to search products...'
+                        : _results.isEmpty
+                        ? 'No products found'
+                        : 'Found ${_results.length} products',
+                  ),
+                ),
+                if (_results.isNotEmpty)
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _results.length,
+                      itemBuilder: (_, index) {
+                        final product = _results[index];
 
-          // 🔹 Blended results panel
-          Positioned(
-            top: appBarHeight,
-            left: 12,
-            right: 12,
-            bottom: 12,
-            child: Material(
-              elevation: 6,
-              borderRadius: BorderRadius.circular(16),
-              color: Colors.grey[100], // 👈 NOT pure white
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      !_hasSearched
-                          ? 'Type to search products...'
-                          : _results.isEmpty
-                          ? 'No products found'
-                          : 'Found ${_results.length} products',
-                      style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                      ),
+                        return ListTile(
+                          title: Text(product['name']),
+                          trailing: const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 14,
+                          ),
+                          onTap: () {
+                            _toggle(false);
+                            widget.onProductTap?.call(product['id']);
+                          },
+                        );
+                      },
                     ),
                   ),
-
-                  if (_results.isNotEmpty)
-                    Expanded(
-                      child: ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        itemCount: _results.length,
-                        itemBuilder: (_, index) {
-                          final product = _results[index];
-
-                          return Card(
-                            elevation: 0,
-                            color: Colors.white,
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ListTile(
-                              title: Text(product['name']),
-                              trailing: const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 14,
-                              ),
-                              onTap: () {
-                                _toggle(false);
-                                widget.onProductTap?.call(product['id']);
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                ],
-              ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
