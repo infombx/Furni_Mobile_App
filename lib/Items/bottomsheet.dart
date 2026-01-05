@@ -73,7 +73,7 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Column(
                       children: [
                         SizedBox(
