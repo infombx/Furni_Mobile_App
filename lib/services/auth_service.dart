@@ -6,9 +6,7 @@ import 'package:furni_mobile_app/models/user_model.dart';
 class AuthService {
   final String baseUrl = "http://159.65.15.249:1337";
 
-  /// ======================
-  /// REGISTER USER
-  /// ======================
+
   Future<AppUser?> register(String email, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/api/auth/local/register'),
@@ -36,10 +34,7 @@ class AuthService {
 
     return null;
   }
-
-  /// ======================
-  /// LOGIN USER
-  /// ======================
+  
   Future<AppUser?> signIn(String identifier, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/api/auth/local'),
@@ -50,12 +45,10 @@ class AuthService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
 
-      // Save JWT and userId in SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('jwt', data['jwt']);
       await prefs.setInt('userId', data['user']['id']);
 
-      // Create AppUser and assign JWT
       final user = AppUser.fromJson(data['user']);
       user.jwtToken = data['jwt'];
       return user;

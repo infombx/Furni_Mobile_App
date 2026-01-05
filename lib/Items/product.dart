@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/dummy items/data_required.dart';
-import 'package:furni_mobile_app/Items/counter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:furni_mobile_app/Items/counter.dart';
+import 'package:furni_mobile_app/product/data/orders.dart';
+
 
 class ProductWidget extends StatefulWidget {
   const ProductWidget({
@@ -12,9 +13,9 @@ class ProductWidget extends StatefulWidget {
     required this.initialQuantity,
   });
 
-  final CartItem item;
-  final void Function(double itemprice) onPriceChanged;
-  final void Function(int quantity) onQuantityChanged;
+  final MyOrders item;
+  final void Function(double) onPriceChanged;
+  final void Function(int) onQuantityChanged;
   final int initialQuantity;
 
   @override
@@ -28,103 +29,109 @@ class _ProductWidgetState extends State<ProductWidget> {
   void initState() {
     super.initState();
     selectedQty = widget.initialQuantity >= 1 ? widget.initialQuantity : 1;
-    final initialPrice = widget.item.price * selectedQty;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.onQuantityChanged(selectedQty);
-      widget.onPriceChanged(initialPrice);
+      widget.onPriceChanged(widget.item.price * selectedQty);
     });
   }
 
   void _onQuantityChanged(int value) {
-    setState(() {
-      selectedQty = value;
-      widget.item.quantity = value;
-    });
-    widget.onQuantityChanged(selectedQty);
-    widget.onPriceChanged(widget.item.price * selectedQty);
+    setState(() => selectedQty = value);
+    widget.item.quantity = value;
+    widget.onQuantityChanged(value);
+    widget.onPriceChanged(widget.item.price * value);
   }
+
+  void removeOrders() {
+    setState(() {
+      ordersList.removeWhere(
+        (item) => item.product_id == widget.item.product_id,
+      );
+    });
+
+    widget.onPriceChanged(0);
+    widget.onQuantityChanged(0);
+  }
+  ImageProvider resolveImage(String image) {
+  if (image.startsWith('http')) {
+    return NetworkImage(image);
+  }
+  return AssetImage(image);
+}
 
   @override
   Widget build(BuildContext context) {
-    final double itemPrice = (widget.item.price * selectedQty);
-    ImageProvider imageProvider;
-    final url = widget.item.imageUrl;
-
-    if (url.isNotEmpty && url.startsWith('http')) {
-      imageProvider = NetworkImage(url);
-    } else {
-      final assetPath = url.startsWith('assets/') ? url : 'assets/images/$url';
-      imageProvider = AssetImage(assetPath);
-    }
+    final itemPrice = widget.item.price * selectedQty;
 
     return SizedBox(
       height: 190,
-      width: double.infinity,
       child: Card(
-        color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 height: 150,
                 width: 100,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
-                  ),
                   borderRadius: BorderRadius.circular(8),
+                  image: DecorationImage(
+                    image: resolveImage(widget.item.image),
+                    fit: BoxFit.fitWidth,
+                    onError: (_, __) {}, // 🔥 critical for Web
+                  ),
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
+
+              const Spacer(),
+
+              Column(
+                children: [
+                  const SizedBox(height: 30),
+                  Text(
+                    widget.item.name,
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    widget.item.measurement,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: const Color(0xFF666E72),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  QuantityCounter(
+                    initialQuantity: selectedQty,
+                    onQuantityChanged: _onQuantityChanged,
+                  ),
+                ],
+              ),
+
+              const Spacer(),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 30),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const SizedBox(height: 6),
                     Text(
-                      widget.item.productName,
+                      '\$${itemPrice.toStringAsFixed(2)}',
                       style: GoogleFonts.inter(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.item.property,
-                      style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                        color: const Color.fromARGB(255, 102, 110, 114),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    QuantityCounter(
-                      initialQuantity: widget.item.quantity,
-                      onQuantityChanged: (value) {
-                        _onQuantityChanged(value);
-                      },
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: removeOrders,
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(width: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '\$${itemPrice.toStringAsFixed(2)}',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black,
-                    ),
-                  ),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.close)),
-                ],
               ),
             ],
           ),
