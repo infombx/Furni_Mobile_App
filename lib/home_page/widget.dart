@@ -49,7 +49,8 @@ void handleAddToCart(BuildContext context) async {
     colorr: item.colours,
     name: item.name,
     userId: user.id,
-    measurement: item.measurements
+    measurement: item.measurements,
+    stock: item.quantity
   ));
   await CartPersistence.saveCart();
   ScaffoldMessenger.of(context).showSnackBar(
@@ -139,7 +140,6 @@ void handleAddToCart(BuildContext context) async {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RatingStar(initialRating: item.rating),
               const SizedBox(height: 4),
               Text(
                 item.name,

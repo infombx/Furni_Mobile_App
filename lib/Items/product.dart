@@ -43,16 +43,15 @@ class _ProductWidgetState extends State<ProductWidget> {
     widget.onPriceChanged(widget.item.price * value);
   }
 
-  void removeOrders() {
-    setState(() {
-      ordersList.removeWhere(
-        (item) => item.product_id == widget.item.product_id,
-      );
-    });
+void removeOrders() {
+  setState(() {
 
-    widget.onPriceChanged(0);
-    widget.onQuantityChanged(0);
-  }
+    ordersList.remove(widget.item);
+  });
+
+  widget.onPriceChanged(0);
+  widget.onQuantityChanged(0);
+}
   ImageProvider resolveImage(String image) {
   if (image.startsWith('http')) {
     return NetworkImage(image);
@@ -68,8 +67,9 @@ Widget build(BuildContext context) {
     height: 150, // Reduced height to fit content better
     width: double.infinity,
     child: Card(
+      color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.all(10), // Increased padding for better spacing
+        padding: const EdgeInsets.all(5), // Increased padding for better spacing
         child: Row(
           children: [
             // 1. IMAGE SECTION
@@ -113,6 +113,7 @@ Widget build(BuildContext context) {
                   ),
                   const SizedBox(height: 10),
                   QuantityCounter(
+                    max: widget.item.stock,
                     initialQuantity: selectedQty,
                     onQuantityChanged: _onQuantityChanged,
                   ),

@@ -3,9 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:furni_mobile_app/Header/header.dart';
 import 'package:furni_mobile_app/contactUs/about.dart';
 import 'package:furni_mobile_app/contactUs/widget/contactForm.dart';
+import 'package:furni_mobile_app/contactUs/widget/info_card.dart';
 import 'package:furni_mobile_app/contactUs/widget/services.dart';
 import 'package:furni_mobile_app/contactUs/widget/shopnow.dart';
 import 'package:furni_mobile_app/navbar/navbar.dart';
+import 'package:furni_mobile_app/services/contactus_services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:furni_mobile_app/contactUs/widget/location.dart';
 
@@ -50,10 +52,9 @@ class Contactus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false, title: Header()),
-
+      appBar: AppBar(title: Header(), automaticallyImplyLeading: false),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16,0,16,0),
+        padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
         child: Column(
           children: [
             Row(
@@ -75,39 +76,114 @@ class Contactus extends StatelessWidget {
                 ),
               ],
             ),
+
             About(),
             const SizedBox(height: 20),
-            Shopnow(),
-            const SizedBox(height: 20),
+            FutureBuilder<List<dynamic>>(
+              future: ContactPageService.fetchBlocks(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                }
 
-            Text(
-              'Contact Us',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 20,
-                fontFamily: GoogleFonts.poppins().fontFamily,
-              ),
+                if (snapshot.hasError) {
+                  return const Text('Failed to load About section');
+                }
+
+                final blocks = snapshot.data!;
+
+                final aboutBlock = blocks.firstWhere(
+                  (b) => b['__component'] == 'blocks.about-section',
+                  orElse: () => null,
+                );
+
+                if (aboutBlock == null) {
+                  return const SizedBox();
+                }
+
+                return Shopnow(block: aboutBlock);
+              },
             ),
 
             const SizedBox(height: 40),
 
-            _infoCard(
-              'assets/images/store.svg',
-              'ADDRESS',
-              '234 Hai Trieu, Ho Chi Minh City, Viet Nam',
+            FutureBuilder<List<dynamic>>(
+              future: ContactPageService.fetchBlocks(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                }
+
+                if (snapshot.hasError) {
+                  return const SizedBox();
+                }
+
+                final blocks = snapshot.data!;
+
+                final headingBlocks = blocks
+                    .where((b) => b['__component'] == 'blocks.heading')
+                    .toList();
+
+                final headingBlock = headingBlocks.length > 1
+                    ? headingBlocks[1]
+                    : null;
+                if (headingBlock == null) return const SizedBox();
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Text(
+                    headingBlock['heading'] ?? '',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: GoogleFonts.poppins().fontFamily,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                );
+              },
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
-            _infoCard(
-              'assets/images/phone.svg',
-              'CONTACT US',
-              '+84 234 567 890',
+            FutureBuilder<List<dynamic>>(
+              future: ContactPageService.fetchBlocks(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                }
+
+                if (snapshot.hasError) {
+                  return const SizedBox();
+                }
+
+                final blocks = snapshot.data!;
+
+                final cardBlocks = blocks
+                    .where((b) => b['__component'] == 'blocks.card')
+                    .take(3)
+                    .toList();
+                if (cardBlocks.isEmpty) return const SizedBox();
+
+                return Column(
+                  children: cardBlocks.map((card) {
+                    final icon = card['icon'];
+                    final iconUrl = icon != null
+                        ? 'http://159.65.15.249:1337${icon['url']}'
+                        : '';
+
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: InfoCard(
+                        title: card['title'] ?? '',
+                        text: card['text'] ?? '',
+                        iconUrl: iconUrl,
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
             ),
-
-            const SizedBox(height: 16),
-
-            _infoCard('assets/images/mail.svg', 'EMAIL', 'hello@furni.com'),
 
             const SizedBox(height: 32),
             Location(),
@@ -116,35 +192,12 @@ class Contactus extends StatelessWidget {
             Contactform(),
             const SizedBox(height: 10),
 
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 6,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text(
-                'Send Message',
-                style: TextStyle(
-                  fontFamily: GoogleFonts.inter().fontFamily,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-
             const SizedBox(height: 50),
             Services(),
           ],
         ),
       ),
-      bottomNavigationBar: SizedBox(height: 90, child: GlassFloatingNavBar()),
+      bottomNavigationBar: SizedBox(height: 90, child: GlassFloatingNavBar(currentIndex: 3,)),
     );
   }
 }

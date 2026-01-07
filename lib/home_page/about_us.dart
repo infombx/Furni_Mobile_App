@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furni_mobile_app/contactUs/contactus.dart';
-import 'package:furni_mobile_app/home_page/data/aboutUs.dart'; // Your Model
-import 'package:furni_mobile_app/services/api_aboutus.dart'; // Adjust path to your ApiService
+import 'package:furni_mobile_app/home_page/data/aboutUs.dart'; 
+import 'package:furni_mobile_app/services/api_aboutus.dart'; 
 
 class AboutUsSection extends StatelessWidget {
   const AboutUsSection({super.key});
@@ -14,14 +14,13 @@ class AboutUsSection extends StatelessWidget {
       future: ApiService.fetchAboutSection(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Center(child: CircularProgressIndicator()),
+          return const SizedBox(
+            height: 200,
+            child: Center(child: CircularProgressIndicator(color: Color(0xFF06356B))),
           );
         }
 
         if (snapshot.hasError || snapshot.data == null) {
-          // Fallback if API fails or returns no data
           return const SizedBox.shrink(); 
         }
 
@@ -29,7 +28,7 @@ class AboutUsSection extends StatelessWidget {
 
         return Column(
           children: [
-            // Dynamic Image from Strapi
+            // Dynamic Image
             Image.network(
               data.imageUrl.startsWith('http') ? data.imageUrl : '$baseUrl${data.imageUrl}',
               width: double.infinity,
@@ -38,67 +37,59 @@ class AboutUsSection extends StatelessWidget {
                   Image.asset('assets/images/about_us.png', width: double.infinity),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             
-            // Dynamic Heading
             Text(
               data.heading,
+              textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             
-            // Dynamic Description
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Text(
                 data.description,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16, color: Colors.grey, height: 1.5),
               ),
             ),
 
             const SizedBox(height: 20),
 
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (ctx) => const Contactus()),
-                      );
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: Colors.black, width: 1.2),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 6.0),
-                            child: Text(
-                              data.ctaText, // Dynamic CTA Text
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          const Icon(Icons.arrow_forward, size: 16, color: Colors.black),
-                        ],
+            // CTA Button Section
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (ctx) => const Contactus()),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.only(bottom: 4), // Space for underline
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.black, width: 1.5),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      data.ctaText,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 25),
-                ],
+                    const SizedBox(width: 8),
+                    const Icon(Icons.arrow_forward, size: 18, color: Colors.black),
+                  ],
+                ),
               ),
             ),
+            const SizedBox(height: 40),
           ],
         );
       },

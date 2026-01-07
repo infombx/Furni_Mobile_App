@@ -3,9 +3,12 @@ import 'package:furni_mobile_app/Header/header.dart';
 import 'package:furni_mobile_app/Items/cart_listview.dart';
 import 'package:furni_mobile_app/dummy%20items/data_required.dart';
 import 'package:furni_mobile_app/dummy%20items/myItems.dart';
+import 'package:furni_mobile_app/models/user_model.dart';
 import 'package:furni_mobile_app/screens/order_complete_screen.dart';
+import 'package:furni_mobile_app/services/auth_service.dart';
+import 'package:furni_mobile_app/services/order_items_api.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/services/order_service.dart';
+import 'package:furni_mobile_app/product/data/orders.dart';
 
 class OrderSummaryScreen extends StatefulWidget {
   const OrderSummaryScreen({
@@ -21,15 +24,19 @@ class OrderSummaryScreen extends StatefulWidget {
   final double Total;
   final double shipping;
   final Map<int, int> quantities;
-  final void Function(Map<String, String> values)? onSaved;
+  final void Function(Map<String, dynamic> values)? onSaved;
 
   @override
   State<OrderSummaryScreen> createState() => _OrderSummaryScreenState();
 }
 
 class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
-  final OrderService orderService = OrderService();
-
+  AppUser? currentUser;
+  bool isLoading = true;
+ List<MyOrders> get userCart {
+    if (currentUser == null) return [];
+    return ordersList.where((order) => order.userId == currentUser!.id).toList();
+  }
   double itemprice = 0;
   Map<int, int> itemQuantities = {};
   double get total => itemprice + widget.shipping;
@@ -83,76 +90,87 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
     return null;
   }
 
-  void _popWithResult() {
-    Navigator.of(context).pop(<String, dynamic>{
-      'quantities': itemQuantities,
-      'subtotal': itemprice,
-    });
-  }
+ void _popWithResult() {
+  Navigator.of(context).pop(<String, dynamic>{
+    'quantities': itemQuantities,
+    'subtotal': itemprice,
+  });
+}
+void _loadUser() async {
+  final user = await AuthService().fetchMe();
+  setState(() {
+    currentUser = user;
+    isLoading = false;
+  });
+}
 
-  Future<void> _handleSubmit() async {
-    if (!_formKey.currentState!.validate()) return;
+@override
+void initState() {
+  super.initState();
+  itemprice = widget.subtotal;
+  itemQuantities = Map.from(widget.quantities); 
+    _loadUser();
+}
+final OrderApi _orderApi = OrderApi();
+bool _isUploading = false;
 
-    if (selected == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please select a country')));
-      return;
-    }
+void _handleSubmit() async {
+  if (_formKey.currentState?.validate() ?? false) {
+    setState(() => _isUploading = true);
 
-    try {
-      await orderService.createOrder(
-        firstName: firstNameCtrl.text.trim(),
-        lastName: lastNameCtrl.text.trim(),
-        phone: phoneCtrl.text.trim(),
-        email: emailCtrl.text.trim(),
-        street: streetAddress.text.trim(),
-        country: selected!.name, // NOW SAFE
-        city: townCity.text.trim(),
-        state: stateCtrl.text.trim(),
-        zip: zipCode.text.trim(),
-      );
+    Map<String, dynamic> addressInfo = {
+      'firstName': firstNameCtrl.text.trim(),
+      'lastName': lastNameCtrl.text.trim(),
+      'phone': phoneCtrl.text.trim(),
+      'email': emailCtrl.text.trim(),
+      'street': streetAddress.text.trim(),
+      'city': townCity.text.trim(),
+      'state': stateCtrl.text.trim(),
+      'zip': zipCode.text.trim(),
+      'country': selected?.name ?? '', 
+      'userId': currentUser?.id,
+      
+    };
 
+    bool success = await _orderApi.createOrder(
+      addressData: addressInfo,
+      cartItems: userCart,
+    );
+
+    setState(() => _isUploading = false);
+
+    if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Order placed successfully')),
+        const SnackBar(content: Text('Order Placed Successfully!')),
       );
 
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (ctx) => OrderCompleteScreen(
-            item: dummycart,
+            item: userCart,
             Total: total,
             paymode: modePay,
             quantity: itemQuantities,
           ),
         ),
       );
-    } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Failed to place order: $e')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to save order to server.')),
+      );
     }
   }
-
-  @override
-  void dispose() {
-    firstNameCtrl.dispose();
-    lastNameCtrl.dispose();
-    phoneCtrl.dispose();
-    emailCtrl.dispose();
-    streetAddress.dispose();
-    townCity.dispose();
-    stateCtrl.dispose();
-    zipCode.dispose();
-
-    super.dispose();
-  }
+}
 
   @override
   Widget build(BuildContext context) {
+      if (isLoading) {
+    return const Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
+  }
     return Scaffold(
       appBar: AppBar(automaticallyImplyLeading: false, title: Header()),
-
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -528,7 +546,6 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                                 color: Colors.white,
                               ),
                               child: DropdownButtonFormField<Country>(
-                                initialValue: selected,
                                 items: Country.values
                                     .map(
                                       (c) => DropdownMenuItem(
@@ -537,14 +554,23 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                                       ),
                                     )
                                     .toList(),
-                                onChanged: (value) =>
-                                    setState(() => selected = value),
-                                validator: (value) => value == null
-                                    ? 'Country is required'
-                                    : null,
+                                hint: Text(
+                                  'Country',
+                                  style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                  ),
+                                ),
                                 decoration: const InputDecoration(
                                   border: InputBorder.none,
                                 ),
+                                icon: const Icon(
+                                  Icons.keyboard_arrow_down_outlined,
+                                ),
+                                onChanged: (value) =>
+                                    setState(() => selected = value),
+                                validator: (v) =>
+                                    v == null ? 'Country is required' : null,
                               ),
                             ),
                           ],
@@ -688,6 +714,217 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
 
                 const SizedBox(height: 30),
 
+                // PAYMENT METHOD card
+                Container(
+                  height: 500,
+
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.black),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 30),
+                        Text(
+                          'Payment Method',
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+
+                        Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.black),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: RadioListTile<String>(
+                            activeColor: Colors.black,
+                            title: Text(
+                              'Pay by Card Credit',
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            value: 'Credit Card',
+                            groupValue: modePay,
+                            onChanged: (v) =>
+                                setState(() => modePay = v ?? modePay),
+                            visualDensity: const VisualDensity(
+                              horizontal: -4.0,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.black),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: RadioListTile<String>(
+                            activeColor: Colors.black,
+                            title: Text(
+                              'Paypal',
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            value: 'PayPal',
+                            groupValue: modePay,
+                            onChanged: (v) =>
+                                setState(() => modePay = v ?? modePay),
+                            visualDensity: const VisualDensity(
+                              horizontal: -4.0,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+                        const Divider(thickness: 1),
+                        const SizedBox(height: 20),
+
+                        // Card fields
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'CARD NUMBER',
+                              style: GoogleFonts.inter(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Container(
+                              height: 50,
+
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.grey),
+                                color: Colors.white,
+                              ),
+                              child: TextFormField(
+                                controller: cardNumber,
+                                validator: (v) =>
+                                    _nonEmptyValidator(v, 'Card Number'),
+                                decoration: InputDecoration(
+                                  hintText: '1234 1234 1234',
+                                  hintStyle: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                  ),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'EXPIRATION DATE',
+                                    style: GoogleFonts.inter(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    height: 50,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(color: Colors.grey),
+                                      color: Colors.white,
+                                    ),
+                                    child: TextFormField(
+                                      controller: expirationDate,
+                                      validator: (v) => _nonEmptyValidator(
+                                        v,
+                                        'Expiration Date',
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: 'MM/YY',
+                                        hintStyle: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                        ),
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'CVC',
+                                    style: GoogleFonts.inter(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    height: 50,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(color: Colors.grey),
+                                      color: Colors.white,
+                                    ),
+                                    child: TextFormField(
+                                      controller: cvc,
+                                      validator: (v) =>
+                                          _nonEmptyValidator(v, 'CVC Code'),
+                                      decoration: InputDecoration(
+                                        hintText: 'CVC code',
+                                        hintStyle: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                        ),
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
                 const SizedBox(height: 30),
 
                 // Order summary block
@@ -698,7 +935,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                   ),
 
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

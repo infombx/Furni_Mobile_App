@@ -6,6 +6,7 @@ class AppUser {
   String lastName;
   String? jwtToken;
   final String? profilePictureUrl;
+  final int? profileImageId; // 👈 Add this field
 
   AppUser({
     required this.id,
@@ -14,7 +15,8 @@ class AppUser {
     required this.firstName,
     required this.lastName,
     this.jwtToken,
-    required this.profilePictureUrl,
+    this.profilePictureUrl,
+    this.profileImageId, // 👈 Include in constructor
   });
 
   factory AppUser.fromJson(Map<String, dynamic> json) {
@@ -24,8 +26,13 @@ class AppUser {
       displayName: json['displayName'] ?? '',
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
+      // Capture the URL for the UI
       profilePictureUrl: json['profilePicture'] != null
           ? 'http://159.65.15.249:1337${json['profilePicture']['url']}'
+          : null,
+      // Capture the ID for the API relationship 👈
+      profileImageId: json['profilePicture'] != null 
+          ? json['profilePicture']['id'] 
           : null,
     );
   }

@@ -52,12 +52,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() => isLoading = true);
 
     try {
-      final AppUser? user = await authService.register(email, password);
+      final AppUser? user = await authService.register(
+        email,
+        password,
+        rememberMe: rememberMe,
+      );
 
       setState(() => isLoading = false);
 
       if (user != null) {
         // Registration successful, navigate to CompleteProfileScreen
+        final jwtToken = user.jwtToken;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const CompleteProfileScreen()),

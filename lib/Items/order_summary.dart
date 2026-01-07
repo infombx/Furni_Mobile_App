@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:furni_mobile_app/Items/cart_listview.dart';
 import 'package:furni_mobile_app/dummy%20items/myItems.dart';
+import 'package:furni_mobile_app/models/user_model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:furni_mobile_app/product/data/orders.dart';
 class OrderSummary extends StatefulWidget{
   const OrderSummary({super.key});
 
@@ -10,6 +12,12 @@ class OrderSummary extends StatefulWidget{
 }
 
 class _OrderSummaryState extends State<OrderSummary> {
+  AppUser? currentUser;
+  bool isLoading = true;
+  List<MyOrders> get userCart {
+    if (currentUser == null) return [];
+    return ordersList.where((order) => order.userId == currentUser!.id).toList();
+  }
   double itemprice = 0;
   Map<int,int> itemQuantities = {};
   @override
@@ -50,7 +58,7 @@ class _OrderSummaryState extends State<OrderSummary> {
 
   // ✅ Correct: Pass a MAP of all initial quantities
   initialQuantities: {
-    for (int i = 0; i < dummycart.length; i++) i : dummycart[i].quantity
+    for (int i = 0; i < userCart.length; i++) i : userCart[i].quantity
   },
 ),
 

@@ -41,15 +41,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       // signIn returns AppUser? (nullable)
-      final AppUser? user = await authService.signIn(identifier, password);
+      final AppUser? user = await authService.signIn(
+        identifier,
+        password,
+        rememberMe: rememberMe,
+      );
 
       setState(() => isLoading = false);
 
       if (user != null) {
         // Login successful, navigate to HomeScreen
-        Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (_) => HomeScreen()),
+          MaterialPageRoute(
+            settings: const RouteSettings(name: '/home'),
+            builder: (_) => const HomeScreen(),
+          ),
+          (route) => false,
         );
       } else {
         // Login failed

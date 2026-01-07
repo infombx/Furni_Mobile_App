@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:furni_mobile_app/Items/counter.dart';
 import 'package:furni_mobile_app/product/widget/rating_star.dart';
 import 'package:furni_mobile_app/product/widget/select_color.dart';
+import 'package:furni_mobile_app/services/OrdersService.dart';
+import 'package:furni_mobile_app/services/auth_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:furni_mobile_app/product/data/orders.dart';
-import 'package:furni_mobile_app/services/auth_service.dart';
 
 class DetailsCard extends StatefulWidget {
   const DetailsCard({
     super.key,
-
     required this.productId,
     required this.image,
     required this.name,
@@ -22,6 +22,7 @@ class DetailsCard extends StatefulWidget {
     required this.quantity,
     this.initialColor,
     required this.onQuantityChanged,
+    required this.stock,
   });
 
   final int productId;
@@ -36,13 +37,14 @@ class DetailsCard extends StatefulWidget {
   final int rating;
   final String? initialColor;
   final void Function(Map<int, int>) onQuantityChanged;
+  final int stock;
+
   @override
   State<DetailsCard> createState() => _DetailsCardState();
 }
 
 class _DetailsCardState extends State<DetailsCard> {
-  @override
-   late int selectedqty;
+  late int selectedqty;
   late String colorselected;
 
   @override
@@ -53,20 +55,13 @@ class _DetailsCardState extends State<DetailsCard> {
         widget.initialColor ?? (widget.colours.isNotEmpty ? widget.colours[0] : "Default");
   }
 
-  void handleAddToCart(BuildContext context) async {
+ void handleAddToCart(BuildContext context) async {
     final authService = AuthService();
     final user = await authService.fetchMe();
     if (user == null) return;
 
-    final existingIndex = ordersList.indexWhere(
-      (item) => item.product_id == widget.productId && item.userId == user.id,
-    );
 
-    setState(() {
-      if (existingIndex != -1) {
-        ordersList[existingIndex].quantity = selectedqty;
-        ordersList[existingIndex].colorr = [colorselected];
-      } else {
+      else {
         ordersList.add(
           MyOrders(
             product_id: widget.productId,
@@ -78,15 +73,24 @@ class _DetailsCardState extends State<DetailsCard> {
             name: widget.name,
             userId: user.id,
             measurement: widget.measurements,
+            stock: widget.stock
           ),
         );
       }
-    });
+   widget.onQuantityChanged({widget.productId: selectedqty});
+  await CartPersistence.saveCart();
+  ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(content: Text('${widget.name} added to cart!')));
+    }
 
-    widget.onQuantityChanged({widget.productId: selectedqty});
-  }
+
+  
+
+  
+
+  @override
   Widget build(BuildContext context) {
-     final w = MediaQuery.of(context).size.width;
+    final w = MediaQuery.of(context).size.width;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,6 +109,7 @@ class _DetailsCardState extends State<DetailsCard> {
         Row(
           children: [
             QuantityCounter(
+              max: widget.stock,
               initialQuantity: selectedqty,
               onQuantityChanged: (v) => setState(() => selectedqty = v),
             ),
@@ -115,11 +120,12 @@ class _DetailsCardState extends State<DetailsCard> {
                 fixedSize: Size(w * 0.55, 45),
                 backgroundColor: Colors.black,
               ),
-              child: const Text('Add to cart'),
+              child: const Text('Add to cart', style: TextStyle(color: Colors.white),),
             ),
           ],
         ),
       ],
     );
   }
+
 }

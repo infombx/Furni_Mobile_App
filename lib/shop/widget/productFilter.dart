@@ -1,10 +1,10 @@
 class ProductFilter {
-  final String? category;
+  final List<String> categories;
   final double minPrice;
   final double maxPrice;
 
   ProductFilter({
-    this.category,
+    required this.categories,
     required this.minPrice,
     required this.maxPrice,
   });

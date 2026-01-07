@@ -43,7 +43,7 @@ class Services extends StatelessWidget {
               final card = services[index];
               
               return Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: const Color.fromRGBO(243, 245, 247, 1),
                   borderRadius: BorderRadius.circular(20),

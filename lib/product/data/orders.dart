@@ -69,6 +69,7 @@ class MyOrders {
     required this.name,
     required this.userId,
     required this.measurement,
+    required this.stock,
   });
 
   final int product_id;
@@ -80,6 +81,7 @@ class MyOrders {
   final String name;
   final int userId;
   final String measurement;
+  final int stock;
 
   Map<String, dynamic> toJson() => {
         'product_id': product_id,
@@ -91,6 +93,7 @@ class MyOrders {
         'name': name,
         'userId': userId,
         'measurement': measurement,
+        'stock': stock,
       };
 
   factory MyOrders.fromJson(Map<String, dynamic> json) => MyOrders(
@@ -103,8 +106,9 @@ class MyOrders {
         name: json['name'],
         userId: json['userId'],
         measurement: json['measurement'],
+        stock:json['stock']?? 0,
       );
 }
 
-/// MUST NOT be final
+
 List<MyOrders> ordersList = [];

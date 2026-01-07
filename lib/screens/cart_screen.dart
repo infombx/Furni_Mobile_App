@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:furni_mobile_app/Items/cart_listview.dart';
+import 'package:furni_mobile_app/models/user_model.dart';
 import 'package:furni_mobile_app/screens/order_summary_screen.dart';
+import 'package:furni_mobile_app/services/OrdersService.dart';
+import 'package:furni_mobile_app/services/auth_service.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/dummy items/myItems.dart';
+import 'package:furni_mobile_app/product/data/orders.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -12,126 +15,98 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  AppUser? currentUser;
+  bool isLoading = true;
+  
+
+  List<MyOrders> get userCart {
+    if (currentUser == null) return [];
+    return ordersList.where((order) => order.userId == currentUser!.id).toList();
+  }
+
   double currentSubtotal = 0.0;
   String shippingType = 'F';
   Map<int, int> itemQuantities = {};
 
+  // Calculation logic
   double get shippingCost {
     switch (shippingType) {
-      case 'E':
-        return 15.0;
-      case 'P':
-        return 21.0;
-      default:
-        return 0.0;
+      case 'E': return 15.0;
+      case 'P': return 21.0;
+      default: return 0.0;
     }
   }
 
   double get total => currentSubtotal + shippingCost;
+  Future<void> _load() async {
+  await CartPersistence.loadCart();
+  currentUser = await AuthService().fetchMe();
+
+  setState(() {
+    for (final item in userCart) {
+      itemQuantities[item.product_id] = item.quantity;
+    }
+  });
+}
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize quantities from the data source
+    for (int i = 0; i < userCart.length; i++) {
+      itemQuantities[i] = userCart[i].quantity;
+    }
+      _load();
+  }
+
+  // IMPORTANT: Catching data when returning from OrderSummaryScreen
+  Future<void> _navigateToCheckout() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => OrderSummaryScreen(
+          subtotal: currentSubtotal,
+          Total: total,
+          shipping: shippingCost,
+          quantities: Map<int, int>.from(itemQuantities),
+        ),
+      ),
+    );
+
+    // If the user clicked 'back' in the Summary Screen and sent data back
+    if (result != null && result is Map<String, dynamic>) {
+      setState(() {
+        if (result.containsKey('quantities')) {
+          itemQuantities = Map<int, int>.from(result['quantities']);
+        }
+        if (result.containsKey('subtotal')) {
+          currentSubtotal = result['subtotal'];
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                TextButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context, {
-                      'subtotal': currentSubtotal,
-                      'quantities': itemQuantities,
-                    });
-                  },
-
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
-                    size: 11,
-                    color: Colors.black54,
-                  ),
-                  label: const Text(
-                    'back',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-              ],
-            ),
-            Center(
-              child: Text(
-                'Cart',
-                style: GoogleFonts.poppins(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            // header step row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(360),
-                        color: Colors.black,
-                      ),
-                      child: Center(
-                        child: Text(
-                          '1',
-                          style: GoogleFonts.inter(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    Text(
-                      'Shopping cart',
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(360),
-                    color: const Color(0xFFB1B5C3),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '2',
-                      style: GoogleFonts.inter(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const Divider(color: Colors.black, endIndent: 70, thickness: 2),
-            const SizedBox(height: 30),
-
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 350,
-                      child: SingleChildScrollView(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            children: [
+              _buildHeader(context),
+              const SizedBox(height: 20),
+              _buildStepIndicator(),
+              const Divider(color: Colors.black, thickness: 2),
+              const SizedBox(height: 20),
+              
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Cart Items List
+                      SizedBox(
+                        height: 350,
                         child: ListedItems(
                           onSubtotalChanged: (subtotal) {
                             setState(() => currentSubtotal = subtotal);
@@ -141,104 +116,113 @@ class _CartScreenState extends State<CartScreen> {
                               itemQuantities = Map<int, int>.from(quantities);
                             });
                           },
-                          initialQuantities: {
-                            for (int i = 0; i < dummycart.length; i++)
-                              i: dummycart[i].quantity,
-                          },
+                          initialQuantities: itemQuantities,
                         ),
                       ),
-                    ),
-
-                    const SizedBox(height: 30),
-
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Cart Summary',
-                            style: GoogleFonts.inter(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-
-                          _shippingTile('F', 'Free Shipping', 0),
-                          const SizedBox(height: 12),
-                          _shippingTile('E', 'Express Shipping', 15),
-                          const SizedBox(height: 12),
-                          _shippingTile('P', 'Pick Up', 21),
-
-                          const SizedBox(height: 30),
-                          _row('Subtotal', currentSubtotal),
-                          const SizedBox(height: 10),
-                          const Divider(),
-                          const SizedBox(height: 10),
-                          _row('Total', total, big: true),
-
-                          const SizedBox(height: 30),
-
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              onPressed: () async {
-                                await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => OrderSummaryScreen(
-                                      subtotal: currentSubtotal,
-                                      Total: total,
-                                      shipping: shippingCost,
-                                      quantities: Map<int, int>.from(
-                                        itemQuantities,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Text(
-                                'CheckOut',
-                                style: GoogleFonts.inter(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                      
+                      const SizedBox(height: 30),
+                      _buildCartSummaryCard(),
+                    ],
+                  ),
                 ),
               ),
-            ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton.icon(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.arrow_back_ios, size: 14, color: Colors.black),
+            label: const Text('back', style: TextStyle(color: Colors.black)),
+          ),
+        ),
+        Text(
+          'Cart',
+          style: GoogleFonts.poppins(fontSize: 32, fontWeight: FontWeight.w600),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStepIndicator() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            _stepCircle('1', Colors.black),
+            const SizedBox(width: 12),
+            Text('Shopping cart', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
           ],
         ),
+        _stepCircle('2', const Color(0xFFB1B5C3)),
+      ],
+    );
+  }
+
+  Widget _stepCircle(String text, Color color) {
+    return Container(
+      height: 35, width: 35,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+      child: Center(
+        child: Text(text, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+  }
+
+  Widget _buildCartSummaryCard() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black12),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Cart Summary', style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 20),
+          _shippingTile('F', 'Free Shipping', 0.00),
+          const SizedBox(height: 10),
+          _shippingTile('E', 'Express Shipping', 15.00),
+          const SizedBox(height: 10),
+          _shippingTile('P', 'Pick Up', 21.00),
+          const SizedBox(height: 25),
+          _row('Subtotal', currentSubtotal),
+          const Divider(height: 30),
+          _row('Total', total, big: true),
+          const SizedBox(height: 25),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onPressed: _navigateToCheckout,
+              child: const Text('Checkout', style: TextStyle(color: Colors.white, fontSize: 16)),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _shippingTile(String value, String label, double price) {
     return Container(
-      height: 60,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: shippingType == value ? Colors.black : Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: RadioListTile<String>(
         activeColor: Colors.black,
@@ -248,14 +232,10 @@ class _CartScreenState extends State<CartScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(label, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-            Text(
-              price.toStringAsFixed(2),
-              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-            ),
+            Text(label, style: GoogleFonts.inter(fontSize: 14)),
+            Text('\$${price.toStringAsFixed(2)}', style: GoogleFonts.inter(fontSize: 14)),
           ],
         ),
-        visualDensity: const VisualDensity(horizontal: -4),
       ),
     );
   }
@@ -264,20 +244,8 @@ class _CartScreenState extends State<CartScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          label,
-          style: GoogleFonts.inter(
-            fontSize: big ? 16 : 14,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        Text(
-          value.toStringAsFixed(2),
-          style: GoogleFonts.inter(
-            fontSize: big ? 16 : 14,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+        Text(label, style: GoogleFonts.inter(fontSize: big ? 18 : 14, fontWeight: big ? FontWeight.bold : FontWeight.w500)),
+        Text('\$${value.toStringAsFixed(2)}', style: GoogleFonts.inter(fontSize: big ? 18 : 14, fontWeight: big ? FontWeight.bold : FontWeight.w500)),
       ],
     );
   }

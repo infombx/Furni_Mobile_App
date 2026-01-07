@@ -1,22 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:furni_mobile_app/models/user_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:furni_mobile_app/Items/cart_listview.dart';
 import 'package:furni_mobile_app/dummy%20items/myItems.dart';
 import 'package:furni_mobile_app/screens/order_summary_screen.dart';
 import 'package:furni_mobile_app/screens/cart_screen.dart';
+import 'package:furni_mobile_app/product/data/orders.dart';
+
 
 class BottomCartSheet extends StatefulWidget {
-  const BottomCartSheet({super.key});
+  const BottomCartSheet({super.key, });
+
 
   @override
   State<BottomCartSheet> createState() => _BottomCartSheetState();
 }
 
 class _BottomCartSheetState extends State<BottomCartSheet> {
+  
   double itemprice = 1;
   double currentSubtotal = 0.0;
   String shippingType = 'F';
   Map<int, int> itemQuantities = {};
+
+
+  bool isLoading = true;
+ AppUser? _currentUser; 
+  List<MyOrders> get userCart {
+    if (_currentUser == null) return [];
+    return ordersList.where((order) => order.userId == _currentUser!.id).toList();
+  }
 
   double get shippingCost {
     switch (shippingType) {
@@ -73,7 +86,7 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
                         SizedBox(
@@ -82,6 +95,7 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
                             child: Column(
                               children: [
                                 ListedItems(
+                                
                                   onSubtotalChanged: (subtotal) {
                                     setState(() {
                                       currentSubtotal = subtotal;
@@ -94,8 +108,8 @@ class _BottomCartSheetState extends State<BottomCartSheet> {
                                     });
                                   },
                                   initialQuantities: {
-                                    for (int i = 0; i < dummycart.length; i++)
-                                      i: dummycart[i].quantity,
+                                    for (int i = 0; i < userCart.length; i++)
+                                      i: userCart[i].quantity,
                                   },
                                 ),
                               ],

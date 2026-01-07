@@ -95,16 +95,16 @@ class _SelectColorState extends State<SelectColor> {
                   shape: BoxShape.circle,
                   color: colorValue,
                   border: Border.all(
-                    color: isSelected ? Colors.black : Colors.grey.withOpacity(0.3),
-                    width: isSelected ? 3 : 1,
+                    color: isSelected ? const Color.fromARGB(255, 62, 62, 62) : Colors.grey.withOpacity(0.1),
+                    width: isSelected ? 1.5 : 1,
                   ),
                   boxShadow: isSelected
-                      ? [const BoxShadow(color: Colors.black26, blurRadius: 4)]
+                      ? [const BoxShadow(color: Color.fromARGB(97, 0, 0, 0), blurRadius: 7)]
                       : [],
                 ),
-                child: isSelected 
-                  ? Icon(Icons.check, size: 20, color: colorValue == Colors.white ? Colors.black : Colors.white)
-                  : null,
+                // child: isSelected 
+                //   ? Icon(Icons.check, size: 20, color: colorValue == Colors.white ? Colors.black : Colors.white)
+                //   : null,
               ),
             );
           }).toList(),

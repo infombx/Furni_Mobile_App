@@ -57,9 +57,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
           const SnackBar(content: Text('Profile saved successfully')),
         );
 
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          MaterialPageRoute(
+            settings: const RouteSettings(name: '/home'),
+            builder: (_) => const HomeScreen(),
+          ),
+          (route) => false,
         );
       } else {
         ScaffoldMessenger.of(

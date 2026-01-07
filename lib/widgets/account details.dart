@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:furni_mobile_app/screens/splash_screen.dart';
+import 'package:furni_mobile_app/services/auth_service.dart';
 import 'package:furni_mobile_app/widgets/user_profile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:furni_mobile_app/models/user_model.dart';
@@ -308,24 +310,24 @@ class _AccountDetailsState extends State<AccountDetails> {
                 ),
               ),
             ),
-            const SizedBox(height: 40),
-            const Text(
-              'Password',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-            ),
-            const SizedBox(height: 25),
-            _buildPasswordField('OLD PASSWORD', _oldPassword),
-            const SizedBox(height: 25),
-            _buildPasswordField('NEW PASSWORD', _newPassword),
-            const SizedBox(height: 25),
-            _buildPasswordField('REPEAT NEW PASSWORD', _confirmPassword),
-            const SizedBox(height: 25),
+            const SizedBox(height: 20),
+
             Center(
               child: SizedBox(
                 width: 183,
                 height: 52,
                 child: ElevatedButton(
-                  onPressed: _updateProfile,
+                  onPressed: () async {
+                    await AuthService().logout();
+
+                    if (!context.mounted) return;
+
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (_) => const SplashScreen()),
+                      (route) => false,
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
@@ -333,13 +335,13 @@ class _AccountDetailsState extends State<AccountDetails> {
                     ),
                   ),
                   child: const Text(
-                    'Save changes',
+                    'Log Out',
                     style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 60),
+            const SizedBox(height: 70),
           ],
         ),
       ),
@@ -367,42 +369,6 @@ class _AccountDetailsState extends State<AccountDetails> {
             isDense: true,
             contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPasswordField(String label, TextEditingController controller) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: GoogleFonts.inter(
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xff6C7275),
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: lowercaseExceptFirst(label),
-            border: const OutlineInputBorder(),
-            isDense: true,
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 12,
-              horizontal: 12,
-            ),
-          ),
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return '$label is required';
-            }
-            return null;
-          },
         ),
       ],
     );

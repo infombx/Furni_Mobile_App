@@ -65,8 +65,8 @@ import 'package:http/http.dart' as http;
 import 'package:furni_mobile_app/product/data/orders.dart';
 
 class OrderItemApi {
-  static const String _url =
-      'http://159.65.15.249:1337/api/order-items';
+  static const String _url = 'http://159.65.15.249:1337/api/order-items';
+  final String _token = "3d58939c2822591c6bde1f1e25d5ae556772b52930d3a888184a3b26cb16e41df945b5d86e75a451134b30a16356cc3932c55fd360edae44c571b47e8c19a4f0f3e2d0a8a4fda083eb18aa503de9f2b1a597d0d32cbbaea1df217bcbc386c04a810adb3e50099de94527eef0f66e4b9a6fec99677c2a87cdd7c21145e094b016";
 
   Future<int> createOrderItem({
     required MyOrders item,
@@ -74,26 +74,27 @@ class OrderItemApi {
   }) async {
     final response = await http.post(
       Uri.parse(_url),
-      headers: const {"Content-Type": "application/json","Authorization": "3d58939c2822591c6bde1f1e25d5ae556772b52930d3a888184a3b26cb16e41df945b5d86e75a451134b30a16356cc3932c55fd360edae44c571b47e8c19a4f0f3e2d0a8a4fda083eb18aa503de9f2b1a597d0d32cbbaea1df217bcbc386c04a810adb3e50099de94527eef0f66e4b9a6fec99677c2a87cdd7c21145e094b016"},
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $_token" // Ensure 'Bearer ' is included if it's a JWT
+      },
       body: jsonEncode({
         "data": {
-          
           "quantity": item.quantity,
-          "colour":
-            item.colorr.isNotEmpty ? item.colorr.first : "Default",
-         "order": { "id": orderId },
-          "product": item.product_id,
+          "colour": item.colorr.isNotEmpty ? item.colorr.first : "Default",
+          // Link to Order (Relation)
+          "order": orderId, 
+          // Link to Product (Relation)
+          "product": item.product_id, 
         }
       }),
     );
 
-    if (response.statusCode != 200 &&
-        response.statusCode != 201) {
-      throw Exception(
-        "OrderItem error: ${response.body}",
-      );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body)['data']['id'];
+    } else {
+      print("❌ OrderItem Error: ${response.body}");
+      throw Exception("Failed to create OrderItem");
     }
-
-    return jsonDecode(response.body)['data']['id'];
   }
 }
