@@ -4,6 +4,7 @@ import 'package:furni_mobile_app/screens/login_screen.dart';
 import 'package:furni_mobile_app/screens/signup_screen.dart';
 
 class SplashScreen extends StatelessWidget {
+  static const routeName = '/splash';
   const SplashScreen({super.key});
 
   @override

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:furni_mobile_app/models/user_model.dart';
 import 'package:furni_mobile_app/services/update_profilepicture.dart';
 import 'package:furni_mobile_app/widgets/account%20details.dart';
-import 'package:furni_mobile_app/widgets/address_details.dart';
 import 'package:furni_mobile_app/widgets/footer/profile_picture.dart';
 import 'package:furni_mobile_app/widgets/user_profile.dart';
 import 'package:furni_mobile_app/services/auth_service.dart';
@@ -16,7 +15,6 @@ class MyAccount extends StatefulWidget {
 }
 
 class _MyAccountState extends State<MyAccount> {
-  String _selectedValue = 'Account';
   AppUser? currentUser;
   bool isLoading = true;
 
@@ -48,7 +46,7 @@ class _MyAccountState extends State<MyAccount> {
                 children: [
                   TextButton.icon(
                     onPressed: () {
-                       Navigator.pushAndRemoveUntil(
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                           settings: const RouteSettings(name: '/home'),
@@ -80,7 +78,7 @@ class _MyAccountState extends State<MyAccount> {
                       padding: const EdgeInsets.symmetric(horizontal: 18.0),
                       child: Container(
                         width: double.infinity,
-                        height: 370,
+                        height: 230,
                         decoration: BoxDecoration(
                           color: Color(0xfff3f5f7),
                           borderRadius: BorderRadius.circular(20),
@@ -133,37 +131,6 @@ class _MyAccountState extends State<MyAccount> {
                         const Text('Failed to load user'),
 
                       const SizedBox(height: 40),
-                      Container(
-                        height: 48,
-                        width:
-                            MediaQuery.of(context).size.width *
-                            0.85, // ✅ responsive
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.black),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            isExpanded: true, // ✅ prevents overflow
-                            value: _selectedValue,
-                            items: const ['Account', 'Address']
-                                .map(
-                                  (value) => DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _selectedValue = newValue!;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ],
@@ -171,18 +138,13 @@ class _MyAccountState extends State<MyAccount> {
               const SizedBox(height: 50),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: _selectedValue == 'Account'
-                    ? AccountDetails(
-                        currentUser: currentUser,
-                        isLoading: isLoading,
-                        onProfileUpdated: () {
-                          setState(() {});
-                        },
-                      )
-                    : AddressDetails(
-                        currentUser: currentUser,
-                        isLoading: isLoading,
-                      ),
+                child: AccountDetails(
+                  currentUser: currentUser,
+                  isLoading: isLoading,
+                  onProfileUpdated: () {
+                    setState(() {});
+                  },
+                ),
               ),
             ],
           ),

@@ -134,10 +134,7 @@ class _ProductPageState extends State<ProductPage> {
               );
             },
           ),
-          bottomNavigationBar: const SizedBox(
-            height: 100,
-            child: GlassFloatingNavBar(currentIndex: 3),
-          ),
+        
         );
       },
     );

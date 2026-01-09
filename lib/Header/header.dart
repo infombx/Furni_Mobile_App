@@ -34,6 +34,27 @@ class _HeaderState extends State<Header> {
     super.dispose();
   }
 
+  // --- NAVIGATION & OVERLAY LOGIC ---
+
+  void _safeNavigate(VoidCallback action) {
+    _removeOverlay();
+    _toggle(false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      action();
+    });
+  }
+
+  void _onLogoTap(BuildContext context) {
+    final currentRoute = ModalRoute.of(context)?.settings.name;
+    if (currentRoute == HomeScreen.routeName) return;
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      HomeScreen.routeName,
+      (route) => false,
+    );
+  }
+
   void _toggle(bool value) {
     setState(() {
       _showSearch = value;
@@ -70,7 +91,6 @@ class _HeaderState extends State<Header> {
     _updateOverlay();
 
     try {
-      // populate=* is critical to get the featuredImage object
       final url = 'http://159.65.15.249:1337/api/products?filters[title][\$containsi]=$trimmed&populate=*';
       final res = await http.get(Uri.parse(url));
 
@@ -116,286 +136,209 @@ class _HeaderState extends State<Header> {
     _overlayEntry = null;
   }
 
-Widget _buildOverlay() {
-
-  final double headerHeight = MediaQuery.of(context).padding.top + 80;
-
-
-
-  return Positioned(
-
-    top: headerHeight,
-
-    left: 0,
-
-    right: 0,
-
-    bottom: 0,
-
-    child: Material( // <--- ADD THIS MATERIAL WIDGET
-
-      color: const Color.fromARGB(255, 255, 255, 255), // Keeps the underlying container's color
-
-      child: Container(
-
-        decoration: BoxDecoration(
-
-          color: Colors.white,
-
-          boxShadow: [
-
-            BoxShadow(
-
-              color: Colors.black.withOpacity(0.05),
-
-              blurRadius: 10,
-
-              offset: const Offset(0, 4),
-
-            ),
-
-          ],
-
-        ),
-
-        child: Column(
-
-          crossAxisAlignment: CrossAxisAlignment.start,
-
-          children: [
-
-            // Search Status Header
-
-            Padding(
-
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-
-              child: Text(
-
-                !_hasSearched
-
-                    ? 'Recent Searches'
-
-                    : _results.isEmpty
-
-                        ? 'No results for your search'
-
-                        : '${_results.length} results found',
-
-                style: GoogleFonts.inter(
-
-                  fontSize: 12,
-
-                  fontWeight: FontWeight.w600,
-
-                  color: Colors.grey[500],
-
-                  letterSpacing: 0.5,
-
-                ),
-
-              ),
-
-            ),
-
-
-
-            if (_results.isNotEmpty)
-
-              Expanded(
-
-                child: ListView.builder(
-
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-
-                  itemCount: _results.length,
-
-                  itemBuilder: (_, index) {
-
-                    final product = _results[index];
-
-                    return Padding(
-
-                      padding: const EdgeInsets.only(bottom: 8.0),
-
-                      child: InkWell( // Now this will find the Material ancestor!
-
-                        borderRadius: BorderRadius.circular(12),
-
-                        onTap: () {
-
-                          _toggle(false);
-
-                          if (widget.onProductTap != null) {
-
-                            widget.onProductTap!(product['id']);
-
-                          } else {
-
-                            Navigator.of(context).push(
-
-                              MaterialPageRoute(
-
-                                builder: (context) => ProductPage(
-
-                                  product_id: product['id'],
-
-                                  onQuantityChanged: (q) {},
-
-                                ),
-
-                              ),
-
-                            );
-
-                          }
-
-                        },
-
-                        child: Container(
-
-                          padding: const EdgeInsets.all(8),
-
-                          child: Row(
-
-                            children: [
-
-                              Container(
-
-                                height: 60,
-
-                                width: 60,
-
-                                decoration: BoxDecoration(
-
-                                  color: Colors.grey[100],
-
-                                  borderRadius: BorderRadius.circular(8),
-
-                                ),
-
-                                child: ClipRRect(
-
-                                  borderRadius: BorderRadius.circular(8),
-
-                                  child: Image.network(
-
-                                    product['image_url'] ?? '',
-
-                                    fit: BoxFit.cover,
-
-                                    errorBuilder: (c, e, s) => const Icon(Icons.chair, color: Colors.grey),
-
-                                  ),
-
-                                ),
-
-                              ),
-
-                              const SizedBox(width: 16),
-
-                              Expanded(
-
-                                child: Column(
-
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-
-                                  children: [
-
-                                    Text(
-
-                                      product['name'],
-
-                                      style: GoogleFonts.inter(
-
-                                        fontWeight: FontWeight.w500,
-
-                                        fontSize: 15,
-
-                                      ),
-
-                                    ),
-
-                                    const SizedBox(height: 4),
-
-                                    Text(
-
-                                      'Rs${product['price'] ?? '0.00'}',
-
-                                      style: GoogleFonts.inter(
-
-                                        color: Colors.grey[600],
-
-                                        fontSize: 13,
-
-                                      ),
-
-                                    ),
-
-                                  ],
-
-                                ),
-
-                              ),
-
-                              Icon(Icons.chevron_right, color: Colors.grey[400], size: 20),
-
-                            ],
-
-                          ),
-
+  // --- UI BUILDERS ---
+
+  Widget _buildOverlay() {
+    final double topPadding = MediaQuery.of(context).padding.top;
+
+    return Positioned(
+      top: 0, // TAKES THE WHOLE PAGE
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: Material(
+        color: Colors.white, // Full white background
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Search Input inside the overlay
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(12),
                         ),
-
+                        child: TextField(
+                          controller: _controller,
+                          autofocus: true,
+                          onChanged: _onChanged,
+                          style: GoogleFonts.inter(fontSize: 15),
+                          decoration: InputDecoration(
+                            hintText: 'Search products...',
+                            prefixIcon: const Icon(Icons.search, size: 20),
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                          ),
+                        ),
                       ),
-
-                    );
-
-                  },
-
+                    ),
+                    const SizedBox(width: 10),
+                    TextButton(
+                      onPressed: () => _toggle(false),
+                      child: Text(
+                        'Cancel',
+                        style: GoogleFonts.inter(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-
               ),
 
-          ],
+              const Divider(height: 1),
 
+              // Results Header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      !_hasSearched
+                          ? 'RECENT SEARCHES'
+                          : _results.isEmpty && !_isLoading
+                              ? 'NO RESULTS FOUND'
+                              : '${_results.length} RESULTS FOUND',
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.grey[400],
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                    if (_isLoading)
+                      const SizedBox(
+                        width: 14,
+                        height: 14,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                      ),
+                  ],
+                ),
+              ),
+
+              // Scrollable Results
+              Expanded(
+                child: _results.isEmpty && _hasSearched && !_isLoading
+                ? _buildNoResults()
+                : ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    itemCount: _results.length,
+                    itemBuilder: (_, index) {
+                      final product = _results[index];
+                      return _buildProductItem(product);
+                    },
+                  ),
+              ),
+            ],
+          ),
         ),
-
       ),
+    );
+  }
 
-    ),
+  Widget _buildNoResults() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.search_off, size: 64, color: Colors.grey[300]),
+          const SizedBox(height: 16),
+          Text(
+            'We couldn\'t find what you\'re looking for.',
+            style: GoogleFonts.inter(color: Colors.grey[500]),
+          ),
+        ],
+      ),
+    );
+  }
 
-  );
-
-}
+  Widget _buildProductItem(Map<String, dynamic> product) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {
+          _safeNavigate(() {
+            if (widget.onProductTap != null) {
+              widget.onProductTap!(product['id']);
+            } else {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProductPage(
+                    product_id: product['id'],
+                    onQuantityChanged: (q) {},
+                  ),
+                ),
+              );
+            }
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            children: [
+              Container(
+                height: 70,
+                width: 70,
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    product['image_url'] ?? '',
+                    fit: BoxFit.cover,
+                    errorBuilder: (c, e, s) => const Icon(Icons.chair, color: Colors.grey),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product['name'],
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w600, 
+                        fontSize: 16,
+                        color: Colors.black87
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Rs ${product['price']}',
+                      style: GoogleFonts.inter(
+                        color: Colors.grey[600], 
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.arrow_forward_ios, color: Colors.grey[300], size: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-         GestureDetector(
-          onTap: () {
-                 final navigator = Navigator.of(context);
-
-            bool homeFound = false;
-
-            navigator.popUntil((route) {
-              if (route.settings.name == '/home') {
-                homeFound = true;
-                return true; // stop popping
-              }
-              return false;
-            });
-
-            if (!homeFound) {
-              navigator.pushAndRemoveUntil(
-                MaterialPageRoute(
-                  settings: const RouteSettings(name: '/home'),
-                  builder: (_) => const HomeScreen(),
-                ),
-                (_) => false,
-              );
-            }
-          },
+        GestureDetector(
+          onTap: () => _onLogoTap(context),
           child: SvgPicture.asset(
             'assets/images/furniLogo.svg',
             width: 120,
@@ -403,34 +346,12 @@ Widget _buildOverlay() {
           ),
         ),
         const Spacer(),
-        if (_showSearch)
-          SizedBox(
-            width: 220,
-            height: 36,
-            child: TextField(
-              controller: _controller,
-              autofocus: true,
-              onChanged: _onChanged,
-              style: GoogleFonts.inter(fontSize: 14),
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                isDense: true,
-                prefixIcon: IconButton(
-                  icon: const Icon(Icons.close, size: 20),
-                  onPressed: () => _toggle(false),
-                ),
-                hintText: 'Search...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(32),
-                ),
-              ),
-            ),
-          )
-        else
-          IconButton(
-            icon: SvgPicture.asset('assets/images/search.svg', width: 24, height: 24),
-            onPressed: () => _toggle(true),
-          ),
+        // Only the Search Icon is needed here now, 
+        // as the actual text field is inside the full-page overlay
+        IconButton(
+          icon: SvgPicture.asset('assets/images/search.svg', width: 24, height: 24),
+          onPressed: () => _toggle(true),
+        ),
       ],
     );
   }

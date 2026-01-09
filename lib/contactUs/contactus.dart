@@ -195,7 +195,6 @@ class Contactus extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: SizedBox(height: 90, child: GlassFloatingNavBar(currentIndex: 3,)),
     );
   }
 }

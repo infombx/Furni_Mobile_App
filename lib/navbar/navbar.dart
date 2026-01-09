@@ -54,19 +54,16 @@ class GlassFloatingNavBar extends StatelessWidget {
                         icon: GestureDetector(
                           onTap: () {
                             if (currentIndex == 0) {
-                              // ✅ Trigger visible pull-down
-                              if (onHomeTap != null) onHomeTap!();
+                              onHomeTap?.call();
                             } else {
-                              // Navigate to Home with slide
-                              Navigator.pushReplacement(
+                              Navigator.pushNamedAndRemoveUntil(
                                 context,
-                                SlidePageRoute(
-                                  page: const HomeScreen(),
-                                  fromLeft: false,
-                                ),
+                                HomeScreen.routeName,
+                                (route) => false,
                               );
                             }
                           },
+
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [

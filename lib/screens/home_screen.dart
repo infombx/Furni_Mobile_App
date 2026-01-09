@@ -10,6 +10,7 @@ import 'package:furni_mobile_app/navbar/navbar.dart';
 class HomeScreen extends StatefulWidget {
   static final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
+      static const routeName = '/home';
 
   const HomeScreen({super.key});
 
@@ -84,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           // Floating Glass Navbar
-          const GlassFloatingNavBar(currentIndex: 0),
+           GlassFloatingNavBar(currentIndex: 0, onHomeTap: showPullDownRefresh,),
         ],
       ),
     );
