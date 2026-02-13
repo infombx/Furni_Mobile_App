@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/screens/splash_screen.dart';
-import 'package:furni_mobile_app/services/auth_service.dart';
-import 'package:furni_mobile_app/widgets/user_profile.dart';
+import 'package:teakworld/screens/splash_screen.dart';
+import 'package:teakworld/services/auth_service.dart';
+import 'package:teakworld/widgets/user_profile.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/models/user_model.dart';
-import 'package:furni_mobile_app/services/update_profile.dart';
+import 'package:teakworld/models/user_model.dart';
+import 'package:teakworld/services/update_profile.dart';
 
 String lowercaseExceptFirst(String input) {
   if (input.isEmpty) return input;

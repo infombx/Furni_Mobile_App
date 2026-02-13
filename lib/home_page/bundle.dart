@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/home_page/shopNow_widget.dart';
+import 'package:teakworld/home_page/shopNow_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/home_page/data/bundle.dart';
-import 'package:furni_mobile_app/services/api_bundle.dart';
-import 'package:furni_mobile_app/shop/Shoppage.dart';
+import 'package:teakworld/home_page/data/bundle.dart';
+import 'package:teakworld/services/api_bundle.dart';
+import 'package:teakworld/shop/Shoppage.dart';
 
 class Bundle extends StatefulWidget {
   const Bundle({super.key});

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/Header/header.dart';
-import 'package:furni_mobile_app/Items/cart_listview.dart';
-import 'package:furni_mobile_app/dummy%20items/data_required.dart';
-import 'package:furni_mobile_app/dummy%20items/myItems.dart';
-import 'package:furni_mobile_app/models/user_model.dart';
-import 'package:furni_mobile_app/screens/order_complete_screen.dart';
-import 'package:furni_mobile_app/services/auth_service.dart';
-import 'package:furni_mobile_app/services/order_items_api.dart';
+import 'package:teakworld/Header/header.dart';
+import 'package:teakworld/Items/cart_listview.dart';
+import 'package:teakworld/dummy%20items/data_required.dart';
+import 'package:teakworld/dummy%20items/myItems.dart';
+import 'package:teakworld/models/user_model.dart';
+import 'package:teakworld/screens/order_complete_screen.dart';
+import 'package:teakworld/services/auth_service.dart';
+import 'package:teakworld/services/order_items_api.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/product/data/orders.dart';
+import 'package:teakworld/product/data/orders.dart';
 
 class OrderSummaryScreen extends StatefulWidget {
   const OrderSummaryScreen({
@@ -170,7 +170,11 @@ void _handleSubmit() async {
     );
   }
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false, title: Header()),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Header(),
+        backgroundColor: const Color.fromRGBO(1, 100, 109, 1),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(15.0),

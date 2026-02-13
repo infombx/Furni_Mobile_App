@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/home_page/shopNow_widget.dart';
+import 'package:teakworld/home_page/shopNow_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Shopnow extends StatelessWidget {

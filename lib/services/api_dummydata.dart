@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:furni_mobile_app/product/data/dummyData.dart'; // Your Product Model
-import 'package:furni_mobile_app/shop/data/category_model.dart'; // Category Model
+import 'package:teakworld/product/data/dummyData.dart'; // Your Product Model
+import 'package:teakworld/shop/data/category_model.dart'; // Category Model
 
 class ApiService {
   static const String baseUrl = "http://159.65.15.249:1337";

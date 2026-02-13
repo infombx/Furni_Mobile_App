@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/Header/header.dart';
-import 'package:furni_mobile_app/navbar/navbar.dart';
-import 'package:furni_mobile_app/services/api_dummydata.dart';
-import 'package:furni_mobile_app/shop/widget/filternav.dart';
-import 'package:furni_mobile_app/shop/widget/grid.dart';
-import 'package:furni_mobile_app/shop/widget/productFilter.dart';
-import 'package:furni_mobile_app/shop_page/hero_section.dart';
-import 'package:furni_mobile_app/product/data/dummyData.dart';
-import 'package:furni_mobile_app/shop/model/category_model.dart';
+import 'package:teakworld/Header/header.dart';
+import 'package:teakworld/navbar/navbar.dart';
+import 'package:teakworld/services/api_dummydata.dart';
+import 'package:teakworld/shop/widget/filternav.dart';
+import 'package:teakworld/shop/widget/grid.dart';
+import 'package:teakworld/shop/widget/productFilter.dart';
+import 'package:teakworld/shop_page/hero_section.dart';
+import 'package:teakworld/product/data/dummyData.dart';
+import 'package:teakworld/shop/model/category_model.dart';
 
 class Shoppage extends StatefulWidget {
   final String? selectedCategory;
@@ -110,7 +110,7 @@ class _ShoppageState extends State<Shoppage> {
       appBar: AppBar(
         title: const Header(),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromRGBO(1, 100, 109, 1),
         elevation: 0,
       ),
       body: Stack(

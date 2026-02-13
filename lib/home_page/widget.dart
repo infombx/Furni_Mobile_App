@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/product/Product_page.dart';
-import 'package:furni_mobile_app/product/data/dummyData.dart';
-import 'package:furni_mobile_app/product/widget/rating_star.dart';
-import 'package:furni_mobile_app/home_page/toggle_favorite.dart';
-import 'package:furni_mobile_app/screens/home_screen.dart';
-import 'package:furni_mobile_app/product/data/orders.dart';
-import 'package:furni_mobile_app/models/user_model.dart';
-import 'package:furni_mobile_app/services/OrdersService.dart';
-import 'package:furni_mobile_app/services/update_profilepicture.dart';
-import 'package:furni_mobile_app/widgets/account%20details.dart';
-import 'package:furni_mobile_app/widgets/address_details.dart';
-import 'package:furni_mobile_app/widgets/footer/profile_picture.dart';
-import 'package:furni_mobile_app/widgets/user_profile.dart';
-import 'package:furni_mobile_app/services/auth_service.dart';
-import 'package:furni_mobile_app/services/api_review.dart';
+import 'package:teakworld/product/Product_page.dart';
+import 'package:teakworld/product/data/dummyData.dart';
+import 'package:teakworld/product/widget/rating_star.dart';
+import 'package:teakworld/home_page/toggle_favorite.dart';
+import 'package:teakworld/screens/home_screen.dart';
+import 'package:teakworld/product/data/orders.dart';
+import 'package:teakworld/models/user_model.dart';
+import 'package:teakworld/services/OrdersService.dart';
+import 'package:teakworld/services/update_profilepicture.dart';
+import 'package:teakworld/widgets/account%20details.dart';
+import 'package:teakworld/widgets/address_details.dart';
+import 'package:teakworld/widgets/footer/profile_picture.dart';
+import 'package:teakworld/widgets/user_profile.dart';
+import 'package:teakworld/services/auth_service.dart';
+import 'package:teakworld/services/api_review.dart';
 
 class NewProductCard extends StatelessWidget {
   const NewProductCard({

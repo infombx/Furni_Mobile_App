@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/services/contactus_services.dart';
+import 'package:teakworld/services/contactus_services.dart';
 
 class About extends StatelessWidget {
   const About({super.key});

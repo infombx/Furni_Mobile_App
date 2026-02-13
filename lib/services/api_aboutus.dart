@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
-import 'package:furni_mobile_app/home_page/data/aboutUs.dart';
+import 'package:teakworld/home_page/data/aboutUs.dart';
 
 class ApiService {
   static const String baseUrl = "http://159.65.15.249:1337";

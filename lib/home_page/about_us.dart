@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/contactUs/contactus.dart';
-import 'package:furni_mobile_app/home_page/data/aboutUs.dart'; 
-import 'package:furni_mobile_app/services/api_aboutus.dart'; 
+import 'package:teakworld/contactUs/contactus.dart';
+import 'package:teakworld/home_page/data/aboutUs.dart'; 
+import 'package:teakworld/services/api_aboutus.dart'; 
 
 class AboutUsSection extends StatelessWidget {
   const AboutUsSection({super.key});

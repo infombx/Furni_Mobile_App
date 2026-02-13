@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/shop/widget/productFilter.dart';
-import 'package:furni_mobile_app/shop/model/category_model.dart';
-import 'package:furni_mobile_app/services/category_service.dart';
+import 'package:teakworld/shop/widget/productFilter.dart';
+import 'package:teakworld/shop/model/category_model.dart';
+import 'package:teakworld/services/category_service.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   final List<CategoryModel> initialSelectedCategories;

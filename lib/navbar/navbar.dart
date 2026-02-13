@@ -1,11 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:furni_mobile_app/Items/bottomsheet.dart';
-import 'package:furni_mobile_app/screens/home_screen.dart';
-import 'package:furni_mobile_app/screens/my_account.dart';
-import 'package:furni_mobile_app/shop/shopPage.dart';
-import 'package:furni_mobile_app/navbar/slide_page_route.dart';
+import 'package:teakworld/Items/bottomsheet.dart';
+import 'package:teakworld/screens/home_screen.dart';
+import 'package:teakworld/screens/my_account.dart';
+import 'package:teakworld/shop/shopPage.dart';
+import 'package:teakworld/navbar/slide_page_route.dart';
 
 class GlassFloatingNavBar extends StatelessWidget {
   final int currentIndex;
@@ -90,45 +90,45 @@ class GlassFloatingNavBar extends StatelessWidget {
                         label: '',
                       ),
 
-                      // ================= SHOP =================
-                      BottomNavigationBarItem(
-                        icon: GestureDetector(
-                          onTap: () {
-                            if (currentIndex != 1) {
-                              Navigator.pushReplacement(
-                                context,
-                                SlidePageRoute(
-                                  page: const Shoppage(),
-                                  fromLeft: true, // LEFT → RIGHT
-                                ),
-                              );
-                            }
-                          },
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/shop-page.svg',
-                                width: 24,
-                                colorFilter: ColorFilter.mode(
-                                  currentIndex == 1
-                                      ? Colors.black
-                                      : Colors.black,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                              if (currentIndex == 1)
-                                Container(
-                                  margin: const EdgeInsets.only(top: 4),
-                                  height: 2,
-                                  width: 15,
-                                  color: Colors.black,
-                                ),
-                            ],
-                          ),
-                        ),
-                        label: '',
-                      ),
+                      // ================= SHOP (DISABLED) =================
+                      // BottomNavigationBarItem(
+                      //   icon: GestureDetector(
+                      //     onTap: () {
+                      //       if (currentIndex != 1) {
+                      //         Navigator.pushReplacement(
+                      //           context,
+                      //           SlidePageRoute(
+                      //             page: const Shoppage(),
+                      //             fromLeft: true, // LEFT → RIGHT
+                      //           ),
+                      //         );
+                      //       }
+                      //     },
+                      //     child: Column(
+                      //       mainAxisSize: MainAxisSize.min,
+                      //       children: [
+                      //         SvgPicture.asset(
+                      //           'assets/images/shop-page.svg',
+                      //           width: 24,
+                      //           colorFilter: ColorFilter.mode(
+                      //             currentIndex == 1
+                      //                 ? Colors.black
+                      //                 : Colors.black,
+                      //             BlendMode.srcIn,
+                      //           ),
+                      //         ),
+                      //         if (currentIndex == 1)
+                      //           Container(
+                      //             margin: const EdgeInsets.only(top: 4),
+                      //             height: 2,
+                      //             width: 15,
+                      //             color: Colors.black,
+                      //           ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      //   label: '',
+                      // ),
 
                       // ================= CART =================
                       BottomNavigationBarItem(
@@ -157,7 +157,8 @@ class GlassFloatingNavBar extends StatelessWidget {
                       BottomNavigationBarItem(
                         icon: GestureDetector(
                           onTap: () {
-                            if (currentIndex != 3) {
+                            // Updated index from 3 to 2 since Shop is removed
+                            if (currentIndex != 2) {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -170,7 +171,8 @@ class GlassFloatingNavBar extends StatelessWidget {
                             'assets/images/user-circle.svg',
                             width: 24,
                             colorFilter: ColorFilter.mode(
-                              currentIndex == 3 ? Colors.black : Colors.black,
+                              // Updated index from 3 to 2
+                              currentIndex == 2 ? Colors.black : Colors.black,
                               BlendMode.srcIn,
                             ),
                           ),

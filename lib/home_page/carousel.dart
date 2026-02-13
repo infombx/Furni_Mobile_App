@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/home_page/data/hero_banner_section.dart';
-import 'package:furni_mobile_app/services/api_herobanner.dart';
+import 'package:teakworld/home_page/data/hero_banner_section.dart';
+import 'package:teakworld/services/api_herobanner.dart';
 
 class CarouselWidget extends StatefulWidget {
   const CarouselWidget({super.key});

@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/screens/home_screen.dart';
-import 'package:furni_mobile_app/widgets/footer/profile_picture.dart';
-import 'package:furni_mobile_app/services/profile_service.dart';
+import 'package:teakworld/screens/home_screen.dart';
+import 'package:teakworld/widgets/footer/profile_picture.dart';
+import 'package:teakworld/services/profile_service.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
   const CompleteProfileScreen({super.key});
@@ -85,8 +85,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
         ),
+        backgroundColor: const Color.fromRGBO(1, 100, 109, 1),
       ),
       body: SingleChildScrollView(
         child: Column(

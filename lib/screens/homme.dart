@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/Items/bottomsheet.dart';
+import 'package:teakworld/Items/bottomsheet.dart';
 
 class HommeScreen extends StatelessWidget {
   const HommeScreen({super.key});

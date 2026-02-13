@@ -1,6 +1,6 @@
 // import 'dart:convert';
 // import 'package:http/http.dart' as http;
-// import 'package:furni_mobile_app/product/data/orders.dart';
+// import 'package:teakworld/product/data/orders.dart';
 
 // class OrderItemApi {
 //   static const String _baseUrl =
@@ -37,7 +37,7 @@
 
 // import 'dart:convert';
 // import 'package:http/http.dart' as http;
-// import 'package:furni_mobile_app/product/data/orders.dart';
+// import 'package:teakworld/product/data/orders.dart';
 
 // class OrderItemApi {
 //   static const String _url =
@@ -62,7 +62,7 @@
 // }
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:furni_mobile_app/product/data/orders.dart';
+import 'package:teakworld/product/data/orders.dart';
 
 class OrderItemApi {
   static const String _url = 'http://159.65.15.249:1337/api/order-items';

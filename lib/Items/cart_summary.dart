@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/dummy%20items/myItems.dart';
-import 'package:furni_mobile_app/models/user_model.dart';
-import 'package:furni_mobile_app/services/auth_service.dart';
-import 'package:furni_mobile_app/services/profile_service.dart';
+import 'package:teakworld/dummy%20items/myItems.dart';
+import 'package:teakworld/models/user_model.dart';
+import 'package:teakworld/services/auth_service.dart';
+import 'package:teakworld/services/profile_service.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/product/data/orders.dart';
+import 'package:teakworld/product/data/orders.dart';
 
 class CartSummary extends StatefulWidget {
   const CartSummary({super.key});

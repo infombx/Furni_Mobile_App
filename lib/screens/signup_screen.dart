@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:furni_mobile_app/screens/login_screen.dart';
+import 'package:teakworld/screens/login_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/screens/profile.dart';
-import 'package:furni_mobile_app/services/auth_service.dart';
-import 'package:furni_mobile_app/models/user_model.dart';
+import 'package:teakworld/screens/profile.dart';
+import 'package:teakworld/services/auth_service.dart';
+import 'package:teakworld/models/user_model.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -106,11 +106,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding: const EdgeInsets.only(top: 30.0),
                         child: Center(
                           child: SvgPicture.asset(
-                            'assets/images/furniLogo.svg',
-                            width: 70,
+                            'assets/images/teakworld.mu-0.svg',
+                            height: 30,
                           ),
                         ),
                       ),

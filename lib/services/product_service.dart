@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:furni_mobile_app/models/product_model.dart';
+import 'package:teakworld/models/product_model.dart';
 
 class ProductService {
   final String baseUrl = "http://159.65.15.249:1337";

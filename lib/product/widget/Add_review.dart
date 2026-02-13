@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/product/widget/rating_star.dart';
-import 'package:furni_mobile_app/services/api_review.dart';
-import 'package:furni_mobile_app/services/auth_service.dart';
-import 'package:furni_mobile_app/models/user_model.dart';
+import 'package:teakworld/product/widget/rating_star.dart';
+import 'package:teakworld/services/api_review.dart';
+import 'package:teakworld/services/auth_service.dart';
+import 'package:teakworld/models/user_model.dart';
 
 class AddReview extends StatefulWidget {
   const AddReview({super.key, required this.productId, this.onReviewPosted});

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:furni_mobile_app/product/data/orders.dart';
+import 'package:teakworld/product/data/orders.dart';
 
 class CartPersistence {
   static const String _key = 'user_cart_items';

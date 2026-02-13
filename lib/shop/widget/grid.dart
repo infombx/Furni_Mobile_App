@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/product/Product_page.dart';
-import 'package:furni_mobile_app/product/data/dummyData.dart';
-import 'package:furni_mobile_app/services/auth_service.dart';
-import 'package:furni_mobile_app/product/data/orders.dart';
-import 'package:furni_mobile_app/services/OrdersService.dart';
+import 'package:teakworld/product/Product_page.dart';
+import 'package:teakworld/product/data/dummyData.dart';
+import 'package:teakworld/services/auth_service.dart';
+import 'package:teakworld/product/data/orders.dart';
+import 'package:teakworld/services/OrdersService.dart';
 
 class ProductGrid extends StatefulWidget {
   const ProductGrid({super.key, required this.items});

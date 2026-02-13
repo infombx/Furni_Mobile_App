@@ -1,4 +1,4 @@
-import 'package:furni_mobile_app/dummy items/data_required.dart';
+import 'package:teakworld/dummy items/data_required.dart';
 
 final dummycart = [
   CartItem(

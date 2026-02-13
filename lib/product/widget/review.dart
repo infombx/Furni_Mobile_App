@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/product/widget/rating_star.dart';
-import 'package:furni_mobile_app/product/data/reviewdata.dart';
-import 'package:furni_mobile_app/services/api_review.dart';
+import 'package:teakworld/product/widget/rating_star.dart';
+import 'package:teakworld/product/data/reviewdata.dart';
+import 'package:teakworld/services/api_review.dart';
 
 class Review extends StatefulWidget {
   const Review({super.key, required this.productId});

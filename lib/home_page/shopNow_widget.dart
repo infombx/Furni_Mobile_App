@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/shop/shopPage.dart';
+import 'package:teakworld/shop/shopPage.dart';
 
 class ShopNowLink extends StatelessWidget {
   const ShopNowLink({super.key});

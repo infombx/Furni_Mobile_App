@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/screens/home_screen.dart';
-import 'package:furni_mobile_app/shop/shopPage.dart';
+import 'package:teakworld/screens/home_screen.dart';
+import 'package:teakworld/shop/shopPage.dart';
 
 class Navigation extends StatelessWidget {
   const Navigation({super.key});

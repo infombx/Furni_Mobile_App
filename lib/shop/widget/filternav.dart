@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:furni_mobile_app/shop/widget/filter.dart';
-import 'package:furni_mobile_app/shop/widget/sortby.dart';
+import 'package:teakworld/shop/widget/filter.dart';
+import 'package:teakworld/shop/widget/sortby.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/shop/widget/productFilter.dart';
-import 'package:furni_mobile_app/shop/model/category_model.dart';
+import 'package:teakworld/shop/widget/productFilter.dart';
+import 'package:teakworld/shop/model/category_model.dart';
 
 class Filternav extends StatelessWidget {
   final Function(ProductFilter) onFilterApplied;

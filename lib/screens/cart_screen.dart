@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/Items/cart_listview.dart';
-import 'package:furni_mobile_app/models/user_model.dart';
-import 'package:furni_mobile_app/screens/order_summary_screen.dart';
-import 'package:furni_mobile_app/services/OrdersService.dart';
-import 'package:furni_mobile_app/services/auth_service.dart';
+import 'package:teakworld/Items/cart_listview.dart';
+import 'package:teakworld/models/user_model.dart';
+import 'package:teakworld/screens/order_summary_screen.dart';
+import 'package:teakworld/services/OrdersService.dart';
+import 'package:teakworld/services/auth_service.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/product/data/orders.dart';
+import 'package:teakworld/product/data/orders.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/services/api_serviceCard.dart';
-import 'package:furni_mobile_app/contactUs/data/servicesData.dart';
+import 'package:teakworld/services/api_serviceCard.dart';
+import 'package:teakworld/contactUs/data/servicesData.dart';
 
 class Services extends StatelessWidget {
   const Services({super.key});

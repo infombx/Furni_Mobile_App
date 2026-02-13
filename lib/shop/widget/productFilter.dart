@@ -1,4 +1,4 @@
-import 'package:furni_mobile_app/shop/model/category_model.dart';
+import 'package:teakworld/shop/model/category_model.dart';
 
 class ProductFilter {
   final List<String> categories;

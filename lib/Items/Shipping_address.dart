@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/dummy%20items/data_required.dart';
+import 'package:teakworld/dummy%20items/data_required.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ShippingDetailsForm extends StatefulWidget {

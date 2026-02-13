@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/screens/home_screen.dart';
-import 'package:furni_mobile_app/screens/splash_screen.dart';
-import 'package:furni_mobile_app/services/OrdersService.dart';
-import 'package:furni_mobile_app/services/auth_service.dart';
+import 'package:teakworld/screens/home_screen.dart';
+import 'package:teakworld/screens/splash_screen.dart';
+import 'package:teakworld/services/OrdersService.dart';
+import 'package:teakworld/services/auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

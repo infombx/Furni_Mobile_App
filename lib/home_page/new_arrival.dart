@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/data/data_cons.dart';
-import 'package:furni_mobile_app/product/widget/rating_star.dart';
-import 'package:furni_mobile_app/data/dummy_data.dart';
+import 'package:teakworld/data/data_cons.dart';
+import 'package:teakworld/product/widget/rating_star.dart';
+import 'package:teakworld/data/dummy_data.dart';
 
 // Rename this to a proper name instead of `Widget`
 class DummyNewProductCard extends StatelessWidget {

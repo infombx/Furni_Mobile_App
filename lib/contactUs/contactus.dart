@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:furni_mobile_app/Header/header.dart';
-import 'package:furni_mobile_app/contactUs/about.dart';
-import 'package:furni_mobile_app/contactUs/widget/contactForm.dart';
-import 'package:furni_mobile_app/contactUs/widget/info_card.dart';
-import 'package:furni_mobile_app/contactUs/widget/services.dart';
-import 'package:furni_mobile_app/contactUs/widget/shopnow.dart';
-import 'package:furni_mobile_app/navbar/navbar.dart';
-import 'package:furni_mobile_app/services/contactus_services.dart';
+import 'package:teakworld/Header/header.dart';
+import 'package:teakworld/contactUs/about.dart';
+import 'package:teakworld/contactUs/widget/contactForm.dart';
+import 'package:teakworld/contactUs/widget/info_card.dart';
+import 'package:teakworld/contactUs/widget/services.dart';
+import 'package:teakworld/contactUs/widget/shopnow.dart';
+import 'package:teakworld/navbar/navbar.dart';
+import 'package:teakworld/services/contactus_services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:furni_mobile_app/contactUs/widget/location.dart';
+import 'package:teakworld/contactUs/widget/location.dart';
 
 class Contactus extends StatelessWidget {
   const Contactus({super.key});
@@ -52,7 +52,11 @@ class Contactus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Header(), automaticallyImplyLeading: false),
+      appBar: AppBar(
+        title: const Header(),
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color.fromRGBO(1, 100, 109, 1),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(28, 0, 28, 0),
         child: Column(

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:furni_mobile_app/contactUs/data/servicesData.dart';
+import 'package:teakworld/contactUs/data/servicesData.dart';
 
 class ApiService {
   static const String baseUrl = "http://159.65.15.249:1337";

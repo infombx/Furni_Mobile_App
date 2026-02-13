@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:furni_mobile_app/screens/login_screen.dart';
-import 'package:furni_mobile_app/screens/signup_screen.dart';
+import 'package:teakworld/screens/login_screen.dart';
+import 'package:teakworld/screens/signup_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   static const routeName = '/splash';
@@ -39,7 +39,7 @@ class SplashScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 60),
-                    SvgPicture.asset('assets/images/logo.svg', width: 250),
+                    SvgPicture.asset('assets/images/teakworld.mu-0.svg', height: 40),
                     const SizedBox(height: 15),
                     const Text(
                       'Furniture that feels like home',

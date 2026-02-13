@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:furni_mobile_app/product/product_page.dart';
-import 'package:furni_mobile_app/screens/home_screen.dart';
+import 'package:teakworld/product/product_page.dart';
+import 'package:teakworld/screens/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
@@ -336,22 +336,24 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         GestureDetector(
           onTap: () => _onLogoTap(context),
           child: SvgPicture.asset(
-            'assets/images/furniLogo.svg',
-            width: 120,
-            height: 85,
+            'assets/images/teakworld.mu-0.svg',
+            height: 30,
+            fit: BoxFit.contain,
           ),
         ),
-        const Spacer(),
+        // const Spacer(), // Removed Spacer to center the logo
         // Only the Search Icon is needed here now, 
         // as the actual text field is inside the full-page overlay
-        IconButton(
-          icon: SvgPicture.asset('assets/images/search.svg', width: 24, height: 24),
-          onPressed: () => _toggle(true),
-        ),
+        // Search functionality disabled
+        // IconButton(
+        //   icon: SvgPicture.asset('assets/images/search.svg', width: 24, height: 24),
+        //   onPressed: () => _toggle(true),
+        // ),
       ],
     );
   }

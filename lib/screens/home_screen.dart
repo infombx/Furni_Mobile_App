@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/Header/header.dart';
-import 'package:furni_mobile_app/home_page/carousel.dart';
-import 'package:furni_mobile_app/home_page/bundle.dart';
-import 'package:furni_mobile_app/home_page/newproduct.dart';
-import 'package:furni_mobile_app/home_page/about_us.dart';
-import 'package:furni_mobile_app/contactUs/widget/services.dart';
-import 'package:furni_mobile_app/navbar/navbar.dart';
+import 'package:teakworld/Header/header.dart';
+import 'package:teakworld/home_page/carousel.dart';
+import 'package:teakworld/home_page/bundle.dart';
+import 'package:teakworld/home_page/newproduct.dart';
+import 'package:teakworld/home_page/about_us.dart';
+import 'package:teakworld/contactUs/widget/services.dart';
+import 'package:teakworld/navbar/navbar.dart';
 
 class HomeScreen extends StatefulWidget {
   static final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
@@ -52,7 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Header(), automaticallyImplyLeading: false),
+      appBar: AppBar(
+        title: const Header(),
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color.fromRGBO(1, 100, 109, 1),
+      ),
       body: Stack(
         children: [
           // Main scrollable content
@@ -68,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     const SizedBox(height: 300, child: CarouselWidget()),
-                    const Bundle(),
+                    // const Bundle(),
                     const NewArrival(),
                     const SizedBox(height: 10),
                     Container(

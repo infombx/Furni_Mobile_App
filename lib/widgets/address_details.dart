@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:furni_mobile_app/models/user_model.dart';
+import 'package:teakworld/models/user_model.dart';
 
 class AddressDetails extends StatelessWidget {
   const AddressDetails({

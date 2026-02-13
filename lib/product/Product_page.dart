@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/Header/header.dart';
-import 'package:furni_mobile_app/navbar/navbar.dart';
-import 'package:furni_mobile_app/product/data/dummyData.dart';
-import 'package:furni_mobile_app/product/widget/Add_review.dart';
-import 'package:furni_mobile_app/product/widget/details_card.dart';
-import 'package:furni_mobile_app/product/widget/display_images.dart';
-import 'package:furni_mobile_app/product/widget/navigation.dart';
-import 'package:furni_mobile_app/product/widget/review.dart';
-import 'package:furni_mobile_app/services/api_dummydata.dart';
+import 'package:teakworld/Header/header.dart';
+import 'package:teakworld/navbar/navbar.dart';
+import 'package:teakworld/product/data/dummyData.dart';
+import 'package:teakworld/product/widget/Add_review.dart';
+import 'package:teakworld/product/widget/details_card.dart';
+import 'package:teakworld/product/widget/display_images.dart';
+import 'package:teakworld/product/widget/navigation.dart';
+import 'package:teakworld/product/widget/review.dart';
+import 'package:teakworld/services/api_dummydata.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({
@@ -50,7 +50,7 @@ class _ProductPageState extends State<ProductPage> {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: const Color.fromRGBO(1, 100, 109, 1),
             elevation: 0,
             automaticallyImplyLeading: false,
             title: Center( // Centers the header content on large screens
@@ -71,7 +71,9 @@ class _ProductPageState extends State<ProductPage> {
               ),
             ),
           ),
-          body: LayoutBuilder(
+      body: Stack(
+        children: [
+          LayoutBuilder(
             builder: (context, constraints) {
               // Threshold for Tablet/Desktop
               bool isWideScreen = constraints.maxWidth > 700;
@@ -85,7 +87,7 @@ class _ProductPageState extends State<ProductPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Navigation(),
+                          // const Navigation(),
                           const SizedBox(height: 24),
                           
                           if (isWideScreen)
@@ -119,12 +121,12 @@ class _ProductPageState extends State<ProductPage> {
                           const SizedBox(height: 30),
                           
                           // Reviews section usually stays full width but can be constrained
-                          AddReview(
-                            productId: widget.product_id.toString(),
-                            onReviewPosted: () => setState(() {}),
-                          ),
-                          const SizedBox(height: 20),
-                          Review(productId: widget.product_id.toString()),
+                          // AddReview(
+                          //   productId: widget.product_id.toString(),
+                          //   onReviewPosted: () => setState(() {}),
+                          // ),
+                          // const SizedBox(height: 20),
+                          // Review(productId: widget.product_id.toString()),
                           const SizedBox(height: 120), // Bottom nav space
                         ],
                       ),
@@ -134,6 +136,9 @@ class _ProductPageState extends State<ProductPage> {
               );
             },
           ),
+          const GlassFloatingNavBar(currentIndex: 1),
+        ],
+      ),
         
         );
       },

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:furni_mobile_app/product/data/reviewdata.dart';
+import 'package:teakworld/product/data/reviewdata.dart';
 
 class ReviewService {
   final String apiUrl = "http://159.65.15.249:1337/api/review-webs";

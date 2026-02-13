@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/product/widget/rating_star.dart';
+import 'package:teakworld/product/widget/rating_star.dart';
 
 class FeaturedArticle extends StatelessWidget {
   const FeaturedArticle({super.key});

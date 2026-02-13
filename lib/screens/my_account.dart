@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/models/user_model.dart';
-import 'package:furni_mobile_app/services/update_profilepicture.dart';
-import 'package:furni_mobile_app/widgets/account%20details.dart';
-import 'package:furni_mobile_app/widgets/footer/profile_picture.dart';
-import 'package:furni_mobile_app/widgets/user_profile.dart';
-import 'package:furni_mobile_app/services/auth_service.dart';
-import 'package:furni_mobile_app/screens/home_screen.dart';
+import 'package:teakworld/models/user_model.dart';
+import 'package:teakworld/services/update_profilepicture.dart';
+import 'package:teakworld/widgets/account%20details.dart';
+import 'package:teakworld/widgets/footer/profile_picture.dart';
+import 'package:teakworld/widgets/user_profile.dart';
+import 'package:teakworld/services/auth_service.dart';
+import 'package:teakworld/screens/home_screen.dart';
 
 class MyAccount extends StatefulWidget {
   const MyAccount({super.key});

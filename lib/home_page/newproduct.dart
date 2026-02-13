@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:furni_mobile_app/home_page/widget.dart';
-import 'package:furni_mobile_app/product/data/dummyData.dart';
-import 'package:furni_mobile_app/shop/shopPage.dart';
-import 'package:furni_mobile_app/home_page/newproduct.dart';
-import 'package:furni_mobile_app/services/api_dummydata.dart';
+import 'package:teakworld/home_page/widget.dart';
+import 'package:teakworld/product/data/dummyData.dart';
+import 'package:teakworld/shop/shopPage.dart';
+import 'package:teakworld/home_page/newproduct.dart';
+import 'package:teakworld/services/api_dummydata.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NewArrival extends StatefulWidget {
@@ -191,31 +191,31 @@ class _NewArrivalState extends State<NewArrival> {
         ),
         SizedBox(height: isLaptop ? 40 : 30),
         // ---------------- Footer Link ----------------
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: isLaptop ? 40 : 18),
-          child: TextButton(
-            style: TextButton.styleFrom(padding: EdgeInsets.zero),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const Shoppage()));
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'More Products',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                const Icon(Icons.arrow_forward, size: 18, color: Colors.black),
-              ],
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.symmetric(horizontal: isLaptop ? 40 : 18),
+        //   child: TextButton(
+        //     style: TextButton.styleFrom(padding: EdgeInsets.zero),
+        //     onPressed: () {
+        //       Navigator.of(context).push(MaterialPageRoute(builder: (_) => const Shoppage()));
+        //     },
+        //     child: Row(
+        //       mainAxisSize: MainAxisSize.min,
+        //       children: [
+        //         Text(
+        //           'More Products',
+        //           style: GoogleFonts.poppins(
+        //             fontSize: 16,
+        //             fontWeight: FontWeight.w600,
+        //             color: Colors.black,
+        //             decoration: TextDecoration.underline,
+        //           ),
+        //         ),
+        //         const SizedBox(width: 6),
+        //         const Icon(Icons.arrow_forward, size: 18, color: Colors.black),
+        //       ],
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

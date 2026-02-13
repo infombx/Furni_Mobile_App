@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:furni_mobile_app/models/user_model.dart';
+import 'package:teakworld/models/user_model.dart';
 
 class AuthService {
   final String baseUrl = "http://159.65.15.249:1337";

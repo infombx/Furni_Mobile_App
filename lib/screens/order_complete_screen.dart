@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:furni_mobile_app/Header/header.dart';
-import 'package:furni_mobile_app/screens/home_screen.dart';
-import 'package:furni_mobile_app/product/data/orders.dart';
+import 'package:teakworld/Header/header.dart';
+import 'package:teakworld/screens/home_screen.dart';
+import 'package:teakworld/product/data/orders.dart';
 
 class OrderCompleteScreen extends StatefulWidget {
   const OrderCompleteScreen({
@@ -41,6 +41,7 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
       appBar: AppBar(
         title: const Header(),
         automaticallyImplyLeading: false,
+        backgroundColor: const Color.fromRGBO(1, 100, 109, 1),
       ),
       body: widget.item.isEmpty 
         ? const Center(child: Text("No items found in order."))
