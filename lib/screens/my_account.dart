@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:teakworld/models/user_model.dart';
-import 'package:teakworld/services/update_profilepicture.dart';
-import 'package:teakworld/widgets/account%20details.dart';
-import 'package:teakworld/widgets/footer/profile_picture.dart';
-import 'package:teakworld/widgets/user_profile.dart';
+import 'package:teakworld/screens/login_screen.dart';
+import 'package:teakworld/widgets/account details.dart';
 import 'package:teakworld/services/auth_service.dart';
 import 'package:teakworld/screens/home_screen.dart';
+import 'package:teakworld/screens/splash_screen.dart';
 
 class MyAccount extends StatefulWidget {
   const MyAccount({super.key});
@@ -27,11 +26,18 @@ class _MyAccountState extends State<MyAccount> {
   }
 
   Future<void> _loadUser() async {
-    final user = await authService.fetchMe();
-    setState(() {
-      currentUser = user;
-      isLoading = false;
-    });
+    try {
+      final user = await authService.fetchMe();
+      setState(() {
+        currentUser = user;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        currentUser = null;
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -42,6 +48,7 @@ class _MyAccountState extends State<MyAccount> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // --- Back Button ---
               Row(
                 children: [
                   TextButton.icon(
@@ -52,100 +59,82 @@ class _MyAccountState extends State<MyAccount> {
                           settings: const RouteSettings(name: '/home'),
                           builder: (_) => const HomeScreen(),
                         ),
-                        (route) => false, // removes all previous routes
+                        (route) => false,
                       );
                     },
-                    label: Text('back', style: TextStyle(color: Colors.black)),
-                    icon: Icon(
-                      Icons.arrow_back_ios,
-                      size: 11,
-                      color: Colors.black54,
-                    ),
+                    label: const Text('back', style: TextStyle(color: Colors.black)),
+                    icon: const Icon(Icons.arrow_back_ios, size: 11, color: Colors.black54),
                   ),
                 ],
               ),
-              Center(
-                child: const Text(
+
+              const Center(
+                child: Text(
                   'My Account',
                   style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                 ),
               ),
-              const SizedBox(height: 10),
-              Stack(
-                children: [
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                      child: Container(
-                        width: double.infinity,
-                        height: 230,
-                        decoration: BoxDecoration(
-                          color: Color(0xfff3f5f7),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                    ),
+              const SizedBox(height: 20),
+
+              // --- Conditional UI: Loader, User Name, or Sign In Button ---
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: const Color(0xfff3f5f7),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-
-                  Column(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: ProfilePicture(
-                            imagePath: UserProfile.profileImagePath,
-                            imageUrl: currentUser?.profilePictureUrl,
-                            onImageSelected: (path) async {
-                              setState(() {
-                                UserProfile.profileImagePath = path;
-                              });
-
-                              final success = await UserProfileService()
-                                  .updateProfilePicture(path);
-
-                              if (success) {
-                                await _loadUser(); // 🔁 refresh from backend
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-
-                      //display user details
                       if (isLoading)
-                        const CircularProgressIndicator()
+                        const CircularProgressIndicator(color: Colors.black)
                       else if (currentUser != null)
-                        Column(
-                          children: [
-                            Text(
-                              currentUser!.displayName,
-                              style: const TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          currentUser!.displayName,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                         )
-                      else
-                        const Text('Failed to load user'),
-
-                      const SizedBox(height: 40),
+                      else ...[
+                        const Text(
+                          "You are not signed in",
+                          style: TextStyle(fontSize: 18, color: Colors.black54),
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            minimumSize: const Size(200, 50),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          ),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+                          },
+                          child: const Text('Sign In', style: TextStyle(fontSize: 16)),
+                        ),
+                      ],
                     ],
                   ),
-                ],
-              ),
-              const SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: AccountDetails(
-                  currentUser: currentUser,
-                  isLoading: isLoading,
-                  onProfileUpdated: () {
-                    setState(() {});
-                  },
                 ),
               ),
+
+              const SizedBox(height: 30),
+
+              // --- Detailed Info Section (Only shown if logged in) ---
+              if (!isLoading && currentUser != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: AccountDetails(
+                    currentUser: currentUser,
+                    isLoading: isLoading,
+                    onProfileUpdated: () => _loadUser(),
+                  ),
+                ),
+              
+              const SizedBox(height: 20),
             ],
           ),
         ),

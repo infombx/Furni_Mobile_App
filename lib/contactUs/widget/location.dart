@@ -16,7 +16,7 @@ class _LocationState extends State<Location> {
   final List<Marker> _markers = [];
 
   // Initial center → Mauritius (Port Louis)
-  final LatLng _initialCenter = LatLng(-20.1619, 57.5013);
+  final LatLng _initialCenter = LatLng(-20.2215, 57.4950);
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _LocationState extends State<Location> {
       Marker(
         width: 50,
         height: 50,
-        point: LatLng(-20.1619, 57.5013),
+        point: LatLng(-20.2215, 57.4950),
         child: const Icon(Icons.location_on, size: 36, color: Colors.red),
       ),
     );
@@ -47,10 +47,11 @@ class _LocationState extends State<Location> {
           mapController: _mapController,
           options: MapOptions(initialCenter: _initialCenter, initialZoom: 14),
           children: [
-            TileLayer(
-              urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-              subdomains: const ['a', 'b', 'c'],
-            ),
+           TileLayer(
+  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+  userAgentPackageName: 'com.yourdomain.teakworld', // MUST MATCH your Bundle ID
+  subdomains: const ['a', 'b', 'c'],
+),
             MarkerLayer(markers: _markers),
           ],
         ),
